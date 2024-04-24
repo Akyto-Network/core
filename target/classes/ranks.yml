@@ -1,0 +1,6 @@
+ranks:
+  default:
+    prefix: "&a"
+    color: "&a"
+    permissions: 
+       - "bukkit.command.ping"
