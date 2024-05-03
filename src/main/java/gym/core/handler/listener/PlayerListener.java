@@ -1,14 +1,19 @@
 package gym.core.handler.listener;
 
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -16,15 +21,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+
+import com.google.common.collect.Lists;
 
 import gym.core.Core;
 import gym.core.chat.ChatState;
@@ -34,6 +41,8 @@ import gym.core.punishment.MuteEntry;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
+import kezukdev.akyto.duel.Duel;
+import kezukdev.akyto.profile.ProfileState;
 
 public class PlayerListener implements Listener {
 	
@@ -128,6 +137,67 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
             }
         }
+        if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).getProfileState().equals(ProfileState.MOD)) {
+        	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
+        		if (this.main.getPracticeAPI().getDuels().isEmpty()) {
+        			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
+        			return;
+        		}
+        		final List<UUID> playersInMatch = new ArrayList<>();
+        		this.main.getPracticeAPI().getDuels().forEach(duel -> {
+        			playersInMatch.addAll(duel.getFirst());
+        			playersInMatch.addAll(duel.getSecond());
+        		});
+        		Collections.shuffle(playersInMatch);
+        		event.getPlayer().teleport(Bukkit.getPlayer(playersInMatch.get(0)));
+        		final Duel duel = this.main.getPracticeAPI().getUtils().getDuelByUUID(playersInMatch.get(0));
+        		List<UUID> duelPlayers = new ArrayList<UUID>();
+        		duelPlayers.addAll(duel.getFirst());
+        		duelPlayers.addAll(duel.getSecond());
+        		duelPlayers.forEach(uuid -> event.getPlayer().showPlayer(Bukkit.getPlayer(uuid)));
+        		this.main.getLoaderHandler().getMessage().getRandomTeleport().forEach(msg -> {
+        			event.getPlayer().sendMessage(msg.replace("%target%", Bukkit.getPlayer(playersInMatch.get(0)).getName()).replace("%playerOne%", Bukkit.getPlayer(duel.getFirst().stream().collect(Collectors.toList()).get(0)).getName()).replace("%playerTwo%", Bukkit.getPlayer(duel.getSecond().stream().collect(Collectors.toList()).get(0)).getName()).replace("%matchLadder%", ChatColor.stripColor(duel.getKit().displayName())).replace("%matchDuration%", this.getFormattedDuration(duel)));
+        		});
+        		return;
+        	}
+        	if (event.getItem().getType().equals(Material.REDSTONE_TORCH_ON)) {
+        		event.setUseInteractedBlock(Result.DENY);
+        		event.setUseItemInHand(Result.DENY);
+        		event.setCancelled(true);
+        		event.getPlayer().chat("/mod");
+        		return;
+        	}
+        }
+    }
+    
+    public String getFormattedDuration(final Duel duel) {
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(duel.getDuration());
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(duel.getDuration()) - TimeUnit.MINUTES.toSeconds(minutes);
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+    
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEntityEvent event) {
+    	if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).getProfileState().equals(ProfileState.MOD)) {
+            Player clicker = event.getPlayer();
+            if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE) || clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)  || clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
+                if (event.getRightClicked() instanceof Player) {
+                    Player clicked = (Player) event.getRightClicked();
+                    if (clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
+                    	clicker.chat("/stats " + clicked.getName());
+                    	return;
+                    }
+                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)) {
+                    	clicker.chat("/viewcps " + clicked.getName());
+                    	return;
+                    }
+                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE)) {
+                    	clicker.chat("/freeze " + clicked.getName());
+                    	return;
+                    }
+                }
+            }
+    	}
     }
 	
 	@EventHandler
@@ -184,7 +254,43 @@ public class PlayerListener implements Listener {
 		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId());
 		final String prefix = Utils.translate(rank.getPrefix());
 		final String color = Utils.translate(rank.getColor());
-		event.setFormat(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat().replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : "")).replace("%rankColor%", color).replace("%player%", "%1$s").replace("%msg%", "%2$s")));
+		if (event.getMessage().startsWith(this.main.getLoaderHandler().getMessage().getScSymbol()) && event.getPlayer().hasPermission("akyto.staff")) {
+			Bukkit.getOnlinePlayers().forEach(player -> {
+				if (player.hasPermission("akyto.staff")) {
+					player.sendMessage(this.main.getLoaderHandler().getMessage().getScFormat()
+							.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
+							.replace("%rankColor%", color).replace("%player%", event.getPlayer().getName())
+							.replace("%msg%", event.getMessage().replaceFirst("!", "")));
+				}
+			});
+			event.setCancelled(true);
+			return;
+		}
+		Bukkit.getOnlinePlayers().forEach(player -> {
+			if (event.getMessage().contains(player.getName())) {
+				List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
+				p.remove(Bukkit.getPlayer(player.getName()));
+				player.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+						.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
+						.replace("%rankColor%", color)
+						.replace("%player%", event.getPlayer().getName())
+						.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
+				player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
+				p.forEach(ppl -> ppl.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+						.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
+						.replace("%rankColor%", color)
+						.replace("%player%", event.getPlayer().getName())
+						.replace("%msg%", event.getMessage().replace(player.getName(), player.getName())))));
+				event.setCancelled(true);
+				return;
+			}
+		});
+		event.setFormat(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+				.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
+				.replace("%rankColor%", color)
+				.replace("%player%", "%1$s")
+				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+				.replace("%msg%", "%2$s")));
 	}
 
     @EventHandler

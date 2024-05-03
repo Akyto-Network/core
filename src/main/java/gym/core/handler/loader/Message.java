@@ -37,6 +37,14 @@ public class Message {
 	private String chatPriorityChange;
 	private String frozed;
 	private String frozeStatus;
+	private String enterModMode;
+	private String time;
+	private String pmFormat;
+	private String scSymbol;
+	private String scFormat;
+	private String nameMCLike;
+	private String nameMCUnlike;
+	private String nameMCLikeTag;
 	private List<String> movementFrozeMessage = Lists.newArrayList();
 	private List<String> punishmentInfo = Lists.newArrayList();
 	private List<String> muteHelp = Lists.newArrayList();
@@ -44,6 +52,7 @@ public class Message {
 	private List<String> rankHelp = Lists.newArrayList();
 	private List<String> bungeeIps = Lists.newArrayList();
 	private List<String> filteredText = Lists.newArrayList();
+	private List<String> randomTeleport = Lists.newArrayList();
 	
 	public Message(final Core main) {
 		this.banDisconnect = Utils.translate(main.getConfig().getString("messages.banDisconnect"));
@@ -72,6 +81,14 @@ public class Message {
 		this.chatPriorityChange = Utils.translate(main.getConfig().getString("messages.chatPriorityChanged"));
 		this.frozed = Utils.translate(main.getConfig().getString("messages.frozed"));
 		this.frozeStatus = Utils.translate(main.getConfig().getString("messages.frozeStatusNotif"));
+		this.enterModMode = Utils.translate(main.getConfig().getString("messages.modmode"));
+		this.time = Utils.translate(main.getConfig().getString("messages.time"));
+		this.pmFormat = Utils.translate(main.getConfig().getString("messages.private-message"));
+		this.scFormat = Utils.translate(main.getConfig().getString("chat.staff-format"));
+		this.scSymbol = main.getConfig().getString("chat.staff-symbol");
+		this.nameMCLike = Utils.translate(main.getConfig().getString("messages.namemc-liked"));
+		this.nameMCUnlike = Utils.translate(main.getConfig().getString("messages.namemc-unliked"));
+		this.nameMCLikeTag = Utils.translate(main.getConfig().getString("namemc.like-tag"));
 		main.getConfig().getStringList("bungeecord.whitelist").forEach(str -> this.bungeeIps.add(str));
 		main.getConfig().getStringList("messages.punishmentInformations").forEach(str -> this.punishmentInfo.add(Utils.translate(str)));
 		main.getConfig().getStringList("messages.muteHelp").forEach(str -> this.muteHelp.add(Utils.translate(str)));
@@ -79,6 +96,7 @@ public class Message {
 		main.getConfig().getStringList("messages.rankHelp").forEach(str -> this.rankHelp.add(Utils.translate(str)));
 		main.getConfig().getStringList("chat.filtered").forEach(str -> this.filteredText.add(Utils.translate(str)));
 		main.getConfig().getStringList("freeze.movement-message").forEach(str -> this.movementFrozeMessage.add(Utils.translate(str)));
+		main.getConfig().getStringList("messages.randomTeleport").forEach(str -> this.randomTeleport.add(Utils.translate(str)));
 	}
 
 }

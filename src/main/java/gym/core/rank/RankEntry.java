@@ -21,5 +21,4 @@ public class RankEntry {
 		this.spaceBetweenColor = spacer;
 		this.permissions = permissions;
 	}
-
 }

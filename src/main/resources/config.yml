@@ -7,8 +7,15 @@ bungeecord:
   whitelist:
     - "0.0.0.0"
     
+namemc:
+  check-enabled: "true"
+  server-ip: "akyto.club"
+  like-tag: "&c❤"
+    
 chat:
-  format: "%prefix%%rankColor%%player%&7: &f%msg%"
+  format: "%prefix%%rankColor%%player%%likeTag%&7: &f%msg%"
+  staff-format: "&7[&eStaff&7] %prefix%%rankColor%%player%&7: &e%msg%"
+  staff-symbol: "!"
   state: "GLOBAL"
   cooldown:
     enabled: "true"
@@ -51,6 +58,7 @@ permissions:
   chat-manage: "akyto.chat.manage"
   chat-closed-bypass: "akyto.chat.closed.bypass"
   freeze: "akyto.staff"
+  modmode: "akyto.staff"
 
 broadcast-settings:
   rank-promote: "true"
@@ -62,6 +70,11 @@ broadcast-settings:
   staff-proxy-notification: "true"
 
 messages:
+  namemc-unliked: "&7You want to support the server? Don't forget to vote for us on &fNameMC&7: &ehttps://fr.namemc.com/server/akyto.club"
+  namemc-liked: "&7Thank you for &avoting &7for us!"
+  private-message: "&7(%incommingType% %rank%%rankColor%%player%&7) &e%message%"
+  time: "&fYou have change your time to &c%time%"
+  modmode: "%type% staffmode&7, &fif you want %subType% it &7(/mod)"
   frozed: "&fYou have got froze by &c%frozer%"
   frozeStatusNotif: "&fFrozen status of &e%frozed% &fhas been updated to &c%frozeStatus%&f!"
   chatPriorityChanged: "&fThe chat priority has been updated to &c%priority%"
@@ -117,3 +130,11 @@ messages:
     - "&8/rank promote <player> <rank>"
     - "&8/rank demote <player>"
     - "&7&m----------------------"
+  randomTeleport: 
+    - "&7Successfuly teleported to &c%target%"
+    - "&7&m------------------------------------"
+    - "&eMatch Informations&7:"
+    - "&a%playerOne% &7against &c%playerTwo%"
+    - "&fDuration&7: &e%matchDuration%"
+    - "&fKit&7: &e%matchLadder%"
+    - "&7&m------------------------------------"

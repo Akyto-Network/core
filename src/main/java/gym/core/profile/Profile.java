@@ -18,6 +18,8 @@ public class Profile {
     public long lastAlert = 0;
     public long connection = 0L;
     private boolean frozen;
+    private boolean likeNameMC;
+    private UUID responsive;
 	
 	public boolean isChatCooldownActive() {
 		return this.chatCooldown > System.currentTimeMillis();

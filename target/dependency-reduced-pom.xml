@@ -82,6 +82,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>kezuk.akyto</groupId>
+      <artifactId>practice</artifactId>
+      <version>1.0-dev</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.sathonay.npaper</groupId>
       <artifactId>npaper</artifactId>
       <version>1.7.10-R0.1-SNAPSHOT</version>

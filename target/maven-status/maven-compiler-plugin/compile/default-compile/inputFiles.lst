@@ -2,13 +2,17 @@ C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\Rank
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\MuteCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\punishment\WarnEntry.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\runnable\VerifRunnable.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\ModCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\loader\Inventories.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\runnable\CheckRunnable.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\CommandHandler.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\BulldogCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\utils\Utils.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\manager\InventoryManager.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\manager\ProfileManager.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\chat\ChatPriority.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\TimeCommand.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\MessageCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\rank\file\RankFile.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\utils\database\DatabaseSetup.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\utils\TimeUtils.java
@@ -32,6 +36,8 @@ C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\punishment\MuteEntry
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\listener\PlayerListener.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\manager\ServerManager.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\utils\database\DatabaseType.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\AnnounceCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\manager\RankManager.java
+C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\handler\command\ReportCommand.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\chat\ChatState.java
 C:\Users\Theo\eclipse-workspace\Core\src\main\java\gym\core\punishment\file\PunishmentFile.java

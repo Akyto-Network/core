@@ -9,7 +9,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -21,6 +23,7 @@ import gym.core.profile.Profile;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
+import net.minecraft.server.v1_7_R4.PacketPlayOutScoreboardTeam;
 import net.minecraft.util.com.google.common.collect.Maps;
 
 public class ProfileManager {
@@ -68,6 +71,13 @@ public class ProfileManager {
 				});	
 			}	
 		};
+		if (this.main.getLoaderHandler().getSettings().isNamemcCheck()) {
+			CompletableFuture<Boolean> future = Utils.checkNameMCLikeAsync(main, uuid);
+			future.thenAccept(result -> {
+				this.profiles.get(uuid).setLikeNameMC(result);
+				Bukkit.getPlayer(uuid).sendMessage(result ? this.main.getLoaderHandler().getMessage().getNameMCLike() : this.main.getLoaderHandler().getMessage().getNameMCUnlike());	
+			});      
+		}
 		Bukkit.getPlayer(uuid).setPlayerListName(Utils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
 	}
 	

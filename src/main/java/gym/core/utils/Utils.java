@@ -1,9 +1,20 @@
 package gym.core.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
 import org.bukkit.ChatColor;
+
+import gym.core.Core;
 
 public class Utils {
 	
@@ -19,5 +30,36 @@ public class Utils {
 		final double time = cooldown / dividend;
 		final DecimalFormat df = new DecimalFormat("#.#");
 		return df.format(time);
+	}
+	
+	public static CompletableFuture<Boolean> checkNameMCLikeAsync(Core main, UUID uuid) {
+	    final String uri = "https://api.namemc.com/server/" + main.getNamemcURL() + "/likes?profile=" + uuid;
+
+	    return CompletableFuture.supplyAsync(() -> {
+	        try {
+	            URL url = new URL(uri);
+	            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	            connection.setRequestMethod("GET");
+	            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	            String inputLine;
+	            StringBuilder response = new StringBuilder();
+	            while ((inputLine = reader.readLine()) != null) {
+	                response.append(inputLine);
+	            }
+	            reader.close();
+	            String responseString = response.toString();
+	            if (responseString.equalsIgnoreCase("true")) {
+	                return true;
+	            } else if (responseString.equalsIgnoreCase("false")) {
+	                return false;
+	            } else {
+	                throw new IOException("Invalid response from URL: " + uri);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    });
 	}
 }

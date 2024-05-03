@@ -2,6 +2,7 @@ name: Core
 author: [kezukdev]
 version: 1.0
 main: gym.core.Core
+depends: [Practice]
 commands:
   rank:
     aliases: [ranks, grade]
@@ -20,3 +21,17 @@ commands:
   chat:
   freeze:
     aliases: [froze, frozed, freezed, frozen, ss]
+  mod:
+    aliases: [modmode, staff, staffmode]
+  day:
+  night:
+  sunset:
+  report:
+  msg:
+    aliases: [message, pm, m, dm]
+  reply:
+    aliases: [r, answer, rdm, rpm]
+  announce:
+    aliases: [bc, broadcast, announcement]
+  bulldog:
+    aliases: [troll, gangsquad, gang]

@@ -27,12 +27,16 @@ import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseSetup;
 import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
+import kezukdev.akyto.Practice;
 import lombok.Getter;
 
 @Getter
 public class Core extends JavaPlugin {
 	
+	public static Core API;
+	
 	private String hikariPath;
+	private String namemcURL;
 	public String getHikariPath() { return hikariPath; }
     public Connection connection;
 	private DatabaseType databaseType;
@@ -42,8 +46,10 @@ public class Core extends JavaPlugin {
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
 	private MySQL mySQL;
+	private Practice practiceAPI;
 	
 	public void onEnable() {
+		API = this;
 		this.saveDefaultConfig();
 		this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type")) != null ? DatabaseType.valueOf(this.getConfig().getString("database.type")) : DatabaseType.FLAT_FILES;
 		if (databaseType.equals(DatabaseType.MYSQL)) {
@@ -52,7 +58,9 @@ public class Core extends JavaPlugin {
 			this.mySQL = new MySQL(this);
 			new DatabaseSetup(this);
 		}
+		this.practiceAPI = Practice.getAPI();
 		this.registerListener();
+		this.namemcURL = this.getConfig().getString("namemc.server-ip");
 		this.loaderHandler = new LoaderHandler(this);
 		this.managerHandler = new ManagerHandler(this);
 		this.rankFile = new RankFile(this);

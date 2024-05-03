@@ -17,6 +17,7 @@ public class Settings {
 	private boolean chatCooldown;
 	private int chatCooldownTime;
 	private boolean freezeInventory;
+	private boolean namemcCheck;
 	
 	public Settings(final Core main) {
 		this.rankPromoteBroad = main.getConfig().getString("broadcast-settings.rank-promote").equals("true") ? true : false;
@@ -30,7 +31,7 @@ public class Settings {
 		this.chatCooldown = main.getConfig().getString("chat.cooldown.enabled").equals("true") ? true : false;
 		this.chatCooldownTime = main.getConfig().getInt("chat.cooldown.time");
 		this.freezeInventory = main.getConfig().getString("freeze.open-inventory").equals("true") ? true : false;
-		
+		this.namemcCheck = main.getConfig().getString("namemc.check-enabled").equals("true") ? true : false;
 	}
 
 }
