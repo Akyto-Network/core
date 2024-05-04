@@ -274,12 +274,14 @@ public class PlayerListener implements Listener {
 						.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
 						.replace("%rankColor%", color)
 						.replace("%player%", event.getPlayer().getName())
+						.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 						.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
 				player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
 				p.forEach(ppl -> ppl.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 						.replace("%prefix%", prefix + (rank.getSpaceBetweenColor().booleanValue() ? " " : ""))
 						.replace("%rankColor%", color)
 						.replace("%player%", event.getPlayer().getName())
+						.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 						.replace("%msg%", event.getMessage().replace(player.getName(), player.getName())))));
 				event.setCancelled(true);
 				return;
