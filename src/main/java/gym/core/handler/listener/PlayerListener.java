@@ -150,7 +150,7 @@ public class PlayerListener implements Listener {
         		});
         		Collections.shuffle(playersInMatch);
         		event.getPlayer().teleport(Bukkit.getPlayer(playersInMatch.get(0)));
-        		final Duel duel = this.main.getPracticeAPI().getUtils().getDuelByUUID(playersInMatch.get(0));
+        		final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));
         		List<UUID> duelPlayers = new ArrayList<UUID>();
         		duelPlayers.addAll(duel.getFirst());
         		duelPlayers.addAll(duel.getSecond());

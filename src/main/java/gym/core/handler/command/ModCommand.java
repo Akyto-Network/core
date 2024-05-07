@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import gym.core.Core;
 import kezukdev.akyto.profile.Profile;
 import kezukdev.akyto.profile.ProfileState;
+import kezukdev.akyto.utils.Utils;
 
 public class ModCommand implements CommandExecutor {
 	
@@ -41,7 +42,7 @@ public class ModCommand implements CommandExecutor {
 			Bukkit.getPlayer(sender.getName()).setAllowFlight(true);
 		}
 		if (profileState.equals(ProfileState.MOD)) {
-			this.main.getPracticeAPI().getUtils().sendToSpawn(Bukkit.getPlayer(sender.getName()).getUniqueId(), true);
+			Utils.sendToSpawn(Bukkit.getPlayer(sender.getName()).getUniqueId(), true);
 		}
 		profile.setProfileState(profileState.equals(ProfileState.MOD) ? ProfileState.FREE : ProfileState.MOD);
 		this.main.getPracticeAPI().getManagerHandler().getItemManager().giveItems(Bukkit.getPlayer(sender.getName()).getUniqueId(), false);
