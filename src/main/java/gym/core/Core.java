@@ -35,9 +35,9 @@ public class Core extends JavaPlugin {
 	
 	public static Core API;
 	
-	private String hikariPath;
+	@Getter
+    private String hikariPath;
 	private String namemcURL;
-	public String getHikariPath() { return hikariPath; }
     public Connection connection;
 	private DatabaseType databaseType;
 	private LoaderHandler loaderHandler;
@@ -87,14 +87,14 @@ public class Core extends JavaPlugin {
 	
 	private void savePunishment() {
 		for (Entry<UUID, BanEntry> ban : this.managerHandler.getPunishmentManager().getBanned().entrySet()) {
-			if (this.getPunishmentFile().getConfig().getConfigurationSection("banned." + String.valueOf(ban.getKey())) == null) {
-				this.getPunishmentFile().getConfig().createSection("banned." + String.valueOf(ban.getKey()));
-				this.getPunishmentFile().getConfig().createSection("banned." + String.valueOf(ban.getKey()) + ".judge");
-				this.getPunishmentFile().getConfig().set("banned." + String.valueOf(ban.getKey()) + ".judge", ban.getValue().getJudge());
-				this.getPunishmentFile().getConfig().createSection("banned." + String.valueOf(ban.getKey()) + ".reason");
-				this.getPunishmentFile().getConfig().set("banned." + String.valueOf(ban.getKey()) + ".reason", ban.getValue().getReason());
-				this.getPunishmentFile().getConfig().createSection("banned." + String.valueOf(ban.getKey()) + ".expires");
-				this.getPunishmentFile().getConfig().set("banned." + String.valueOf(ban.getKey()) + ".expires", ban.getValue().getExpiresOn());
+			if (this.getPunishmentFile().getConfig().getConfigurationSection("banned." + ban.getKey()) == null) {
+				this.getPunishmentFile().getConfig().createSection("banned." + ban.getKey());
+				this.getPunishmentFile().getConfig().createSection("banned." + ban.getKey() + ".judge");
+				this.getPunishmentFile().getConfig().set("banned." + ban.getKey() + ".judge", ban.getValue().getJudge());
+				this.getPunishmentFile().getConfig().createSection("banned." + ban.getKey() + ".reason");
+				this.getPunishmentFile().getConfig().set("banned." + ban.getKey() + ".reason", ban.getValue().getReason());
+				this.getPunishmentFile().getConfig().createSection("banned." + ban.getKey() + ".expires");
+				this.getPunishmentFile().getConfig().set("banned." + ban.getKey() + ".expires", ban.getValue().getExpiresOn());
 			}
 		}
 		this.managerHandler.getPunishmentManager().getUnbanned().forEach(bannedName -> {
@@ -107,14 +107,14 @@ public class Core extends JavaPlugin {
 			}
 		});
 		for (Entry<UUID, MuteEntry> ban : this.managerHandler.getPunishmentManager().getMuted().entrySet()) {
-			if (this.getPunishmentFile().getConfig().getConfigurationSection("muted." + String.valueOf(ban.getKey())) == null) {
-				this.getPunishmentFile().getConfig().createSection("muted." + String.valueOf(ban.getKey()));
-				this.getPunishmentFile().getConfig().createSection("muted." + String.valueOf(ban.getKey()) + ".judge");
-				this.getPunishmentFile().getConfig().set("muted." + String.valueOf(ban.getKey()) + ".judge", ban.getValue().getJudge());
-				this.getPunishmentFile().getConfig().createSection("muted." + String.valueOf(ban.getKey()) + ".reason");
-				this.getPunishmentFile().getConfig().set("muted." + String.valueOf(ban.getKey()) + ".reason", ban.getValue().getReason());
-				this.getPunishmentFile().getConfig().createSection("muted." + String.valueOf(ban.getKey()) + ".expires");
-				this.getPunishmentFile().getConfig().set("muted." + String.valueOf(ban.getKey()) + ".expires", ban.getValue().getExpiresOn());
+			if (this.getPunishmentFile().getConfig().getConfigurationSection("muted." + ban.getKey()) == null) {
+				this.getPunishmentFile().getConfig().createSection("muted." + ban.getKey());
+				this.getPunishmentFile().getConfig().createSection("muted." + ban.getKey() + ".judge");
+				this.getPunishmentFile().getConfig().set("muted." + ban.getKey() + ".judge", ban.getValue().getJudge());
+				this.getPunishmentFile().getConfig().createSection("muted." + ban.getKey() + ".reason");
+				this.getPunishmentFile().getConfig().set("muted." + ban.getKey() + ".reason", ban.getValue().getReason());
+				this.getPunishmentFile().getConfig().createSection("muted." + ban.getKey() + ".expires");
+				this.getPunishmentFile().getConfig().set("muted." + ban.getKey() + ".expires", ban.getValue().getExpiresOn());
 			}
 		}
 		this.managerHandler.getPunishmentManager().getUnmuted().forEach(bannedName -> {
@@ -154,13 +154,13 @@ public class Core extends JavaPlugin {
 	}
 
 	private void saveDatabase() {
-		if (Bukkit.getOnlinePlayers().size() != 0) {
+		if (!Bukkit.getOnlinePlayers().isEmpty()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));
 			});
 		}
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
-			if (this.managerHandler.getProfileManager().getProfiles().size() != 0) {
+			if (!this.managerHandler.getProfileManager().getProfiles().isEmpty()) {
 				for (UUID uuid : this.managerHandler.getProfileManager().getProfiles().keySet()) {
 					File file = new File(getDataFolder() + "/players/" + uuid.toString() + ".yml");
 					if (!file.exists()) {

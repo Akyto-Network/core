@@ -17,13 +17,13 @@ import net.minecraft.util.com.google.common.collect.Maps;
 @Getter
 public class PunishmentManager {
 	
-	private Core main;
-	private ConcurrentMap<UUID, BanEntry> banned = Maps.newConcurrentMap();
-	private List<UUID> unbanned = new ArrayList<UUID>();
-	private ConcurrentMap<UUID, MuteEntry> muted = Maps.newConcurrentMap();
-	private List<UUID> unmuted = new ArrayList<UUID>();
-	private ConcurrentMap<UUID, WarnEntry> warned = Maps.newConcurrentMap();
-	private List<UUID> unwarned = new ArrayList<UUID>();
+	private final Core main;
+	private final ConcurrentMap<UUID, BanEntry> banned = Maps.newConcurrentMap();
+	private final List<UUID> unbanned = new ArrayList<>();
+	private final ConcurrentMap<UUID, MuteEntry> muted = Maps.newConcurrentMap();
+	private final List<UUID> unmuted = new ArrayList<>();
+	private final ConcurrentMap<UUID, WarnEntry> warned = Maps.newConcurrentMap();
+	private final List<UUID> unwarned = new ArrayList<>();
 	
 	public PunishmentManager(final Core main) {	
 		this.main = main;
@@ -34,13 +34,13 @@ public class PunishmentManager {
 		if (Bukkit.getPlayer(banned) != null) Bukkit.getPlayer(banned).kickPlayer(this.main.getLoaderHandler().getMessage().getBanDisconnect().replace("%expires%", expires).replace("%reason%", reason).replace("%judge%", judge));
 	}
 	
-	public void addMute(final UUID mutted, final String expires, final String reason, final String judge) {
-		this.muted.put(mutted, new MuteEntry(expires, reason, judge));
+	public void addMute(final UUID muted, final String expires, final String reason, final String judge) {
+		this.muted.put(muted, new MuteEntry(expires, reason, judge));
 	}
 	
-	public void removeMute(final UUID mutted) {
-		this.muted.remove(mutted);
-		this.unmuted.add(mutted);
+	public void removeMute(final UUID muted) {
+		this.muted.remove(muted);
+		this.unmuted.add(muted);
 	}
 	
 	public void removeBan(final UUID banned) {

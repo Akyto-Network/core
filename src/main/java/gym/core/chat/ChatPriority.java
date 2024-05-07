@@ -2,6 +2,7 @@ package gym.core.chat;
 
 import lombok.Getter;
 
+@Getter
 public enum ChatPriority {
 	
 	HIGH(15),
@@ -10,11 +11,9 @@ public enum ChatPriority {
 	NORMAL(3),
 	SPAM(0);
 	
-	@Getter
-	int time;
+	final int time;
 	
 	ChatPriority(final int time) {
 		this.time = time;
 	}
-
 }

@@ -15,10 +15,10 @@ import lombok.Getter;
 
 public class InventoryManager {
 	
-	private Core main;
-	private Inventories invConfig;
+	private final Core main;
+	private final Inventories invConfig;
 	@Getter
-	private Inventory frozeInventory;
+	private final Inventory frozeInventory;
 	
 	public InventoryManager(final Core main) {
 		this.main = main;

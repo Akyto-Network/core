@@ -33,7 +33,7 @@ public class MySQL {
 
 	            if (!tables.next()) {
 	                // Table doesn't exist
-	            	DB.createTransaction(stm -> createPlayerManagerTable(stm));
+	            	DB.createTransaction(this::createPlayerManagerTable);
 	                System.out.println("The SQL core database as been created!");
 	            }
 

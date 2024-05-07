@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class MuteEntry {
 	
-	private String expiresOn;
-	private String reason;
-	private String judge;
+	private final String expiresOn;
+	private final String reason;
+	private final String judge;
 	
 	public MuteEntry(final String expiresOn, final String reason, String judge) {
 		this.expiresOn = expiresOn;	

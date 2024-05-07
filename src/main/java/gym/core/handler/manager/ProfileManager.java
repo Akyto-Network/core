@@ -8,10 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -23,20 +22,19 @@ import gym.core.profile.Profile;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
-import net.minecraft.server.v1_7_R4.PacketPlayOutScoreboardTeam;
 import net.minecraft.util.com.google.common.collect.Maps;
 
 public class ProfileManager {
 	
-	private Core main;
-	private List<UUID> frozed = Lists.newArrayList();
-	public List<UUID> getFrozed() { return frozed; }
-	private ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
-	public ConcurrentMap<UUID, Profile> getProfiles() { return profiles; }
-	private HashMap<UUID, PermissionAttachment> permissible = Maps.newHashMap();
-	public HashMap<UUID, PermissionAttachment> getPermissible() { return permissible; }
-	
-	public ProfileManager(final Core main) {
+	private final Core main;
+	@Getter
+    private final List<UUID> frozed = Lists.newArrayList();
+    @Getter
+    private final ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
+    @Getter
+    private final HashMap<UUID, PermissionAttachment> permissible = Maps.newHashMap();
+
+    public ProfileManager(final Core main) {
 		this.main = main;
 		final long timeUnit = System.currentTimeMillis();
 		if (main.getDatabaseType().equals(DatabaseType.FLAT_FILES)) {
@@ -51,7 +49,7 @@ public class ProfileManager {
 			}	
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("[Profiles] Loaded in " + String.valueOf(endTime - timeUnit) + "ms!");
+		System.out.println("[Profiles] Loaded in " + (endTime - timeUnit) + "ms!");
 	}
 	
 	public void createProfile(final UUID uuid) {
@@ -70,8 +68,8 @@ public class ProfileManager {
 					}
 				});	
 			}	
-		};
-		if (this.main.getLoaderHandler().getSettings().isNamemcCheck()) {
+		}
+        if (this.main.getLoaderHandler().getSettings().isNamemcCheck()) {
 			CompletableFuture<Boolean> future = Utils.checkNameMCLikeAsync(main, uuid);
 			future.thenAccept(result -> {
 				this.profiles.get(uuid).setLikeNameMC(result);

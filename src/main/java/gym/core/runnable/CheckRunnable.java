@@ -9,9 +9,9 @@ import gym.core.profile.Profile;
 
 public class CheckRunnable extends BukkitRunnable {
     
-    private Core main;
-    private int maxCps;
-    private String alertMessage;
+    private final Core main;
+    private final int maxCps;
+    private final String alertMessage;
     
     public CheckRunnable(final Core main, int maxCps, String message){
         this.main = main;
@@ -36,7 +36,7 @@ public class CheckRunnable extends BukkitRunnable {
                                     .replace("%tps%", String.valueOf(tps))
                                     .replace("&", "§"));
                         }
-                        wp.autoclickAlert += 1; 
+                        wp.autoClickAlert += 1;
                     }
                 }
                 System.arraycopy(wp.clicks, 0, wp.clicks, 1, wp.clicks.length - 1);

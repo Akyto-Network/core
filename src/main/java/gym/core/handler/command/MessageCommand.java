@@ -43,7 +43,7 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%incommingType%", "To")
 					.replace("%player%", args[0])
 					.replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getSpaceBetweenColor().booleanValue() ? " " : ""))
+					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			Bukkit.getPlayer(args[0]).sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
 					.replace("%senderColorRank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
@@ -53,7 +53,7 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%incommingType%", "From")
 					.replace("%player%", sender.getName())
 					.replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getSpaceBetweenColor().booleanValue() ? " " : ""))
+					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			receiverProfile.setResponsive(Bukkit.getPlayer(sender.getName()).getUniqueId());
 			return false;
@@ -78,7 +78,7 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%incommingType%", "To")
 					.replace("%player%", Bukkit.getPlayer(senderProfile.getResponsive()).getName())
 					.replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getSpaceBetweenColor().booleanValue() ? " " : ""))
+					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			Bukkit.getPlayer(senderProfile.getResponsive()).sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
 					.replace("%senderColorRank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
@@ -88,7 +88,7 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%incommingType%", "From")
 					.replace("%player%", sender.getName())
 					.replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getSpaceBetweenColor().booleanValue() ? " " : ""))
+					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			receiverProfile.setResponsive(Bukkit.getPlayer(sender.getName()).getUniqueId());
 			return false;

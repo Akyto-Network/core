@@ -12,10 +12,10 @@ import lombok.Getter;
 @Getter
 public class Inventories {
 
-	private String frozeName;
-	private String displayFrozen;
-	private Material frozenMaterial;
-	private List<String> loreFrozen = new ArrayList<>();
+	private final String frozeName;
+	private final String displayFrozen;
+	private final Material frozenMaterial;
+	private final List<String> loreFrozen = new ArrayList<>();
 	
 	public Inventories(final Core main) {
 		this.frozeName = Utils.translate(main.getConfig().getString("freeze.inventory.title"));

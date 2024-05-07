@@ -12,7 +12,7 @@ import gym.core.chat.ChatState;
 
 public class ChatCommand implements CommandExecutor {
 
-	private Core main;
+	private final Core main;
 	
 	public ChatCommand(Core main) {
 		this.main = main;
@@ -55,7 +55,7 @@ public class ChatCommand implements CommandExecutor {
 					}
 					this.main.getManagerHandler().getServerManager().setChatState(ChatState.GLOBAL);
 					sender.sendMessage(ChatColor.WHITE + "The " + ChatColor.RED + "chat" + ChatColor.WHITE + " has been " + ChatColor.GREEN + "enabled" + ChatColor.WHITE + "!");
-					Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatOpenned());
+					Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatOpened());
 					return false;
 				}	
 				if (args[0].equalsIgnoreCase("off")) {

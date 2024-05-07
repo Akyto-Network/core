@@ -3,14 +3,15 @@ package gym.core.runnable;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import gym.core.Core;
 
 public class FrozenRunnable extends BukkitRunnable {
 	
-	private Core main;
-	private UUID uuid;
+	private final Core main;
+	private final UUID uuid;
 	
 	public FrozenRunnable(final Core main, final UUID uuid) {
 		this.main = main;
@@ -19,15 +20,14 @@ public class FrozenRunnable extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (Bukkit.getPlayer(uuid) != null) {
-			if (!this.main.getManagerHandler().getProfileManager().getFrozed().contains(uuid)) {
-				Bukkit.getPlayer(uuid).closeInventory();
-				this.cancel();
-				return;
-			}
-			Bukkit.getPlayer(uuid).openInventory(this.main.getManagerHandler().getInventoryManager().getFrozeInventory());	
+		Player player = Bukkit.getPlayer(uuid);
+		if (player == null || !player.isOnline() || !this.main.getManagerHandler().getProfileManager().getFrozed().contains(uuid)) {
+			if (player != null)
+				player.closeInventory();
+			this.cancel();
+			return;
 		}
-	}
-	
 
+		player.openInventory(this.main.getManagerHandler().getInventoryManager().getFrozeInventory());
+	}
 }

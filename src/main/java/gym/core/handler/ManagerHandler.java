@@ -11,11 +11,11 @@ import lombok.Getter;
 @Getter
 public class ManagerHandler {
 	
-	private ProfileManager profileManager;
-	private RankManager rankManager;
-	private PunishmentManager punishmentManager;
-	private ServerManager serverManager;
-	private InventoryManager inventoryManager;
+	private final ProfileManager profileManager;
+	private final RankManager rankManager;
+	private final PunishmentManager punishmentManager;
+	private final ServerManager serverManager;
+	private final InventoryManager inventoryManager;
 	
 	public ManagerHandler(final Core main) {
 		this.rankManager = new RankManager(main);

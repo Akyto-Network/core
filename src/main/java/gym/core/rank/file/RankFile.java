@@ -3,6 +3,7 @@ package gym.core.rank.file;
 import java.io.File;
 import java.io.IOException;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import gym.core.Core;
@@ -10,13 +11,13 @@ import gym.core.rank.RankEntry;
 
 public class RankFile {
 	
-	private Core main;
-	private YamlConfiguration config;
-	public YamlConfiguration getConfig() { return config; }
-	private File file;
-	public File getFile() { return file; }
-	
-	public RankFile(final Core main) {
+	private final Core main;
+	@Getter
+    private YamlConfiguration config;
+    @Getter
+    private File file;
+
+    public RankFile(final Core main) {
 		this.main = main;
 		this.generate();
 	}
@@ -35,7 +36,7 @@ public class RankFile {
 			}	
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Rank: Succesfully loaded in " + String.valueOf(endTime - startTime) + "ms!");
+		System.out.println("[CORE] Rank: Succesfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

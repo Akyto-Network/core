@@ -26,12 +26,12 @@ public class MuteCommand implements CommandExecutor {
 			return false;
 		}
 		if (args.length == 0) {
-			this.main.getLoaderHandler().getMessage().getMuteHelp().forEach(help -> sender.sendMessage(help));
+			this.main.getLoaderHandler().getMessage().getMuteHelp().forEach(sender::sendMessage);
 			return false;
 		}
 		if (cmd.getName().equalsIgnoreCase("mute")) {
 			if (args.length == 1) {
-				this.main.getLoaderHandler().getMessage().getMuteHelp().forEach(help -> sender.sendMessage(help));
+				this.main.getLoaderHandler().getMessage().getMuteHelp().forEach(sender::sendMessage);
 				return false;
 			}
 			if (args[0].equalsIgnoreCase("info") && args.length == 2) {
@@ -60,7 +60,7 @@ public class MuteCommand implements CommandExecutor {
 				return false;
 			}
 			if (args.length != 1) {
-				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(help -> sender.sendMessage(help));
+				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 				return false;
 			}
 	        this.main.getManagerHandler().getPunishmentManager().removeMute(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId());

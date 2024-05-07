@@ -6,32 +6,32 @@ import lombok.Getter;
 @Getter
 public class Settings {
 	
-	private boolean rankPromoteBroad;
-	private boolean rankDemoteBroad;
-	private boolean banBroad;
-	private boolean muteBroad;
-	private boolean warnBroad;
-	private boolean tryToConnect;
-	private boolean staffNotifications;
-	private boolean bungeeCord;
-	private boolean chatCooldown;
-	private int chatCooldownTime;
-	private boolean freezeInventory;
-	private boolean namemcCheck;
+	private final boolean rankPromoteBroad;
+	private final boolean rankDemoteBroad;
+	private final boolean banBroad;
+	private final boolean muteBroad;
+	private final boolean warnBroad;
+	private final boolean tryToConnect;
+	private final boolean staffNotifications;
+	private final boolean bungeeCord;
+	private final boolean chatCooldown;
+	private final int chatCooldownTime;
+	private final boolean freezeInventory;
+	private final boolean namemcCheck;
 	
 	public Settings(final Core main) {
-		this.rankPromoteBroad = main.getConfig().getString("broadcast-settings.rank-promote").equals("true") ? true : false;
-		this.rankDemoteBroad = main.getConfig().getString("broadcast-settings.rank-demote").equals("true") ? true : false;
-		this.banBroad = main.getConfig().getString("broadcast-settings.banAnnounce").equals("true") ? true : false;
-		this.muteBroad = main.getConfig().getString("broadcast-settings.muteAnnounce").equals("true") ? true : false;
-		this.warnBroad = main.getConfig().getString("broadcast-settings.warnAnnounce").equals("true") ? true : false;
-		this.tryToConnect = main.getConfig().getString("broadcast-settings.try-to-connect-notifications").equals("true") ? true : false;
-		this.staffNotifications = main.getConfig().getString("broadcast-settings.staff-proxy-notification").equals("true") ? true : false;
-		this.bungeeCord = main.getConfig().getString("bungeecord.enable").equals("true") ? true : false;
-		this.chatCooldown = main.getConfig().getString("chat.cooldown.enabled").equals("true") ? true : false;
+		this.rankPromoteBroad = main.getConfig().getBoolean("broadcast-settings.rank-promote");
+		this.rankDemoteBroad = main.getConfig().getBoolean("broadcast-settings.rank-demote");
+		this.banBroad = main.getConfig().getBoolean("broadcast-settings.banAnnounce");
+		this.muteBroad = main.getConfig().getBoolean("broadcast-settings.muteAnnounce");
+		this.warnBroad = main.getConfig().getBoolean("broadcast-settings.warnAnnounce");
+		this.tryToConnect = main.getConfig().getBoolean("broadcast-settings.try-to-connect-notifications");
+		this.staffNotifications = main.getConfig().getBoolean("broadcast-settings.staff-proxy-notification");
+		this.bungeeCord = main.getConfig().getBoolean("bungeecord.enable");
+		this.chatCooldown = main.getConfig().getBoolean("chat.cooldown.enabled");
 		this.chatCooldownTime = main.getConfig().getInt("chat.cooldown.time");
-		this.freezeInventory = main.getConfig().getString("freeze.open-inventory").equals("true") ? true : false;
-		this.namemcCheck = main.getConfig().getString("namemc.check-enabled").equals("true") ? true : false;
+		this.freezeInventory = main.getConfig().getBoolean("freeze.open-inventory");
+		this.namemcCheck = main.getConfig().getBoolean("namemc.check-enabled");
 	}
 
 }

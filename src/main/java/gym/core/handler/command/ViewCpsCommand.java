@@ -18,7 +18,7 @@ import gym.core.profile.Profile;
 public class ViewCpsCommand implements CommandExecutor {
 	
 	private Core main;
-    public static Map<Player, Profile> verifiers = new HashMap<Player, Profile>();
+    public static Map<Player, Profile> verifiers = new HashMap<>();
     
     public ViewCpsCommand(final Core main){
     	this.main = main;

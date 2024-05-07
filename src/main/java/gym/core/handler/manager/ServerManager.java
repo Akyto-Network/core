@@ -17,7 +17,7 @@ public class ServerManager {
 	}
 	
 	public boolean chatIsClosed() {
-		return this.chatState.equals(ChatState.CLOSED) ? true : false;
+		return this.chatState.equals(ChatState.CLOSED);
 	}
 
 }

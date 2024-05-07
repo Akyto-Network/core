@@ -39,8 +39,8 @@ public class ReportCommand implements CommandExecutor {
 			comp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new ComponentBuilder(Bukkit.getPlayer(args[0]) != null ? ChatColor.DARK_GRAY + "Click to teleport to reported player!" : ChatColor.RED + "The reported is offline now!").create()));
 			if (Bukkit.getPlayer(args[0]) != null) comp.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, "/tp " + args[0]));
 			Bukkit.getOnlinePlayers().forEach(player -> {
-				if (player.hasPermission("akyto.staff")) {;
-					player.spigot().sendMessage(comp);
+				if (player.hasPermission("akyto.staff")) {
+                    player.spigot().sendMessage(comp);
 				}
 			});
 		}

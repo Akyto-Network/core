@@ -12,7 +12,7 @@ public class Profile {
 	private String rank;
 	private long chatCooldown = 0L;
 	public int[] clicks = {0, 0, 0, 0, 0, 0};
-    public int autoclickAlert = 0;
+    public int autoClickAlert = 0;
     public int maxClick = 0;
     public long lastBlockInteraction = 0;
     public long lastAlert = 0;
@@ -30,7 +30,7 @@ public class Profile {
 	}
 
 	public void applyChatCooldown(final int cooldown) {
-		this.chatCooldown = Long.valueOf(System.currentTimeMillis() + cooldown * 1000);
+		this.chatCooldown = System.currentTimeMillis() + cooldown * 1000L;
 	}
 	
 	public Profile(final UUID uuid, final String rank) {

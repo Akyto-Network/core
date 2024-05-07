@@ -4,6 +4,6 @@ public enum ChatState {
 	
 	CLOSED,
 	PRIORITY,
-	GLOBAL;
+	GLOBAL
 
 }

@@ -10,10 +10,10 @@ import lombok.Getter;
 @Getter
 public class LoaderHandler {
 	
-	private Message message;
-	private Permission permission;
-	private Settings settings;
-	private Inventories inventory;
+	private final Message message;
+	private final Permission permission;
+	private final Settings settings;
+	private final Inventories inventory;
 	
 	public LoaderHandler(final Core main) {
 		this.permission = new Permission(main);

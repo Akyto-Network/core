@@ -1,6 +1,7 @@
 package gym.core.runnable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -29,7 +30,7 @@ public class VerifRunnable extends BukkitRunnable {
 	              ItemStack max = new ItemStack(Material.PAINTING, Math.min(wp.clicks[0], 64));
 	              ItemMeta maxm = max.getItemMeta();
 	              maxm.setDisplayName(ChatColor.GRAY + "Maximum Click: " + ChatColor.RED + wp.maxClick);
-	              maxm.setLore(Arrays.asList(ChatColor.GRAY + "Instant Click: " + ChatColor.DARK_AQUA + wp.clicks[0]));
+	              maxm.setLore(Collections.singletonList(ChatColor.GRAY + "Instant Click: " + ChatColor.DARK_AQUA + wp.clicks[0]));
 	              max.setItemMeta(maxm);
 	              
 	              int ping = Bukkit.getPlayer(wp.getUuid()).getPing();
@@ -38,13 +39,13 @@ public class VerifRunnable extends BukkitRunnable {
 	              latencyMeta.setDisplayName(ChatColor.YELLOW + "Latency: " + ChatColor.RED + ping);
 		    	  latency.setItemMeta(latencyMeta);
 	              int nombrealert = 1;
-	              if (wp.autoclickAlert > 0){
-	            	  nombrealert = wp.autoclickAlert;
+	              if (wp.autoClickAlert > 0){
+	            	  nombrealert = wp.autoClickAlert;
 	              }
 	              
 	              ItemStack alert = new ItemStack(Material.NAME_TAG, Math.min(nombrealert, 64));
 	              ItemMeta alertMeta = alert.getItemMeta();
-	              alertMeta.setDisplayName(ChatColor.RED + "Alerts Counter: "  + ChatColor.WHITE + wp.autoclickAlert);
+	              alertMeta.setDisplayName(ChatColor.RED + "Alerts Counter: "  + ChatColor.WHITE + wp.autoClickAlert);
 	              alert.setItemMeta(alertMeta);
 	              
 	              ItemStack punishment = new ItemStack(Material.BOOK);

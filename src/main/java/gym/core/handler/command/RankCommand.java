@@ -26,7 +26,7 @@ public class RankCommand implements CommandExecutor {
 			return false;
 		}
 		if (args.length == 0) {
-			this.main.getLoaderHandler().getMessage().getRankHelp().forEach(str -> sender.sendMessage(str));
+			this.main.getLoaderHandler().getMessage().getRankHelp().forEach(sender::sendMessage);
 			return false;
 		}
 		if (args[0].equalsIgnoreCase("create") && args.length == 2 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {

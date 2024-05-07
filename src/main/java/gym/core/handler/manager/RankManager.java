@@ -16,15 +16,15 @@ import net.minecraft.util.com.google.common.collect.Maps;
 @Getter
 public class RankManager {
 	
-	private Core main;
+	private final Core main;
 	
-	private HashMap<String, RankEntry> ranks;
-	private List<String> deletedRank;
+	private final HashMap<String, RankEntry> ranks;
+	private final List<String> deletedRank;
 	
 	public RankManager(final Core main) {
 		this.main = main;
 		this.ranks = Maps.newHashMap();
-		this.deletedRank = new ArrayList<String>();
+		this.deletedRank = new ArrayList<>();
 	}
 	
 	public void createRank(final String name) {

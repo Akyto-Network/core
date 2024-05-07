@@ -26,12 +26,12 @@ public class BanCommand implements CommandExecutor {
 			return false;
 		}
 		if (args.length == 0) {
-			this.main.getLoaderHandler().getMessage().getBanHelp().forEach(help -> sender.sendMessage(help));
+			this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 			return false;
 		}
 		if (cmd.getName().equalsIgnoreCase("ban")) {
 			if (args.length == 1) {
-				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(help -> sender.sendMessage(help));
+				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 				return false;
 			}
 			if (args[0].equalsIgnoreCase("info") && args.length == 2) {
@@ -60,7 +60,7 @@ public class BanCommand implements CommandExecutor {
 				return false;
 			}
 			if (args.length != 1) {
-				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(help -> sender.sendMessage(help));
+				this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 				return false;
 			}
 	        this.main.getManagerHandler().getPunishmentManager().removeBan(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId());

@@ -6,20 +6,20 @@ import lombok.Getter;
 @Getter
 public class Permission {
 	
-	private String rankAdmin;
-	private String rankUp;
-	private String rankDown;
-	private String addBan;
-	private String removeBan;
-	private String staffAnnounce;
-	private String viewCps;
-	private String bypassCooldownChat;
-	private String bypassFilterChat;
-	private String clearChat;
-	private String manageChat;
-	private String bypassChatClosed;
-	private String freeze;
-	private String modMode;
+	private final String rankAdmin;
+	private final String rankUp;
+	private final String rankDown;
+	private final String addBan;
+	private final String removeBan;
+	private final String staffAnnounce;
+	private final String viewCps;
+	private final String bypassCooldownChat;
+	private final String bypassFilterChat;
+	private final String clearChat;
+	private final String manageChat;
+	private final String bypassChatClosed;
+	private final String freeze;
+	private final String modMode;
 	
 	public Permission(final Core main) {
 		this.rankAdmin = main.getConfig().getString("permissions.rank-admin");
