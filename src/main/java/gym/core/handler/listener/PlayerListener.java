@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -150,7 +149,7 @@ public class PlayerListener implements Listener {
         		});
         		Collections.shuffle(playersInMatch);
         		event.getPlayer().teleport(Bukkit.getPlayer(playersInMatch.get(0)));
-        		final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));
+				final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));
         		List<UUID> duelPlayers = new ArrayList<>();
         		duelPlayers.addAll(duel.getFirst());
         		duelPlayers.addAll(duel.getSecond());
