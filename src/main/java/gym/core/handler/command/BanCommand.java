@@ -15,7 +15,7 @@ import gym.core.utils.TimeUtils;
 
 public class BanCommand implements CommandExecutor {
 	
-	private Core main;
+	private final Core main;
 	
 	public BanCommand(final Core main) { this.main = main; }
 

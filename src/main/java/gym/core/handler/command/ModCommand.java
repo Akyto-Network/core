@@ -14,7 +14,7 @@ import kezukdev.akyto.utils.Utils;
 
 public class ModCommand implements CommandExecutor {
 	
-	private Core main;
+	private final Core main;
 	
 	public ModCommand(final Core main) {
 		this.main = main;
