@@ -1,6 +1,7 @@
 package gym.core.handler.command;
 
 import gym.core.Core;
+import gym.core.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,13 +16,16 @@ public class ListCommand implements CommandExecutor {
         StringBuilder builder = new StringBuilder();
 
         builder.append(
-                Core.API.getManagerHandler().getRankManager().getRanks().values().stream()
-                        .map(rank -> rank.getPrefix().substring(1, rank.getPrefix().length() - 1))
+                Core.API.getManagerHandler().getRankManager().getRanks().entrySet().stream()
+                        .map(rank -> Utils.translate(rank.getValue().getColor()) + rank.getKey())
                         .collect(Collectors.joining(ChatColor.GRAY + ", "))
         ).append(ChatColor.GRAY).append(".\n");
 
         String players = Core.API.getServer().getOnlinePlayers().stream()
-                .map(player -> Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()) + player.getDisplayName())
+                .map(player -> {
+                    String rankColor = Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).getColor();
+                    return Utils.translate(rankColor) + player.getDisplayName();
+                })
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));
 
         builder.append(ChatColor.GRAY).append("(").
