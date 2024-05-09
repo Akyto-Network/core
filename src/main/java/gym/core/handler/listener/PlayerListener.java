@@ -204,7 +204,7 @@ public class PlayerListener implements Listener {
 		this.onPlayerLeft(new PlayerQuitEvent(event.getPlayer(), null));
 	}
 	
-	@EventHandler(priority=EventPriority.HIGHEST)
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerTalk(final AsyncPlayerChatEvent event) {
 		if (this.main.getManagerHandler().getPunishmentManager().getMuted().containsKey(event.getPlayer().getUniqueId())) {
 			final MuteEntry mute = this.main.getManagerHandler().getPunishmentManager().getMuted().get(event.getPlayer().getUniqueId());
