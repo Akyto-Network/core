@@ -1,19 +1,7 @@
 package gym.core.handler;
 
 import gym.core.Core;
-import gym.core.handler.command.AnnounceCommand;
-import gym.core.handler.command.BanCommand;
-import gym.core.handler.command.BulldogCommand;
-import gym.core.handler.command.ChatCommand;
-import gym.core.handler.command.FreezeCommand;
-import gym.core.handler.command.HubCommand;
-import gym.core.handler.command.MessageCommand;
-import gym.core.handler.command.ModCommand;
-import gym.core.handler.command.MuteCommand;
-import gym.core.handler.command.RankCommand;
-import gym.core.handler.command.ReportCommand;
-import gym.core.handler.command.TimeCommand;
-import gym.core.handler.command.ViewCpsCommand;
+import gym.core.handler.command.*;
 
 public class CommandHandler {
 	
@@ -38,6 +26,7 @@ public class CommandHandler {
 		main.getCommand("announce").setExecutor(new AnnounceCommand());
 		main.getCommand("bulldog").setExecutor(new BulldogCommand());
 		main.getCommand("hub").setExecutor(new HubCommand());
+		main.getCommand("list").setExecutor(new ListCommand());
 	}
 
 }

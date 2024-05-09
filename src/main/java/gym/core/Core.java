@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -147,7 +146,7 @@ public class Core extends JavaPlugin {
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".color");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", rank.getValue().getColor());
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor");
-				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", String.valueOf(rank.getValue().getSpaceBetweenColor().booleanValue()));
+				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", String.valueOf(rank.getValue().getHasSpaceBetweenColor().booleanValue()));
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".permissions");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".permissions", rank.getValue().getPermissions());
 			}
