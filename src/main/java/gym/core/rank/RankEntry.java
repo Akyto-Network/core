@@ -13,12 +13,14 @@ public class RankEntry {
 	public String getPrefix() { return Utils.translate(this.prefix); }
 	private String color;
 	private Boolean hasSpaceBetweenColor;
+	private RankType rankType;
 	private List<String> permissions;
 	
-	public RankEntry(final String prefix, final String color, final Boolean spacer, final List<String> permissions) {
+	public RankEntry(final String prefix, final String color, final Boolean spacer, final List<String> permissions, final RankType type) {
 		this.prefix = prefix;
 		this.color = color;
 		this.hasSpaceBetweenColor = spacer;
+		this.rankType = type;
 		this.permissions = permissions;
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import gym.core.Core;
 import gym.core.rank.RankEntry;
+import gym.core.rank.RankType;
 
 public class RankFile {
 	
@@ -32,7 +33,7 @@ public class RankFile {
 		if (config.getKeys(true).size() > 2) {
 			for (String str : getConfig().getConfigurationSection("ranks").getKeys(false)) {
 				final String spacer = getConfig().getConfigurationSection("ranks").getString(str + ".spaceBetweenPrefixAndColor");
-				this.main.getManagerHandler().getRankManager().getRanks().put(str, new RankEntry(getConfig().getConfigurationSection("ranks").getString(str + ".prefix"), getConfig().getConfigurationSection("ranks").getString(str + ".color"), Boolean.valueOf(spacer), getConfig().getConfigurationSection("ranks").getStringList(str + ".permissions")));
+				this.main.getManagerHandler().getRankManager().getRanks().put(str, new RankEntry(getConfig().getConfigurationSection("ranks").getString(str + ".prefix"), getConfig().getConfigurationSection("ranks").getString(str + ".color"), Boolean.valueOf(spacer), getConfig().getConfigurationSection("ranks").getStringList(str + ".permissions"), RankType.valueOf(getConfig().getConfigurationSection("ranks").getString(str + ".type"))));
 			}	
 		}
 		final long endTime = System.currentTimeMillis();

@@ -124,6 +124,7 @@ messages:
     - "&7&m----------------------"
     - "&8/rank create <name>"
     - "&8/rank setprefix <name> <prefix>"
+    - "&8/rank settype <name> <COMMUNITY/MODERATION/ADMIN>"
     - "&8/rank setcolor <name> <color>"
     - "&8/rank addperm <rank> <perm>"
     - "&8/rank delperm <rank> <perm>"

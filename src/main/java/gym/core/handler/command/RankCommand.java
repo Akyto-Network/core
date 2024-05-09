@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import co.aikar.idb.DB;
 import gym.core.Core;
+import gym.core.rank.RankType;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
 
@@ -58,6 +59,19 @@ public class RankCommand implements CommandExecutor {
 			}
 			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setColor(args[2]);
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "upgraded"));
+			return false;
+		}
+		if (args[0].equalsIgnoreCase("setranktype") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
+			if (!this.main.getManagerHandler().getRankManager().getRanks().containsKey(args[1].toLowerCase())) {
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
+				return false;
+			}
+			if (RankType.valueOf(args[2].toUpperCase()) == null) {
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank type"));
+				return false;
+			}
+			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setRankType(RankType.valueOf(args[2].toUpperCase()));
+			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "setted to"));
 			return false;
 		}
 		if (args[0].equalsIgnoreCase("addperm") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
