@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +52,9 @@ public class Core extends JavaPlugin {
 	public void onEnable() {
 		API = this;
 		this.saveDefaultConfig();
+		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
+			this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		}
 		this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type")) != null ? DatabaseType.valueOf(this.getConfig().getString("database.type")) : DatabaseType.FLAT_FILES;
 		if (databaseType.equals(DatabaseType.MYSQL)) {
 			this.hikariPath = this.getDataFolder() + "/hikari.properties";
@@ -156,7 +160,13 @@ public class Core extends JavaPlugin {
 	private void saveDatabase() {
 		if (!Bukkit.getOnlinePlayers().isEmpty()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
-				player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));
+				if (this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
+					player.sendMessage(Utils.translate(this.getConfig().getString("messages.server-restart")));
+					Utils.sendServer(player, "Connect", this.getConfig().getString("bungeecord.hub-instance"));
+				}
+				else if (!this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
+					player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));	
+				}
 			});
 		}
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {

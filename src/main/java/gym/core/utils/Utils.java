@@ -12,10 +12,20 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import gym.core.Core;
+import net.minecraft.util.com.google.common.io.ByteArrayDataOutput;
+import net.minecraft.util.com.google.common.io.ByteStreams;
 
 public class Utils {
+	
+	public static void sendServer(final Player player, final String type, final String server) {
+	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+	    out.writeUTF(type);
+	    out.writeUTF(server);
+	    player.sendPluginMessage(Core.API, "BungeeCord", out.toByteArray());
+	}
 	
 	public static String translate(final String str) {
 		return ChatColor.translateAlternateColorCodes('&', str);

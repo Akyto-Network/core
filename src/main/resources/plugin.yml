@@ -35,3 +35,5 @@ commands:
     aliases: [bc, broadcast, announcement]
   bulldog:
     aliases: [troll, gangsquad, gang]
+  hub:
+    aliases: [lobby, h, l, lob]

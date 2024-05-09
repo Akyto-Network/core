@@ -4,6 +4,8 @@ database:
 bungeecord:
   enable: "false"
   kick-whitout-using-correct-ip: "&cPlease, use the correct ip of the server to connect on it."
+  move-to-hub-at-restart: "true"
+  hub-instance: "hub"
   whitelist:
     - "0.0.0.0"
     
@@ -21,7 +23,7 @@ chat:
     enabled: "true"
     message: "&cPlease wait &f%time% second(s) &cto send another message!"
     priority: "NORMAL"
-  filtered: ["ntm", "fdp", "kys", "nigger", "hitler", "staline"]
+  filtered: ["ntm", "fdp", "kys", "nigger", "hitler", "staline", "nigga", "negga", "nig", "faggot"]
   
 autoclicker:
   max-cps: 17

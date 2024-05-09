@@ -6,6 +6,7 @@ import gym.core.handler.command.BanCommand;
 import gym.core.handler.command.BulldogCommand;
 import gym.core.handler.command.ChatCommand;
 import gym.core.handler.command.FreezeCommand;
+import gym.core.handler.command.HubCommand;
 import gym.core.handler.command.MessageCommand;
 import gym.core.handler.command.ModCommand;
 import gym.core.handler.command.MuteCommand;
@@ -34,6 +35,7 @@ public class CommandHandler {
 		main.getCommand("reply").setExecutor(new MessageCommand(main));
 		main.getCommand("announce").setExecutor(new AnnounceCommand());
 		main.getCommand("bulldog").setExecutor(new BulldogCommand());
+		main.getCommand("hub").setExecutor(new HubCommand());
 	}
 
 }
