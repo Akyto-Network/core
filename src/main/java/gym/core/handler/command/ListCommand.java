@@ -2,6 +2,7 @@ package gym.core.handler.command;
 
 import gym.core.Core;
 import gym.core.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +18,7 @@ public class ListCommand implements CommandExecutor {
 
         builder.append(
                 Core.API.getManagerHandler().getRankManager().getRanks().entrySet().stream()
-                        .map(rank -> Utils.translate(rank.getValue().getColor()) + rank.getKey())
+                        .map(rank -> Utils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey()))
                         .collect(Collectors.joining(ChatColor.GRAY + ", "))
         ).append(ChatColor.GRAY).append(".\n");
 
