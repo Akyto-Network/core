@@ -1,5 +1,5 @@
 name: Core
-author: [kezukdev]
+authors: [kezukdev]
 version: 1.0
 main: gym.core.Core
 commands:
@@ -36,3 +36,5 @@ commands:
     aliases: [troll, gangsquad, gang]
   hub:
     aliases: [lobby, h, l, lob]
+  list:
+    aliases: [who]
