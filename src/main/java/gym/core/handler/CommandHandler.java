@@ -26,7 +26,9 @@ public class CommandHandler {
 		main.getCommand("viewcps").setExecutor(new ViewCpsCommand(main));
 		main.getCommand("chat").setExecutor(new ChatCommand(main));
 		main.getCommand("freeze").setExecutor(new FreezeCommand(main));
-		main.getCommand("mod").setExecutor(new ModCommand(main));
+		if (main.isAkytoPractice()) {
+			main.getCommand("mod").setExecutor(new ModCommand(main));	
+		}
 		main.getCommand("night").setExecutor(new TimeCommand(main));
 		main.getCommand("day").setExecutor(new TimeCommand(main));
 		main.getCommand("sunset").setExecutor(new TimeCommand(main));

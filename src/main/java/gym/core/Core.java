@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.apache.logging.log4j.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,6 +49,7 @@ public class Core extends JavaPlugin {
 	private CommandHandler commandHandler;
 	private MySQL mySQL;
 	private Practice practiceAPI;
+	private boolean akytoPractice;
 	
 	public void onEnable() {
 		API = this;
@@ -62,7 +64,11 @@ public class Core extends JavaPlugin {
 			this.mySQL = new MySQL(this);
 			new DatabaseSetup(this);
 		}
-		this.practiceAPI = Practice.getAPI();
+		if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+			this.akytoPractice = true;
+			this.practiceAPI = Practice.getAPI();
+			System.out.println("AkytoPractice was successully loaded and linked to the Core.");
+		}
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
 		this.loaderHandler = new LoaderHandler(this);

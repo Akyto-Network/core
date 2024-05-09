@@ -2,15 +2,15 @@ database:
   type: "FLAT_FILES"
 
 bungeecord:
-  enable: "false"
+  enable: false
   kick-whitout-using-correct-ip: "&cPlease, use the correct ip of the server to connect on it."
-  move-to-hub-at-restart: "true"
+  move-to-hub-at-restart: true
   hub-instance: "hub"
   whitelist:
     - "0.0.0.0"
     
 namemc:
-  check-enabled: "true"
+  check-enabled: true
   server-ip: "akyto.club"
   like-tag: "&c❤"
     
@@ -20,7 +20,7 @@ chat:
   staff-symbol: "!"
   state: "GLOBAL"
   cooldown:
-    enabled: "true"
+    enabled: true
     message: "&cPlease wait &f%time% second(s) &cto send another message!"
     priority: "NORMAL"
   filtered: ["ntm", "fdp", "kys", "nigger", "hitler", "staline", "nigga", "negga", "nig", "faggot"]
@@ -35,8 +35,8 @@ freeze:
     - "&fYou've been frozen by a staff member!"
     - "&ePlease join our discord: &chttps://discord.gg/BRwRRarRYR/"
     - "&7&m---------------------------"
-  disconnect-ban: "true"
-  open-inventory: "true"
+  disconnect-ban: true
+  open-inventory: true
   inventory:
     item: "PACKED_ICE"
     title: "&7Frozen »"
@@ -63,13 +63,13 @@ permissions:
   modmode: "akyto.staff"
 
 broadcast-settings:
-  rank-promote: "true"
-  rank-demote: "true"
-  banAnnounce: "true"
-  muteAnnounce: "true"
-  warnAnnounce: "true"
-  try-to-connect-notifications: "true"
-  staff-proxy-notification: "true"
+  rank-promote: true
+  rank-demote: true
+  banAnnounce: true
+  muteAnnounce: true
+  warnAnnounce: true
+  try-to-connect-notifications: true
+  staff-proxy-notification: true
 
 messages:
   namemc-unliked: "&7You want to support the server? Don't forget to vote for us on &fNameMC&7: &ehttps://fr.namemc.com/server/akyto.club"

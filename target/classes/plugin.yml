@@ -2,7 +2,6 @@ name: Core
 author: [kezukdev]
 version: 1.0
 main: gym.core.Core
-depends: [Practice]
 commands:
   rank:
     aliases: [ranks, grade]
