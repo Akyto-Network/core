@@ -1,23 +1,21 @@
 package gym.core.handler.command;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
 
-public class TimeCommand implements CommandExecutor {
+public class TimeCommand {
 	
-	private Core main;
-
-	public TimeCommand(final Core main) {
-		this.main = main;
-	}
+	private Core main = Core.API;
 	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Command(name = "day", aliases= {"night", "sunset"}, inGameOnly = true)
+	public boolean timeCommand(final CommandArgs arg) {
+		final CommandSender sender = arg.getSender();
+		final org.bukkit.command.Command cmd = arg.getCommand();
 		if (!(sender instanceof Player)) return false;
 		if (cmd.getName().equalsIgnoreCase("night")) Bukkit.getPlayer(sender.getName()).setPlayerTime(18000, false);
 		if (cmd.getName().equalsIgnoreCase("day")) Bukkit.getPlayer(sender.getName()).setPlayerTime(12500, true);

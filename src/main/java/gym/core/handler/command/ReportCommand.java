@@ -3,29 +3,26 @@ package gym.core.handler.command;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import gym.core.Core;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ReportCommand implements CommandExecutor {
-	
-	private final Core main;
-	
-	public ReportCommand(final Core potted) { this.main = potted; }
+public class ReportCommand {
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Command(name = "report", aliases= {"reports"}, inGameOnly = true)
+	public boolean reportCommand(final CommandArgs arg) {
+		final CommandSender sender = arg.getSender();
+		final String[] args = arg.getArgs();
 		if (!(sender instanceof Player)) return false;
 		if (args.length < 1) {
-			sender.sendMessage(ChatColor.RED + "/" + cmd.getName() + " <player> <reason>");
+			sender.sendMessage(ChatColor.RED + "/report <player> <reason>");
 			return false;
 		}
 		if (args.length > 1) {

@@ -1,42 +1,40 @@
 package gym.core.handler.command;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
 import gym.core.runnable.FrozenRunnable;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
 import net.md_5.bungee.api.ChatColor;
 
-public class FreezeCommand implements CommandExecutor {
+public class FreezeCommand {
     
-    private final Core main;
-    
-    public FreezeCommand(final Core main) {
-        this.main = main;
-    }
+    private final Core main = Core.API;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) return false;
+    @Command(name = "freeze", aliases= {"frozen", "froze", "frozed", "freezed"}, inGameOnly = true)
+    public void freezeCommand(final CommandArgs arg) {
+    	final CommandSender sender = arg.getSender();
+    	final String[] args = arg.getArgs();
+    	if (!(sender instanceof Player)) return;
         Player player = (Player) sender;
         
         if (!player.hasPermission(this.main.getLoaderHandler().getPermission().getFreeze())) {
             player.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
-            return false;
+            return;
         }
         
         if (args.length != 1) {
-            player.sendMessage(ChatColor.RED + "/" + cmd.getName() + " <player>");
-            return false;
+            player.sendMessage(ChatColor.RED + "/" + arg.getCommand() + " <player>");
+            return;
         }
         
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
             player.sendMessage(ChatColor.RED + args[0] + " isn't connected!");
-            return false;
+            return;
         }
         
         boolean isFrozen = !this.main.getManagerHandler().getProfileManager().getProfiles().get(target.getUniqueId()).isFrozen();
@@ -58,6 +56,6 @@ public class FreezeCommand implements CommandExecutor {
         
         player.sendMessage(this.main.getLoaderHandler().getMessage().getFrozeStatus().replace("%frozed%", target.getName()).replace("%frozeStatus%", isFrozen ? "frozen" : "unfrozen"));
         
-        return true;
+        return;
     }
 }

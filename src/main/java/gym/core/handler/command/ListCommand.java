@@ -2,18 +2,20 @@ package gym.core.handler.command;
 
 import gym.core.Core;
 import gym.core.utils.Utils;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.stream.Collectors;
 
-public class ListCommand implements CommandExecutor {
+public class ListCommand {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	@Command(name = "list", inGameOnly = false)
+    public void listCommand(final CommandArgs arg) {
+    	final CommandSender sender = arg.getSender();
         StringBuilder builder = new StringBuilder();
 
         builder.append(
@@ -36,6 +38,6 @@ public class ListCommand implements CommandExecutor {
 
         sender.sendMessage(builder.toString());
 
-        return true;
+        return;
     }
 }

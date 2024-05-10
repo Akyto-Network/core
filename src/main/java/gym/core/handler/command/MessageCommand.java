@@ -3,34 +3,33 @@ package gym.core.handler.command;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
 import gym.core.profile.Profile;
 import gym.core.utils.Utils;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
 
-public class MessageCommand implements CommandExecutor {
+public class MessageCommand {
 	
-	private Core main;
-	
-	public MessageCommand(final Core main) {
-		this.main = main;
-	}
+	private Core main = Core.API;
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player)) return false;
+	@Command(name = "msg", aliases= {"message", "tell", "whisper", "r", "m", "reply"}, inGameOnly = true)
+	public void messageCommand(final CommandArgs arg) {
+		final CommandSender sender = arg.getSender();
+		final String[] args = arg.getArgs();
+		final org.bukkit.command.Command cmd = arg.getCommand();
+		if (!(sender instanceof Player)) return;
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED + "/" + cmd.getName() + (cmd.getName().contains("r") ? "<message>" : "<player> <message>"));
-			return false;
+			return;
 		}
 		if (cmd.getName().contains("m")) {
 			if (Bukkit.getPlayer(args[0]) == null) {
 				sender.sendMessage(ChatColor.RED + "Target isn't connected!");
-				return false;
+				return;
 			}
 			final Profile senderProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(sender.getName()).getUniqueId());
 			final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[0]).getUniqueId());
@@ -56,17 +55,17 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			receiverProfile.setResponsive(Bukkit.getPlayer(sender.getName()).getUniqueId());
-			return false;
+			return;
 		}
 		if (cmd.getName().contains("r")) {
 			final Profile senderProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(sender.getName()).getUniqueId());
 			if (senderProfile.getResponsive() == null) {
 				sender.sendMessage(ChatColor.RED + "You doesn't have anyone to answer.");
-				return false;
+				return;
 			}
 			if (Bukkit.getPlayer(senderProfile.getResponsive()) == null) {
 				sender.sendMessage(ChatColor.RED + "Target isn't connected!");
-				return false;
+				return;
 			}
 			final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(senderProfile.getResponsive());
 			String msg = args.length > 0 ? StringUtils.join(args, ' ', 0, args.length) : "Hi, how are you today?"; 
@@ -91,9 +90,9 @@ public class MessageCommand implements CommandExecutor {
 					.replace("%rank%", Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
 					.replace("%message%", msg));
 			receiverProfile.setResponsive(Bukkit.getPlayer(sender.getName()).getUniqueId());
-			return false;
+			return;
 		}
-		return false;
+		return;
 	}
 
 }

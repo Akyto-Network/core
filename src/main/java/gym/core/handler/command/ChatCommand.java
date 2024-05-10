@@ -2,27 +2,25 @@ package gym.core.handler.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import gym.core.Core;
 import gym.core.chat.ChatPriority;
 import gym.core.chat.ChatState;
+import gym.core.utils.command.Command;
+import gym.core.utils.command.CommandArgs;
 
-public class ChatCommand implements CommandExecutor {
+public class ChatCommand {
 
-	private final Core main;
+	private final Core main = Core.API;
 	
-	public ChatCommand(Core main) {
-		this.main = main;
-	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Command(name = "chat", aliases= {"chatmanagement"}, inGameOnly = false)
+	public void chatCommand(final CommandArgs arg) {
+		final CommandSender sender = arg.getSender();
+		final String[] args = arg.getArgs();
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED + "/chat <clear/on/off/priority>");
-			return false;
+			return;
 		}
 		if (args[0].equalsIgnoreCase("clear") && sender.hasPermission(this.main.getLoaderHandler().getPermission().getClearChat())) {
 			if (args.length == 1 || args.length == 2) {
@@ -34,7 +32,7 @@ public class ChatCommand implements CommandExecutor {
 				if (args.length == 2) {
 					if (Integer.valueOf(args[1]) == null) {
 						sender.sendMessage(ChatColor.RED + "Please provide a integer number!");
-						return false;
+						return;
 					}
 					for (int i = 0; i < Integer.valueOf(args[1]); i++) {
 						Bukkit.broadcastMessage(" ");
@@ -51,22 +49,22 @@ public class ChatCommand implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("on")) {
 					if (!this.main.getManagerHandler().getServerManager().getChatState().equals(ChatState.CLOSED)) {
 						sender.sendMessage(ChatColor.RED + "Sorry but the chat as already openned!");
-						return false;
+						return;
 					}
 					this.main.getManagerHandler().getServerManager().setChatState(ChatState.GLOBAL);
 					sender.sendMessage(ChatColor.WHITE + "The " + ChatColor.RED + "chat" + ChatColor.WHITE + " has been " + ChatColor.GREEN + "enabled" + ChatColor.WHITE + "!");
 					Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatOpened());
-					return false;
+					return;
 				}	
 				if (args[0].equalsIgnoreCase("off")) {
 					if (this.main.getManagerHandler().getServerManager().getChatState().equals(ChatState.CLOSED)) {
 						sender.sendMessage(ChatColor.RED + "Sorry but the chat as already closed!");
-						return false;
+						return;
 					}
 					this.main.getManagerHandler().getServerManager().setChatState(ChatState.CLOSED);
 					sender.sendMessage(ChatColor.WHITE + "The " + ChatColor.RED + "chat" + ChatColor.WHITE + " has been " + ChatColor.RED + "closed" + ChatColor.WHITE + "!");
 					Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatClosed());
-					return false;
+					return;
 				}
 			}
 		}
@@ -74,16 +72,16 @@ public class ChatCommand implements CommandExecutor {
 			if (args.length == 2) {
 				if (ChatPriority.valueOf(args[1].toUpperCase()) == null) {
 					sender.sendMessage(ChatColor.RED + "/chat priority <HIGH/MEDIUM/LOWER/NORMAL/SPAM>");
-					return false;
+					return;
 				}
 				this.main.getManagerHandler().getServerManager().setChatPriority(ChatPriority.valueOf(args[1].toUpperCase()));
 				Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatPriorityChange().replace("%priority%", args[1].toLowerCase()));
-				return false;
+				return;
 			}
 			sender.sendMessage(ChatColor.RED + "/chat priority <HIGH/MEDIUM/LOWER/NORMAL/SPAM>");
-			return false;
+			return;
 		}
-		return false;
+		return;
 	}
 
 }
