@@ -22,7 +22,7 @@ public class ManagerHandler {
 		this.profileManager = new ProfileManager(main);
 		this.punishmentManager = new PunishmentManager(main);
 		this.serverManager = new ServerManager(main.getConfig().getString("chat.state"), main.getConfig().getString("chat.cooldown.priority"));
-		this.inventoryManager = new InventoryManager(main);
+		this.inventoryManager = new InventoryManager();
 	}
 
 }

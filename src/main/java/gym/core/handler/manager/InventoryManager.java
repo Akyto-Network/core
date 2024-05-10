@@ -15,15 +15,13 @@ import lombok.Getter;
 
 public class InventoryManager {
 	
-	private final Core main;
 	private final Inventories invConfig;
 	@Getter
 	private final Inventory frozeInventory;
 	
-	public InventoryManager(final Core main) {
-		this.main = main;
-		this.invConfig = main.getLoaderHandler().getInventory();
-		this.frozeInventory = Bukkit.createInventory(null, InventoryType.DISPENSER, main.getLoaderHandler().getInventory().getFrozeName());
+	public InventoryManager() {
+		this.invConfig = Core.API.getLoaderHandler().getInventory();
+		this.frozeInventory = Bukkit.createInventory(null, InventoryType.DISPENSER, Core.API.getLoaderHandler().getInventory().getFrozeName());
 		this.setFrozenInventory();
 	}
 

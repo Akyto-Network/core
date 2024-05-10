@@ -3,12 +3,18 @@ package gym.core;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.apache.logging.log4j.Level;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +28,6 @@ import gym.core.punishment.MuteEntry;
 import gym.core.punishment.file.PunishmentFile;
 import gym.core.rank.RankEntry;
 import gym.core.rank.file.RankFile;
-import gym.core.runnable.CheckRunnable;
 import gym.core.runnable.VerifRunnable;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseSetup;
@@ -51,6 +56,16 @@ public class Core extends JavaPlugin {
 	private boolean akytoPractice;
 	
 	public void onEnable() {
+        long delay = calculateDelayUntilFiveAM();
+        if (delay > 0) {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    Bukkit.broadcastMessage(ChatColor.RED + "Automatic restart executed");
+                    Bukkit.shutdown();
+                }
+            }, delay);
+        }
 		API = this;
 		this.saveDefaultConfig();
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
@@ -76,7 +91,6 @@ public class Core extends JavaPlugin {
 		this.punishmentFile = new PunishmentFile(this);
 		this.commandHandler = new CommandHandler(this);
 		new VerifRunnable().runTaskTimerAsynchronously(this, 0L, 1L);
-		new CheckRunnable(this, this.getConfig().getInt("autoclicker.max-cps"), this.getConfig().getString("autoclicker.alert-message")).runTaskTimerAsynchronously(this, 0L, 20L);
 	}
 
 	private void registerListener() {
@@ -199,4 +213,12 @@ public class Core extends JavaPlugin {
 			}
 		}
 	}
+	
+    public long calculateDelayUntilFiveAM() {
+        LocalTime targetTime = LocalTime.of(5, 0);
+        LocalDateTime targetDateTime = LocalDate.now().atTime(targetTime);
+        ZonedDateTime targetZonedDateTime = ZonedDateTime.of(targetDateTime, ZoneId.systemDefault());
+        Duration duration = Duration.between(ZonedDateTime.now(), targetZonedDateTime);
+        return duration.toMillis() / 50L;
+    }
 }

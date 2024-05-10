@@ -38,15 +38,6 @@ public class VerifRunnable extends BukkitRunnable {
 	              ItemMeta latencyMeta = latency.getItemMeta();
 	              latencyMeta.setDisplayName(ChatColor.YELLOW + "Latency: " + ChatColor.RED + ping);
 		    	  latency.setItemMeta(latencyMeta);
-	              int nombrealert = 1;
-	              if (wp.autoClickAlert > 0){
-	            	  nombrealert = wp.autoClickAlert;
-	              }
-	              
-	              ItemStack alert = new ItemStack(Material.NAME_TAG, Math.min(nombrealert, 64));
-	              ItemMeta alertMeta = alert.getItemMeta();
-	              alertMeta.setDisplayName(ChatColor.RED + "Alerts Counter: "  + ChatColor.WHITE + wp.autoClickAlert);
-	              alert.setItemMeta(alertMeta);
 	              
 	              ItemStack punishment = new ItemStack(Material.BOOK);
 	              ItemMeta punishmentMeta = punishment.getItemMeta();
@@ -59,7 +50,7 @@ public class VerifRunnable extends BukkitRunnable {
 		          lastMeta.setDisplayName(ChatColor.GRAY + "Last 5seconds CPS:");
 		          final List<String> lore = Lists.newArrayList();
 		          for (int i = 1; i < wp.clicks.length; i++) {
-		        	  lore.add(ChatColor.GRAY + " » " + ChatColor.WHITE + wp.clicks[i]);
+		        	  lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + " * " + ChatColor.WHITE + wp.clicks[i]);
 		          }
 		          lastMeta.setLore(lore);
 		          last.setItemMeta(lastMeta);
@@ -68,9 +59,9 @@ public class VerifRunnable extends BukkitRunnable {
 		          verifier.getOpenInventory().getTopInventory().setItem(1, new ItemStack(Material.STAINED_GLASS_PANE));
 		          verifier.getOpenInventory().getTopInventory().setItem(2, last);
 		          verifier.getOpenInventory().getTopInventory().setItem(3, new ItemStack(Material.STAINED_GLASS_PANE));
-		          verifier.getOpenInventory().getTopInventory().setItem(4, punishment);
+		          verifier.getOpenInventory().getTopInventory().setItem(4, new ItemStack(Material.STAINED_GLASS_PANE));
 		          verifier.getOpenInventory().getTopInventory().setItem(5, new ItemStack(Material.STAINED_GLASS_PANE));
-		          verifier.getOpenInventory().getTopInventory().setItem(6, alert);
+		          verifier.getOpenInventory().getTopInventory().setItem(6, punishment);
 		          verifier.getOpenInventory().getTopInventory().setItem(7, new ItemStack(Material.STAINED_GLASS_PANE));
 		          verifier.getOpenInventory().getTopInventory().setItem(8, latency);
 	            }
