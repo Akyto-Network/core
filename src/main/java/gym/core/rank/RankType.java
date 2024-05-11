@@ -2,8 +2,8 @@ package gym.core.rank;
 
 public enum RankType {
 	
-	ADMIN,
+	COMMUNITY,
 	MODERATION,
-	COMMUNITY
+	ADMIN
 
 }

@@ -17,7 +17,7 @@ public class HubCommand {
 	public void hubCommand(final CommandArgs arg){
 		final CommandSender sender = arg.getSender();
 		if (!(sender instanceof Player)) return;
-		if (kezukdev.akyto.utils.Utils.getProfiles(kezukdev.akyto.utils.Utils.getUUID(sender.getName())).getProfileState().equals(ProfileState.FIGHT)) {
+		if (kezukdev.akyto.utils.Utils.getProfiles(kezukdev.akyto.utils.Utils.getUUID(sender.getName())).isInState(ProfileState.FIGHT)) {
 			sender.sendMessage(ChatColor.RED + "Sorry but you cannot do that in fight!");
 			return;
 		}

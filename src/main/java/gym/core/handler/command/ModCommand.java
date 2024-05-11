@@ -25,24 +25,23 @@ public class ModCommand {
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
 			return;
 		}
-		ProfileState profileState = this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(sender.getName()).getUniqueId()).getProfileState();
-		if (profileState.equals(ProfileState.EDITOR) || profileState.equals(ProfileState.QUEUE) || profileState.equals(ProfileState.SPECTATE) || profileState.equals(ProfileState.FIGHT)) {
+		final Profile profile = this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(sender.getName()).getUniqueId());
+		if (profile.isInState(ProfileState.EDITOR, ProfileState.QUEUE, ProfileState.SPECTATE, ProfileState.FIGHT)) {
 			sender.sendMessage(ChatColor.RED + "You cannot do this right now!");
 			return;
 		}
-		final Profile profile = this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(sender.getName()).getUniqueId());
-		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profileState.equals(ProfileState.MOD) ? "Quit" : "Enter").replace("%subType%", profileState.equals(ProfileState.MOD) ? "enter" : "left"));
+		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profile.isInState(ProfileState.MOD) ? "Quit" : "Enter").replace("%subType%", profile.isInState(ProfileState.MOD) ? "enter" : "left"));
 		Bukkit.getOnlinePlayers().forEach(player -> {
-			if (profileState.equals(ProfileState.MOD)) player.showPlayer(Bukkit.getPlayer(sender.getName()));
-			if (profileState.equals(ProfileState.FREE)) player.hidePlayer(Bukkit.getPlayer(sender.getName()));
+			if (profile.isInState(ProfileState.MOD)) player.showPlayer(Bukkit.getPlayer(sender.getName()));
+			if (profile.isInState(ProfileState.FREE)) player.hidePlayer(Bukkit.getPlayer(sender.getName()));
 		});
-		if (profileState.equals(ProfileState.FREE)) {
+		if (profile.isInState(ProfileState.FREE)) {
 			Bukkit.getPlayer(sender.getName()).setAllowFlight(true);
 		}
-		if (profileState.equals(ProfileState.MOD)) {
+		if (profile.isInState(ProfileState.MOD)) {
 			Utils.sendToSpawn(Bukkit.getPlayer(sender.getName()).getUniqueId(), true);
 		}
-		profile.setProfileState(profileState.equals(ProfileState.MOD) ? ProfileState.FREE : ProfileState.MOD);
+		profile.setProfileState(profile.isInState(ProfileState.MOD) ? ProfileState.FREE : ProfileState.MOD);
 		this.main.getPracticeAPI().getManagerHandler().getItemManager().giveItems(Bukkit.getPlayer(sender.getName()).getUniqueId(), false);
 		return;
 	}

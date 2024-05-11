@@ -136,7 +136,7 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
             }
         }
-        if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).getProfileState().equals(ProfileState.MOD)) {
+        if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
         	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
         		if (this.main.getPracticeAPI().getDuels().isEmpty()) {
         			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
@@ -177,7 +177,7 @@ public class PlayerListener implements Listener {
     
     @EventHandler
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
-    	if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).getProfileState().equals(ProfileState.MOD)) {
+    	if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
             Player clicker = event.getPlayer();
             if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE) || clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)  || clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
                 if (event.getRightClicked() instanceof Player) {
