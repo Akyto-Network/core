@@ -28,6 +28,7 @@ import gym.core.punishment.MuteEntry;
 import gym.core.punishment.file.PunishmentFile;
 import gym.core.rank.RankEntry;
 import gym.core.rank.file.RankFile;
+import gym.core.runnable.TipsRunnable;
 import gym.core.runnable.VerifRunnable;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseSetup;
@@ -35,6 +36,8 @@ import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
 import kezukdev.akyto.Practice;
 import lombok.Getter;
+import net.minecraft.util.com.google.common.io.ByteArrayDataOutput;
+import net.minecraft.util.com.google.common.io.ByteStreams;
 
 @Getter
 public class Core extends JavaPlugin {
@@ -66,6 +69,7 @@ public class Core extends JavaPlugin {
                 }
             }, delay);
         }
+        new TipsRunnable().runTaskTimerAsynchronously(this, 6000L, 6000L);
 		API = this;
 		this.saveDefaultConfig();
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
@@ -181,7 +185,10 @@ public class Core extends JavaPlugin {
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				if (this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
 					player.sendMessage(Utils.translate(this.getConfig().getString("messages.server-restart")));
-					Utils.sendServer(player, "Connect", this.getConfig().getString("bungeecord.hub-instance"));
+				    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+				    out.writeUTF("Connect");
+				    out.writeUTF(this.getConfig().getString("bungeecord.hub-instance"));
+				    player.sendPluginMessage(Core.API, "BungeeCord", out.toByteArray());
 				}
 				else if (!this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
 					player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));	
