@@ -208,36 +208,42 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerTalk(final AsyncPlayerChatEvent event) {
-		if (this.main.getManagerHandler().getPunishmentManager().getMuted().containsKey(event.getPlayer().getUniqueId())) {
-			final MuteEntry mute = this.main.getManagerHandler().getPunishmentManager().getMuted().get(event.getPlayer().getUniqueId());
+		final Player pls = event.getPlayer();
+
+		if (pls.isOp() || pls.hasPermission("akyto.colorchat")) {
+			event.setMessage(Utils.translate(event.getMessage()));
+		}
+
+		if (this.main.getManagerHandler().getPunishmentManager().getMuted().containsKey(pls.getUniqueId())) {
+			final MuteEntry mute = this.main.getManagerHandler().getPunishmentManager().getMuted().get(pls.getUniqueId());
 			Date todayGlobal = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			try {
-				Date muteExpiresOn = sdf.parse(this.main.getManagerHandler().getPunishmentManager().getMuted().get(event.getPlayer().getUniqueId()).getExpiresOn());
+				Date muteExpiresOn = sdf.parse(this.main.getManagerHandler().getPunishmentManager().getMuted().get(pls.getUniqueId()).getExpiresOn());
 				if (muteExpiresOn != null && muteExpiresOn.before(todayGlobal)) {
-					this.main.getManagerHandler().getPunishmentManager().getMuted().remove(event.getPlayer().getUniqueId());
+					this.main.getManagerHandler().getPunishmentManager().getMuted().remove(pls.getUniqueId());
 				} else if (muteExpiresOn != null && !muteExpiresOn.equals(todayGlobal)) {
-				    event.getPlayer().sendMessage(this.main.getLoaderHandler().getMessage().getMuteCancel().replace("%reason%", mute.getReason()).replace("%judge%", mute.getJudge()).replace("%expires%", mute.getExpiresOn()));
+				    pls.sendMessage(this.main.getLoaderHandler().getMessage().getMuteCancel().replace("%reason%", mute.getReason()).replace("%judge%", mute.getJudge()).replace("%expires%", mute.getExpiresOn()));
 				    event.setCancelled(true);
 				    return;
 				}
 			} catch (ParseException e) { e.printStackTrace(); }	
 		}
 		if (this.main.getManagerHandler().getServerManager().getChatState().equals(ChatState.CLOSED)) {
-			if (!event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getBypassChatClosed())) {
-				event.getPlayer().sendMessage(ChatColor.RED + "Sorry but the chat as currently closed!");
+			if (!pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassChatClosed())) {
+				pls.sendMessage(ChatColor.RED + "Sorry but the chat as currently closed!");
 				event.setCancelled(true);
 				return;	
 			}
 		}
-		if (this.main.getLoaderHandler().getSettings().isChatCooldown() && !event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getBypassCooldownChat())) {
-			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isChatCooldownActive()) {
-				event.getPlayer().sendMessage(this.main.getLoaderHandler().getMessage().getChatCooldown().replace("%time%", Utils.formatTime(this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).getChatCooldown(), 1000.0d)));
+		if (this.main.getLoaderHandler().getSettings().isChatCooldown() && !pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassCooldownChat())) {
+			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isChatCooldownActive()) {
+				pls.sendMessage(this.main.getLoaderHandler().getMessage().getChatCooldown().replace("%time%", Utils.formatTime(this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).getChatCooldown(), 1000.0d)));
 				event.setCancelled(true);
 				return;
 			}	
 		}
-		if (!event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getBypassFilterChat())) {
+		if (!pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassFilterChat())) {
 			for (String filter : this.main.getLoaderHandler().getMessage().getFilteredText()) {
 				if (event.getMessage().contains(filter)) {
 					StringBuilder filtered = new StringBuilder();
@@ -249,50 +255,49 @@ public class PlayerListener implements Listener {
 				}
 			}	
 		}
-		if (this.main.getLoaderHandler().getSettings().isChatCooldown() && !event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getBypassCooldownChat())) {
-			this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).applyChatCooldown(this.main.getManagerHandler().getServerManager().getChatPriority().getTime());	
+		if (this.main.getLoaderHandler().getSettings().isChatCooldown() && !pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassCooldownChat())) {
+			this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).applyChatCooldown(this.main.getManagerHandler().getServerManager().getChatPriority().getTime());
 		}
-		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId());
+		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(pls.getUniqueId());
 		final String prefix = Utils.translate(rank.getPrefix());
 		final String color = Utils.translate(rank.getColor());
-		if (event.getMessage().startsWith(this.main.getLoaderHandler().getMessage().getScSymbol()) && event.getPlayer().hasPermission("akyto.staff")) {
-			Bukkit.getOnlinePlayers().forEach(player -> {
-				if (player.hasPermission("akyto.staff")) {
-					player.sendMessage(this.main.getLoaderHandler().getMessage().getScFormat()
-							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-							.replace("%rankColor%", color).replace("%player%", event.getPlayer().getName())
-							.replace("%msg%", event.getMessage().replaceFirst("!", "")));
-				}
+		if (event.getMessage().startsWith(this.main.getLoaderHandler().getMessage().getScSymbol()) && pls.hasPermission("akyto.staff")) {
+			Bukkit.getOnlinePlayers().stream()
+					.filter(player -> player.hasPermission("akyto.staff"))
+					.forEach(player -> {
+						player.sendMessage(this.main.getLoaderHandler().getMessage().getScFormat()
+								.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
+								.replace("%rankColor%", color).replace("%player%", pls.getName())
+								.replace("%msg%", event.getMessage().replaceFirst("!", "")));
 			});
 			event.setCancelled(true);
 			return;
 		}
-		Bukkit.getOnlinePlayers().forEach(player -> {
-			if (event.getMessage().contains(player.getName())) {
-				List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
-				p.remove(Bukkit.getPlayer(player.getName()));
-				player.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-						.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-						.replace("%rankColor%", color)
-						.replace("%player%", event.getPlayer().getName())
-						.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
-						.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
-				player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
-				p.forEach(ppl -> ppl.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-						.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-						.replace("%rankColor%", color)
-						.replace("%player%", event.getPlayer().getName())
-						.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
-						.replace("%msg%", event.getMessage().replace(player.getName(), player.getName())))));
-				event.setCancelled(true);
-				return;
-			}
+		Bukkit.getOnlinePlayers().stream()
+				.filter(player -> event.getMessage().contains(player.getName()))
+				.forEach(player -> {
+					List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
+					p.remove(Bukkit.getPlayer(player.getName()));
+					player.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
+							.replace("%rankColor%", color)
+							.replace("%player%", pls.getName())
+							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
+					player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
+					p.forEach(ppl -> ppl.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
+							.replace("%rankColor%", color)
+							.replace("%player%", pls.getName())
+							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+							.replace("%msg%", event.getMessage()))));
+					event.setCancelled(true);
 		});
 		event.setFormat(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 				.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
 				.replace("%rankColor%", color)
 				.replace("%player%", "%1$s")
-				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 				.replace("%msg%", "%2$s")));
 	}
 
