@@ -3,21 +3,9 @@ package gym.core.handler;
 import java.util.Arrays;
 
 import gym.core.Core;
-import gym.core.handler.command.AnnounceCommand;
-import gym.core.handler.command.BanCommand;
-import gym.core.handler.command.ChatCommand;
-import gym.core.handler.command.FreezeCommand;
-import gym.core.handler.command.HubCommand;
-import gym.core.handler.command.ListCommand;
-import gym.core.handler.command.MessageCommand;
-import gym.core.handler.command.ModCommand;
-import gym.core.handler.command.MuteCommand;
-import gym.core.handler.command.RankCommand;
-import gym.core.handler.command.ReportCommand;
-import gym.core.handler.command.SocialsCommand;
-import gym.core.handler.command.TimeCommand;
-import gym.core.handler.command.ViewCpsCommand;
+import gym.core.handler.command.*;
 import gym.core.utils.command.CommandFramework;
+import jdk.javadoc.internal.doclets.formats.html.markup.Head;
 
 public class CommandHandler {
 	
@@ -36,6 +24,8 @@ public class CommandHandler {
 				new ReportCommand(),
 				new SocialsCommand(),
 				new TimeCommand(),
+				new MoreCommand(),
+				new HeadCommand(),
 				new ViewCpsCommand());
 	}
 
