@@ -1,6 +1,7 @@
 package gym.core.handler.command;
 
 import gym.core.Core;
+import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
@@ -9,9 +10,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ListCommand {
+
+    private static String formatRank(Map.Entry<String, RankEntry> rank) {
+        return Utils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey());
+    }
 
 	@Command(name = "list")
     public void listCommand(final CommandArgs arg) {
@@ -20,7 +26,7 @@ public class ListCommand {
 
         builder.append(
                 Core.API.getManagerHandler().getRankManager().getRanks().entrySet().stream()
-                        .map(rank -> Utils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey()))
+                        .map(ListCommand::formatRank)
                         .collect(Collectors.joining(ChatColor.GRAY + ", "))
         ).append(ChatColor.GRAY).append(".\n");
 

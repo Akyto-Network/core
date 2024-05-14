@@ -232,7 +232,7 @@ public class CommandFramework implements CommandExecutor {
     }
 
     private void addCooldown(CommandSender sender, Command command) {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player) || command.coolDown() == 0L)
             return;
 
         Player player = (Player) sender;

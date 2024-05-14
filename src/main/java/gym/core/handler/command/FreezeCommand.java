@@ -16,10 +16,8 @@ public class FreezeCommand {
 
     @Command(name = "freeze", aliases= {"frozen", "froze", "frozed", "freezed"}, inGameOnly = true)
     public void freezeCommand(final CommandArgs arg) {
-    	final CommandSender sender = arg.getSender();
     	final String[] args = arg.getArgs();
-    	if (!(sender instanceof Player)) return;
-        Player player = (Player) sender;
+        Player player = arg.getPlayer();
         
         if (!player.hasPermission(this.main.getLoaderHandler().getPermission().getFreeze())) {
             player.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
@@ -55,7 +53,5 @@ public class FreezeCommand {
         }
         
         player.sendMessage(this.main.getLoaderHandler().getMessage().getFrozeStatus().replace("%frozed%", target.getName()).replace("%frozeStatus%", isFrozen ? "frozen" : "unfrozen"));
-        
-        return;
     }
 }
