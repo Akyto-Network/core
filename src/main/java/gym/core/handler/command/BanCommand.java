@@ -2,7 +2,9 @@ package gym.core.handler.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.UUID;
 
+import kezukdev.akyto.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -17,7 +19,7 @@ public class BanCommand {
 	
 	private final Core main = Core.API;
 	
-	@Command(name = "ban", aliases= {"punish"}, inGameOnly = false)
+	@Command(name = "ban", aliases= {"punish"})
 	public void banCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
@@ -47,25 +49,28 @@ public class BanCommand {
         if (this.main.getLoaderHandler().getSettings().isBanBroad() && !sender.getName().equalsIgnoreCase("CONSOLE")) {
         	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getBanAnnounce().replace("%banned%", args[0]).replace("%reason%", reason).replace("%judge%", sender.getName()));
         }
-		return;
-	}
+    }
 	
-	@Command(name = "unban", aliases= {"unpunish"}, inGameOnly = true)
+	@Command(name = "unban", aliases= {"unpunish", "pardon"})
 	public void unbanCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
+
 		if (!sender.hasPermission(this.main.getLoaderHandler().getPermission().getRemoveBan())) {
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
 			return;
 		}
+
 		if (args.length != 1) {
 			this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 			return;
 		}
-        this.main.getManagerHandler().getPunishmentManager().removeBan(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+
+		UUID target = Utils.getUUID(args[0]);
+
+        this.main.getManagerHandler().getPunishmentManager().removeBan(target);
         if (this.main.getLoaderHandler().getSettings().isBanBroad()) {
         	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getUnbanAnnounce().replace("%banned%", args[0]).replace("%judge%", sender.getName()));
         }
-		return;
-	}
+    }
 }

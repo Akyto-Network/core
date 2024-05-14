@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class ListCommand {
 
-	@Command(name = "list", inGameOnly = false)
+	@Command(name = "list")
     public void listCommand(final CommandArgs arg) {
     	final CommandSender sender = arg.getSender();
         StringBuilder builder = new StringBuilder();
@@ -37,7 +37,5 @@ public class ListCommand {
                 .append(players);
 
         sender.sendMessage(builder.toString());
-
-        return;
     }
 }

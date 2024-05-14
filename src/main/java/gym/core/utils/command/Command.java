@@ -16,6 +16,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
+    long DEFAULT_COOLDOWN_MS = 1000;
+
     /**
      * The name of the command. If it is a sub command then its values would be
      * separated by periods. ie. a command that would be a subcommand of test
@@ -68,4 +70,11 @@ public @interface Command {
      * @return
      */
     boolean inGameOnly() default false;
+
+    /**
+     * Cooldown between 2 executions of the command in ms (bypassable with permission "akyto.command.cooldown")
+     *
+     * @return
+     */
+    long coolDown() default DEFAULT_COOLDOWN_MS;
 }

@@ -5,12 +5,12 @@ import java.util.Arrays;
 import gym.core.Core;
 import gym.core.handler.command.*;
 import gym.core.utils.command.CommandFramework;
-import jdk.javadoc.internal.doclets.formats.html.markup.Head;
+import org.bukkit.plugin.Plugin;
 
 public class CommandHandler {
-	
+
 	public CommandHandler(final Core main) {
-		this.setupFramework(
+		this.setupFramework(main,
 				new AnnounceCommand(),
 				new BanCommand(),
 				new ChatCommand(),
@@ -26,11 +26,12 @@ public class CommandHandler {
 				new TimeCommand(),
 				new MoreCommand(),
 				new HeadCommand(),
-				new ViewCpsCommand());
+				new ViewCpsCommand()
+		);
 	}
 
-	private void setupFramework(final Object... objects) {
-        CommandFramework commandFramework = new CommandFramework(Core.API);
+	private void setupFramework(final Plugin plugin, final Object... objects) {
+        CommandFramework commandFramework = new CommandFramework(plugin);
         Arrays.stream(objects).forEach(commandFramework::registerCommands);
 	}
 

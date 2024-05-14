@@ -11,7 +11,7 @@ import gym.core.utils.command.CommandArgs;
 
 public class AnnounceCommand {
 	
-	@Command(name = "anounce", aliases= {"bc", "broadcast", "announcement"}, permission = "akyto.admin", inGameOnly = false)
+	@Command(name = "announce", aliases= {"bc", "broadcast", "announcement"}, permission = "akyto.admin")
 	public void announceCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
@@ -23,6 +23,5 @@ public class AnnounceCommand {
 		Bukkit.broadcastMessage(" ");
 		Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ANVIL_LAND, 1f, 1f));
 		sender.sendMessage(ChatColor.GREEN + "Your announce has been sent!");
-		return;
-	}
+    }
 }

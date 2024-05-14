@@ -21,20 +21,20 @@ import java.util.Map.Entry;
  */
 public class BukkitCompleter implements TabCompleter {
 
-    private final Map<String, Entry<Method, Object>> completers = new HashMap<String, Entry<Method, Object>>();
+    private final Map<String, Entry<Method, Object>> completers = new HashMap<>();
 
     public void addCompleter(String label, Method m, Object obj) {
-        completers.put(label, new AbstractMap.SimpleEntry<Method, Object>(m, obj));
+        completers.put(label, new AbstractMap.SimpleEntry<>(m, obj));
     }
 
     @SuppressWarnings("unchecked")
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         for (int i = args.length; i >= 0; i--) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             buffer.append(label.toLowerCase());
             for (int x = 0; x < i; x++) {
-                if (!args[x].equals("") && !args[x].equals(" ")) {
-                    buffer.append("." + args[x].toLowerCase());
+                if (!args[x].isEmpty() && !args[x].equals(" ")) {
+                    buffer.append(".").append(args[x].toLowerCase());
                 }
             }
             String cmdLabel = buffer.toString();
@@ -43,11 +43,7 @@ public class BukkitCompleter implements TabCompleter {
                 try {
                     return (List<String>) entry.getKey().invoke(entry.getValue(),
                             new CommandArgs(sender, command, label, args, cmdLabel.split("\\.").length - 1));
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }

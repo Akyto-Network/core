@@ -15,9 +15,9 @@ import gym.core.utils.command.CommandArgs;
 
 public class MuteCommand {
 	
-	private Core main = Core.API;
+	private final Core main = Core.API;
 
-	@Command(name = "mute", inGameOnly = false)
+	@Command(name = "mute")
 	public void muteCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
@@ -54,8 +54,8 @@ public class MuteCommand {
 		return;
 	}
 
-	@Command(name = "unmute", inGameOnly = false)
-	public void unmuteCommand(final CommandArgs arg) {
+	@Command(name = "unmute")
+	public void unMuteCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
 		if (!sender.hasPermission(this.main.getLoaderHandler().getPermission().getRemoveBan())) {

@@ -1,9 +1,6 @@
 package gym.core.utils;
 
 import java.util.Calendar;
-import java.util.TimerTask;
-
-import kezukdev.akyto.duel.Duel;
 
 public class TimeUtils {
 	

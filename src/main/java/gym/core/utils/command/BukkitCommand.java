@@ -48,7 +48,7 @@ public class BukkitCommand extends org.bukkit.command.Command {
                     + owningPlugin.getDescription().getFullName(), ex);
         }
 
-        if (!success && usageMessage.length() > 0) {
+        if (!success && !usageMessage.isEmpty()) {
             for (String line : usageMessage.replace("<command>", commandLabel).split("\n")) {
                 sender.sendMessage(line);
             }
