@@ -13,22 +13,18 @@ public class RankEntry {
 	public String getPrefix() { return Utils.translate(this.prefix); }
 	private String color;
 	private Boolean spaceBetweenColor;
-	private RankType rankType;
+	private int power;
 	private List<String> permissions;
 	
-	public RankEntry(final String prefix, final String color, final Boolean spacer, final List<String> permissions, final RankType type) {
+	public RankEntry(final String prefix, final String color, final Boolean spacer, final List<String> permissions, final int power) {
 		this.prefix = prefix;
 		this.color = color;
 		this.spaceBetweenColor = spacer;
-		this.rankType = type;
+		this.power = power;
 		this.permissions = permissions;
 	}
 
 	public Boolean hasSpaceBetweenColor() {
 		return this.spaceBetweenColor;
-	}
-
-	public boolean isStaff() {
-		return this.rankType.ordinal() > RankType.COMMUNITY.ordinal();
 	}
 }

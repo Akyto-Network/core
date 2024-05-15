@@ -75,7 +75,8 @@ public class Core extends JavaPlugin {
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
 			this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
-		this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type")) != null ? DatabaseType.valueOf(this.getConfig().getString("database.type")) : DatabaseType.FLAT_FILES;
+        DatabaseType.valueOf(this.getConfig().getString("database.type"));
+        this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type"));
 		if (databaseType.equals(DatabaseType.MYSQL)) {
 			this.hikariPath = this.getDataFolder() + "/hikari.properties";
 			this.saveResource("hikari.properties", false);

@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 
 import gym.core.Core;
 import gym.core.rank.RankEntry;
-import gym.core.rank.RankType;
 import lombok.Getter;
 import net.minecraft.util.com.google.common.collect.Maps;
 
@@ -29,7 +28,7 @@ public class RankManager {
 	}
 	
 	public void createRank(final String name) {
-		this.ranks.put(name, new RankEntry(ChatColor.GREEN.toString(), ChatColor.GREEN.toString(), false, Lists.newArrayList(), RankType.COMMUNITY));
+		this.ranks.put(name, new RankEntry(ChatColor.GREEN.toString(), ChatColor.GREEN.toString(), false, Lists.newArrayList(), 0));
 	}
 
 }

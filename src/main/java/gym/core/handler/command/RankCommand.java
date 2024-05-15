@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 
 import co.aikar.idb.DB;
 import gym.core.Core;
-import gym.core.rank.RankType;
 import gym.core.utils.Utils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
@@ -53,25 +52,24 @@ public class RankCommand {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
 				return;
 			}
-			if (ChatColor.translateAlternateColorCodes('&', args[2]) == null) {
-				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank color"));
-				return;
-			}
-			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setColor(args[2]);
+            ChatColor.translateAlternateColorCodes('&', args[2]);
+            this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setColor(args[2]);
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "upgraded"));
 			return;
 		}
-		if (args[0].equalsIgnoreCase("setranktype") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
+		if (args[0].equalsIgnoreCase("setpower") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
 			if (!this.main.getManagerHandler().getRankManager().getRanks().containsKey(args[1].toLowerCase())) {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
 				return;
 			}
-			if (RankType.valueOf(args[2].toUpperCase()) == null) {
-				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank type"));
+			try {
+				int power = Integer.parseInt(args[2]);
+				this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setPower(power);
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "set to"));
+			} catch (Exception e) {
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank power"));
 				return;
 			}
-			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setRankType(RankType.valueOf(args[2].toUpperCase()));
-			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "setted to"));
 			return;
 		}
 		if (args[0].equalsIgnoreCase("addperm") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {

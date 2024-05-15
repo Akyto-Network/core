@@ -9,7 +9,9 @@ import gym.core.utils.command.CommandArgs;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,11 +28,13 @@ public class ListCommand {
 
         builder.append(
                 Core.API.getManagerHandler().getRankManager().getRanks().entrySet().stream()
+                        .sorted((a, b) -> b.getValue().getPower() - a.getValue().getPower())
                         .map(ListCommand::formatRank)
                         .collect(Collectors.joining(ChatColor.GRAY + ", "))
         ).append(ChatColor.GRAY).append(".\n");
 
         String players = Core.API.getServer().getOnlinePlayers().stream()
+                .sorted(Comparator.comparingInt((Player a) -> Core.API.getManagerHandler().getRankManager().getRanks().get(a.getUniqueId()).getPower()))
                 .map(player -> {
                     String rankColor = Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).getColor();
                     return Utils.translate(rankColor) + player.getDisplayName();
