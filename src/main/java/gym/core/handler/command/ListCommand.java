@@ -34,7 +34,10 @@ public class ListCommand {
         ).append(ChatColor.GRAY).append(".\n");
 
         String players = Core.API.getServer().getOnlinePlayers().stream()
-                .sorted(Comparator.comparingInt((Player a) -> Core.API.getManagerHandler().getRankManager().getRanks().get(a.getUniqueId()).getPower()))
+                .sorted(Comparator.comparingInt(a -> {
+                    RankEntry rank = Core.API.getManagerHandler().getRankManager().getRanks().get(((Player) a).getUniqueId());
+                    return rank == null ? 0 : rank.getPower();
+                }).reversed())
                 .map(player -> {
                     String rankColor = Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).getColor();
                     return Utils.translate(rankColor) + player.getDisplayName();
