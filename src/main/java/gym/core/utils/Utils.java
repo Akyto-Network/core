@@ -15,8 +15,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
-import net.minecraft.util.com.google.common.io.ByteArrayDataOutput;
-import net.minecraft.util.com.google.common.io.ByteStreams;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 public class Utils {
 	
@@ -70,5 +70,12 @@ public class Utils {
 	            return false;
 	        }
 	    });
+	}
+	
+	public static UUID getUUID(String playerName) {
+		Player target = Core.API.getServer().getPlayer(playerName);
+		if (target != null)
+			return target.getUniqueId();
+		return Core.API.getServer().getOfflinePlayer(playerName).getUniqueId();
 	}
 }

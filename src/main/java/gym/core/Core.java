@@ -9,20 +9,18 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import gym.core.handler.CommandHandler;
 import gym.core.handler.LoaderHandler;
 import gym.core.handler.ManagerHandler;
 import gym.core.handler.listener.PlayerListener;
+import gym.core.handler.listener.PracticeListener;
 import gym.core.punishment.BanEntry;
 import gym.core.punishment.MuteEntry;
 import gym.core.punishment.file.PunishmentFile;
@@ -36,8 +34,8 @@ import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
 import kezukdev.akyto.Practice;
 import lombok.Getter;
-import net.minecraft.util.com.google.common.io.ByteArrayDataOutput;
-import net.minecraft.util.com.google.common.io.ByteStreams;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 @Getter
 public class Core extends JavaPlugin {
@@ -59,16 +57,6 @@ public class Core extends JavaPlugin {
 	private boolean akytoPractice;
 	
 	public void onEnable() {
-        long delay = calculateDelayUntilFiveAM();
-        if (delay > 0) {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
-                @Override
-                public void run() {
-                    Bukkit.broadcastMessage(ChatColor.RED + "Automatic restart executed");
-                    Bukkit.shutdown();
-                }
-            }, delay);
-        }
         new TipsRunnable().runTaskTimerAsynchronously(this, 6000L, 6000L);
 		API = this;
 		this.saveDefaultConfig();
@@ -99,8 +87,9 @@ public class Core extends JavaPlugin {
 	}
 
 	private void registerListener() {
-        for (Listener listener : Arrays.asList(new PlayerListener(this))) {
-        	this.getServer().getPluginManager().registerEvents(listener, this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+        	 this.getServer().getPluginManager().registerEvents(new PracticeListener(), this);
         }
 	}
 
@@ -184,16 +173,7 @@ public class Core extends JavaPlugin {
 	private void saveDatabase() {
 		if (!Bukkit.getOnlinePlayers().isEmpty()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
-				if (this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
-					player.sendMessage(Utils.translate(this.getConfig().getString("messages.server-restart")));
-				    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-				    out.writeUTF("Connect");
-				    out.writeUTF(this.getConfig().getString("bungeecord.hub-instance"));
-				    player.sendPluginMessage(Core.API, "BungeeCord", out.toByteArray());
-				}
-				else if (!this.getConfig().getBoolean("bungeecord.move-to-hub-at-restart")) {
-					player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));	
-				}
+				player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));
 			});
 		}
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
@@ -221,12 +201,4 @@ public class Core extends JavaPlugin {
 			}
 		}
 	}
-	
-    public long calculateDelayUntilFiveAM() {
-        LocalTime targetTime = LocalTime.of(5, 0);
-        LocalDateTime targetDateTime = LocalDate.now().atTime(targetTime);
-        ZonedDateTime targetZonedDateTime = ZonedDateTime.of(targetDateTime, ZoneId.systemDefault());
-        Duration duration = Duration.between(ZonedDateTime.now(), targetZonedDateTime);
-        return duration.toMillis() / 50L;
-    }
 }

@@ -2,23 +2,19 @@ package gym.core.handler.listener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -34,13 +30,11 @@ import com.google.common.collect.Lists;
 
 import gym.core.Core;
 import gym.core.chat.ChatState;
-import gym.core.profile.Profile;
 import gym.core.punishment.BanEntry;
 import gym.core.punishment.MuteEntry;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
-import kezukdev.akyto.duel.Duel;
 import kezukdev.akyto.profile.ProfileState;
 
 public class PlayerListener implements Listener {
@@ -84,28 +78,6 @@ public class PlayerListener implements Listener {
 		}
     }
     
-	@EventHandler
-	public void onClick(final PlayerInteractEvent e){
-	    if (e.getAction() == Action.LEFT_CLICK_AIR) {
-	      Player player = e.getPlayer();
-	      Profile wp = this.main.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
-	      if ((player.getTargetBlock(null, 100).getLocation().distance(player.getLocation()) < 6.0D) && (wp.lastBlockInteraction > System.currentTimeMillis()) && (wp.clicks[0] >= 10)) {
-	    	  e.setCancelled(true);
-	    	  e.setUseInteractedBlock(Result.DENY); // IDK if it works but it seems to be the only way
-	    	  e.setUseItemInHand(Result.DENY);
-	    	  return;
-	      }
-	      if (wp.clicks[0] > wp.maxClick) {
-	    	  wp.maxClick = wp.clicks[0];
-	      }
-	      wp.clicks[0] += 1;
-	    } else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-	      Player player = e.getPlayer();
-	      Profile wp = this.main.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
-	      wp.lastBlockInteraction = (System.currentTimeMillis() + 5000L);
-	    }
-	}
-    
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		event.setJoinMessage(null);
@@ -136,70 +108,20 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
             }
         }
-        if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
-        	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
-        		if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
-            		if (this.main.getPracticeAPI().getDuels().isEmpty()) {
-            			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
-            			return;
-            		}
-            		final List<UUID> playersInMatch = new ArrayList<>();
-            		this.main.getPracticeAPI().getDuels().forEach(duel -> {
-            			playersInMatch.addAll(duel.getFirst());
-            			playersInMatch.addAll(duel.getSecond());
-            		});
-            		Collections.shuffle(playersInMatch);
-            		event.getPlayer().teleport(Bukkit.getPlayer(playersInMatch.get(0)));
-    				final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));	
-            		List<UUID> duelPlayers = new ArrayList<>();
-            		duelPlayers.addAll(duel.getFirst());
-            		duelPlayers.addAll(duel.getSecond());
-            		duelPlayers.forEach(uuid -> event.getPlayer().showPlayer(Bukkit.getPlayer(uuid)));
-            		this.main.getLoaderHandler().getMessage().getRandomTeleport().forEach(msg -> {
-            			event.getPlayer().sendMessage(msg.replace("%target%", Bukkit.getPlayer(playersInMatch.get(0)).getName()).replace("%playerOne%", Bukkit.getPlayer(new ArrayList<>(duel.getFirst()).get(0)).getName()).replace("%playerTwo%", Bukkit.getPlayer(new ArrayList<>(duel.getSecond()).get(0)).getName()).replace("%matchLadder%", ChatColor.stripColor(duel.getKit().displayName())).replace("%matchDuration%", this.getFormattedDuration(duel)));
-            		});
-        		}
-        		return;
-        	}
-        	if (event.getItem().getType().equals(Material.REDSTONE_TORCH_ON)) {
-        		event.setUseInteractedBlock(Result.DENY);
-        		event.setUseItemInHand(Result.DENY);
-        		event.setCancelled(true);
-        		event.getPlayer().chat("/mod");
-        		return;
-        	}
-        }
     }
     
-    public String getFormattedDuration(final Duel duel) {
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(duel.getDuration());
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(duel.getDuration()) - TimeUnit.MINUTES.toSeconds(minutes);
-        return String.format("%02d:%02d", minutes, seconds);
-    }
     
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEntityEvent event) {
-    	if (this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
-            Player clicker = event.getPlayer();
-            if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE) || clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)  || clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
-                if (event.getRightClicked() instanceof Player) {
-                    Player clicked = (Player) event.getRightClicked();
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
-                    	clicker.chat("/stats " + clicked.getName());
-                    	return;
-                    }
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)) {
-                    	clicker.chat("/viewcps " + clicked.getName());
-                    	return;
-                    }
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE)) {
-                    	clicker.chat("/freeze " + clicked.getName());
-                    	return;
-                    }
-                }
-            }
-    	}
-    }
+	@EventHandler(priority=EventPriority.LOW)
+	public void PlayerPlaceBlockEvent(final BlockPlaceEvent event) {
+		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
+		event.setCancelled(true);
+	}
+	
+	@EventHandler(priority=EventPriority.LOW)
+	public void PlayerBreakBlockEvent(final BlockBreakEvent event) {
+		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
+		event.setCancelled(true);
+	}
 	
 	@EventHandler
 	public void onPlayerKick(final PlayerKickEvent event) {

@@ -12,7 +12,7 @@ import gym.core.punishment.BanEntry;
 import gym.core.punishment.MuteEntry;
 import gym.core.punishment.WarnEntry;
 import lombok.Getter;
-import net.minecraft.util.com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
 
 @Getter
 public class PunishmentManager {

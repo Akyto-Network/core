@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import gym.core.Core;
 import gym.core.rank.RankEntry;
 import lombok.Getter;
-import net.minecraft.util.com.google.common.collect.Maps;
 
 @Getter
 public class RankManager {
@@ -23,7 +22,7 @@ public class RankManager {
 	
 	public RankManager(final Core main) {
 		this.main = main;
-		this.ranks = Maps.newHashMap();
+		this.ranks = new HashMap<>();
 		this.deletedRank = new ArrayList<>();
 	}
 	

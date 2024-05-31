@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
-import kezukdev.akyto.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import gym.core.Core;
 import gym.core.punishment.BanEntry;
 import gym.core.utils.TimeUtils;
+import gym.core.utils.Utils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 

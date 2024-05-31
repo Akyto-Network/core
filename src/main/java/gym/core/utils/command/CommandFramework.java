@@ -14,6 +14,8 @@ import org.bukkit.help.IndexHelpTopic;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
+import gym.core.Core;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,7 +41,7 @@ public class CommandFramework implements CommandExecutor {
     public CommandFramework(Plugin plugin) {
         this.plugin = plugin;
 
-        plugin.registerListeners(new Listener() {
+        plugin.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onLeave(PlayerQuitEvent event) {
                 cooldowns.remove(event.getPlayer().getUniqueId());
@@ -49,7 +51,7 @@ public class CommandFramework implements CommandExecutor {
             public void onKick(PlayerKickEvent event) {
                 cooldowns.remove(event.getPlayer().getUniqueId());
             }
-        });
+        }, Core.API);
 
         if (plugin.getServer().getPluginManager() instanceof SimplePluginManager) {
             SimplePluginManager manager = (SimplePluginManager) plugin.getServer().getPluginManager();

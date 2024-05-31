@@ -22,7 +22,7 @@ import gym.core.profile.Profile;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
-import net.minecraft.util.com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
 
 public class ProfileManager {
 	
