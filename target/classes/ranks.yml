@@ -1,7 +1,0 @@
-ranks:
-  default:
-    prefix: "&a"
-    color: "&a"
-    type: "COMMUNITY"
-    permissions: 
-       - "bukkit.command.ping"
