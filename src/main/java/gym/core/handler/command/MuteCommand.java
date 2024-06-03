@@ -3,7 +3,7 @@ package gym.core.handler.command;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -44,15 +44,13 @@ public class MuteCommand {
 		}
     	Calendar calendar = Calendar.getInstance();
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    	String reason = "Flood";
 		new TimeUtils(args[1], calendar);
-        reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Flood";  
+        String reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Flood";
         this.main.getManagerHandler().getPunishmentManager().addMute(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName());
         if (this.main.getLoaderHandler().getSettings().isMuteBroad()) {
         	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getMuteAnnounce().replace("%muted%", args[0]).replace("%reason%", reason).replace("%judge%", sender.getName()));
         }
-		return;
-	}
+    }
 
 	@Command(name = "unmute")
 	public void unMuteCommand(final CommandArgs arg) {

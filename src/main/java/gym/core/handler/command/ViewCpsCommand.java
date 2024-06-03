@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -18,7 +17,7 @@ import gym.core.utils.command.CommandArgs;
 public class ViewCpsCommand {
 	
 	private final Core main = Core.API;
-    public static Map<Player, Profile> verifiers = new HashMap<>();
+    public static final Map<Player, Profile> verifiers = new HashMap<>();
     
 	@Command(name = "viewcps", aliases= {"verif", "ss"}, inGameOnly = true)
 	public void viewCpsCommand(final CommandArgs arg) {

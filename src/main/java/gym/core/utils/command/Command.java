@@ -20,7 +20,7 @@ public @interface Command {
 
     /**
      * The name of the command. If it is a sub command then its values would be
-     * separated by periods. ie. a command that would be a subcommand of test
+     * separated by periods. i.e. a command that would be a subcommand of test
      * would be 'test.subcommandname'
      *
      * @return
@@ -65,7 +65,7 @@ public @interface Command {
     String usage() default "";
 
     /**
-     * Whether or not the command is available to players only
+     * Whether the command is available to players only
      *
      * @return
      */

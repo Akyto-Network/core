@@ -15,7 +15,7 @@ import gym.core.utils.database.DatabaseType;
 
 public class RankCommand {
 
-	private Core main = Core.API;
+	private final Core main = Core.API;
 	
 	@Command(name = "rank", aliases= {"grade", "ranks"}, inGameOnly = true)
 	public void rankCommand(final CommandArgs arg) {
@@ -122,8 +122,8 @@ public class RankCommand {
 					if (Bukkit.getPlayer(args[1]) == null && this.main.getMySQL().existPlayerManagerAsync(Bukkit.getOfflinePlayer(args[1]).getUniqueId()).get()) {
 						DB.executeUpdateAsync("UPDATE coredata SET rank=? WHERE name=?", args[2].toLowerCase() , args[1]);
 					}
-				} catch (InterruptedException e) { e.printStackTrace(); } catch (ExecutionException e) { e.printStackTrace(); }
-			}
+				} catch (InterruptedException | ExecutionException e) { e.printStackTrace(); }
+            }
 			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()) != null) {
 				this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()).setRank(args[2].toLowerCase());	
 			}	
@@ -143,8 +143,8 @@ public class RankCommand {
 					if (Bukkit.getPlayer(args[1]) == null && this.main.getMySQL().existPlayerManagerAsync(Bukkit.getOfflinePlayer(args[1]).getUniqueId()).get()) {
 						DB.executeUpdateAsync("UPDATE coredata SET rank=? WHERE name=?", "default" , args[1]);
 					}
-				} catch (InterruptedException e) { e.printStackTrace(); } catch (ExecutionException e) { e.printStackTrace(); }
-			}
+				} catch (InterruptedException | ExecutionException e) { e.printStackTrace(); }
+            }
 			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()) != null) {
 				this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()).setRank("default");	
 			}	
@@ -156,7 +156,6 @@ public class RankCommand {
 			}
 			
 		}
-		return;
-	}
+    }
 
 }

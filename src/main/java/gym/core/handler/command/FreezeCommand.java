@@ -1,7 +1,6 @@
 package gym.core.handler.command;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;

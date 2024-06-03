@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MySQL {
 	
-	private Core main;
+	private final Core main;
 	
 	public MySQL(final Core main) { this.main = main; }
 
