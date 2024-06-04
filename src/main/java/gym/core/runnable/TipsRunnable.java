@@ -21,7 +21,7 @@ public class TipsRunnable extends BukkitRunnable {
 	@Override
 	public void run() {
 		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(messages.get(idx)));
-		idx++;
+		idx = (idx + 1) % messages.size();
 	}
 	
 	
