@@ -26,7 +26,7 @@ public class PracticeListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (Core.API.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
         	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
-        		if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+        		if (Core.API.isAkytoPractice()) {
             		if (Core.API.getPracticeAPI().getDuels().isEmpty()) {
             			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
             			return;

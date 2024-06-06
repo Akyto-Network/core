@@ -26,7 +26,8 @@ public class CommandHandler {
 				new TimeCommand(),
 				new MoreCommand(),
 				new HeadCommand(),
-				new ViewCpsCommand()
+				new ViewCpsCommand(),
+				new TestCommand()
 		);
 	}
 
