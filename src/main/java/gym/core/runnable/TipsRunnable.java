@@ -12,7 +12,7 @@ public class TipsRunnable extends BukkitRunnable {
 	private int idx = 0;
 	private final String prefix = ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Tips" + ChatColor.GRAY + "] " + ChatColor.RESET;
 	private final List<String> messages = Arrays.asList(
-			prefix + "Making C.P.S too high can result in a ban so avoid :p",
+			prefix + "Too high C.P.S can result in a ban so avoid :p",
 			prefix + "Don't forget to join our discord server " + ChatColor.RED + "discord.akyto.club",
 			prefix + "Vote for us on NameMC: " + ChatColor.RED + "namemc.com/server/akyto.club",
 			prefix + "The server is still under development if you see any bugs report them to us and don't abuse them :3"
