@@ -3,12 +3,6 @@ package gym.core;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -34,8 +28,6 @@ import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
 import kezukdev.akyto.Practice;
 import lombok.Getter;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 
 @Getter
 public class Core extends JavaPlugin {
@@ -154,9 +146,25 @@ public class Core extends JavaPlugin {
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".color");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", rank.getValue().getColor());
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor");
-				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()));
+				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor", String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()));
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".permissions");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".permissions", rank.getValue().getPermissions());
+			}
+			if (this.getRankFile().getConfig().getConfigurationSection("ranks." + rank.getKey()) != null) {
+				rank.getValue().getPermissions().forEach(str -> {
+					if (!this.getRankFile().getConfig().getString("ranks." + rank.getKey() + ".prefix").equals(rank.getValue().getPrefix())) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".prefix", rank.getValue().getPrefix());
+					}
+					if (!this.getRankFile().getConfig().getString("ranks." + rank.getKey() + ".color").equals(rank.getValue().getColor())) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", rank.getValue().getColor());
+					}
+					if (!this.getRankFile().getConfig().getString("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor").equals(String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()))) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor", String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()));
+					}
+					if (!this.getRankFile().getConfig().getStringList("ranks." + rank.getKey() + ".permissions").contains(str)) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".permissions", rank.getValue().getPermissions());
+					}
+				});
 			}
 		}
 		this.managerHandler.getRankManager().getDeletedRank().forEach(rankName -> {
