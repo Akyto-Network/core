@@ -10,7 +10,7 @@ import gym.core.utils.command.CommandArgs;
 
 public class TimeCommand {
 	
-	private Core main = Core.API;
+	private final Core main = Core.API;
 	
 	@Command(name = "day", aliases= {"night", "sunset"}, inGameOnly = true)
 	public boolean timeCommand(final CommandArgs arg) {

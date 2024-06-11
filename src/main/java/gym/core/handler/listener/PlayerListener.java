@@ -18,7 +18,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -35,7 +34,6 @@ import gym.core.punishment.MuteEntry;
 import gym.core.rank.RankEntry;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseType;
-import kezukdev.akyto.profile.ProfileState;
 
 public class PlayerListener implements Listener {
 	
@@ -47,31 +45,32 @@ public class PlayerListener implements Listener {
 	
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
+		final Player player = event.getPlayer();
+
     	if (this.main.getLoaderHandler().getSettings().isBungeeCord()) {
     		if (!this.main.getLoaderHandler().getMessage().getBungeeIps().contains(event.getRealAddress().getHostAddress())) {
             	event.disallow(PlayerLoginEvent.Result.KICK_OTHER, this.main.getLoaderHandler().getMessage().getKickWhitelistProxy());
             	return;
     		}
     	}
-		if (this.main.getManagerHandler().getPunishmentManager().getBanned().containsKey(event.getPlayer().getUniqueId())) {
+		if (this.main.getManagerHandler().getPunishmentManager().getBanned().containsKey(player.getUniqueId())) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			final BanEntry ban = this.main.getManagerHandler().getPunishmentManager().getBanned().get(event.getPlayer().getUniqueId());
+			final BanEntry ban = this.main.getManagerHandler().getPunishmentManager().getBanned().get(player.getUniqueId());
 			Date todayGlobal = new Date();
 			try {
-				Date banExpiresOn = sdf.parse(this.main.getManagerHandler().getPunishmentManager().getBanned().get(event.getPlayer().getUniqueId()).getExpiresOn());
+				Date banExpiresOn = sdf.parse(this.main.getManagerHandler().getPunishmentManager().getBanned().get(player.getUniqueId()).getExpiresOn());
 				if (banExpiresOn != null && banExpiresOn.before(todayGlobal)) {
-					this.main.getManagerHandler().getPunishmentManager().getBanned().remove(event.getPlayer().getUniqueId());
+					this.main.getManagerHandler().getPunishmentManager().getBanned().remove(player.getUniqueId());
 				} else if (banExpiresOn != null && !banExpiresOn.equals(todayGlobal)) {
 				    if (this.main.getLoaderHandler().getSettings().isTryToConnect()) {
 						Bukkit.getOnlinePlayers().forEach(players -> {
-							if (players.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
-								players.sendMessage(this.main.getLoaderHandler().getMessage().getTryToConnect().replace("%banned%", event.getPlayer().getName()).replace("%expires%", ban.getExpiresOn()).replace("%judge%", ban.getJudge()).replace("%reason%", ban.getReason()));
+							if (players.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
+								players.sendMessage(this.main.getLoaderHandler().getMessage().getTryToConnect().replace("%banned%", player.getName()).replace("%expires%", ban.getExpiresOn()).replace("%judge%", ban.getJudge()).replace("%reason%", ban.getReason()));
 							}
 						});	
 				    }	
 				    event.disallow(PlayerLoginEvent.Result.KICK_BANNED, (main.getLoaderHandler().getMessage().getBanDisconnect().replace("%expires%", ban.getExpiresOn()).replace("%reason%", ban.getReason()).replace("%judge%", ban.getJudge())));
-				    return;
-				}
+                }
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -91,13 +90,11 @@ public class PlayerListener implements Listener {
 			this.main.getManagerHandler().getProfileManager().exitAsync(event.getPlayer().getUniqueId());
 		}
 		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
-			if (!Bukkit.getOnlinePlayers().isEmpty()) {
-				Bukkit.getOnlinePlayers().forEach(player -> {
-					if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
-						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getPrefix()).replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getColor())).replace("%player%", event.getPlayer().getName()).replace("%type%", "left"));
-					}
-				});	
-			}	
+			Bukkit.getOnlinePlayers().forEach(player -> {
+				if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
+					player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getPrefix()).replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getColor())).replace("%player%", event.getPlayer().getName()).replace("%type%", "left"));
+				}
+			});
 		}
 	}
 	
@@ -168,11 +165,7 @@ public class PlayerListener implements Listener {
 		if (!pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassFilterChat())) {
 			for (String filter : this.main.getLoaderHandler().getMessage().getFilteredText()) {
 				if (event.getMessage().contains(filter)) {
-					StringBuilder filtered = new StringBuilder();
-					for (int i = 0; i < filter.length(); i++) {
-						filtered.append("*");
-					}
-					String newMsg = event.getMessage().replace(filter, filtered.toString());
+                    String newMsg = event.getMessage().replace(filter, "*".repeat(filter.length()));
 					event.setMessage(newMsg);
 				}
 			}	

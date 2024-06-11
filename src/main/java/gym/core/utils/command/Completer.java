@@ -19,7 +19,7 @@ public @interface Completer {
 
     /**
      * The command that this completer completes. If it is a sub command then
-     * its values would be separated by periods. ie. a command that would be a
+     * its values would be separated by periods. i.e. a command that would be a
      * subcommand of test would be 'test.subcommandname'
      *
      * @return

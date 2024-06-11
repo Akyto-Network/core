@@ -63,7 +63,7 @@ public class CommandArgs {
     }
 
     /**
-     * Gets all the arguments after the command's label. ie. if the command
+     * Gets all the arguments after the command's label. i.e. if the command
      * label was test.subcommand and the arguments were subcommand foo foo, it
      * would only return 'foo foo' because 'subcommand' is part of the command
      *

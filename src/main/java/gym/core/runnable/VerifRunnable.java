@@ -44,18 +44,10 @@ public class VerifRunnable extends BukkitRunnable {
 	              punishmentMeta.setDisplayName(ChatColor.RED + "Punish " + o);
 	              punishmentMeta.setLore(Arrays.asList(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------", ChatColor.GREEN + "Click here to punish him", ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------"));
 	              punishment.setItemMeta(punishmentMeta);
-	              
-	              ItemStack last = new ItemStack(Material.PAPER, Math.min(wp.clicks[1], 64));
-		          ItemMeta lastMeta = last.getItemMeta();
-		          lastMeta.setDisplayName(ChatColor.GRAY + "Last 5seconds CPS:");
-		          final List<String> lore = Lists.newArrayList();
-		          for (int i = 1; i < wp.clicks.length; i++) {
-		        	  lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + " * " + ChatColor.WHITE + wp.clicks[i]);
-		          }
-		          lastMeta.setLore(lore);
-		          last.setItemMeta(lastMeta);
-		            
-		          verifier.getOpenInventory().getTopInventory().setItem(0, max);
+
+				  ItemStack last = getLast(wp);
+
+				  verifier.getOpenInventory().getTopInventory().setItem(0, max);
 		          verifier.getOpenInventory().getTopInventory().setItem(1, new ItemStack(Material.STAINED_GLASS_PANE));
 		          verifier.getOpenInventory().getTopInventory().setItem(2, last);
 		          verifier.getOpenInventory().getTopInventory().setItem(3, new ItemStack(Material.STAINED_GLASS_PANE));
@@ -69,5 +61,18 @@ public class VerifRunnable extends BukkitRunnable {
 			}
 			ViewCpsCommand.verifiers.remove(verifier);
 		}
+	}
+
+	private static ItemStack getLast(Profile wp) {
+		ItemStack last = new ItemStack(Material.PAPER, Math.min(wp.clicks[1], 64));
+		ItemMeta lastMeta = last.getItemMeta();
+		lastMeta.setDisplayName(ChatColor.GRAY + "Last 5seconds CPS:");
+		final List<String> lore = Lists.newArrayList();
+		for (int i = 1; i < wp.clicks.length; i++) {
+			lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + " * " + ChatColor.WHITE + wp.clicks[i]);
+		}
+		lastMeta.setLore(lore);
+		last.setItemMeta(lastMeta);
+		return last;
 	}
 }

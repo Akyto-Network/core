@@ -80,7 +80,7 @@ public class Core extends JavaPlugin {
 
 	private void registerListener() {
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+        if (akytoPractice) {
         	 this.getServer().getPluginManager().registerEvents(new PracticeListener(), this);
         }
 	}

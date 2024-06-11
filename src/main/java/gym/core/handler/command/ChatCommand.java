@@ -14,7 +14,7 @@ public class ChatCommand {
 
 	private final Core main = Core.API;
 	
-	@Command(name = "chat", aliases= {"chatmanagement"}, inGameOnly = false)
+	@Command(name = "chat", aliases= {"chatmanagement"})
 	public void chatCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();
@@ -24,23 +24,17 @@ public class ChatCommand {
 		}
 		if (args[0].equalsIgnoreCase("clear") && sender.hasPermission(this.main.getLoaderHandler().getPermission().getClearChat())) {
 			if (args.length == 1 || args.length == 2) {
-				if (args.length == 1) {
-					for (int i = 0; i < 100; i++) {
+				try {
+					int lines = args.length == 2 ? Integer.parseInt(args[1]) : 100;
+					for (int i = 0; i < lines; i++) {
 						Bukkit.broadcastMessage(" ");
 					}
+					Bukkit.broadcastMessage(ChatColor.YELLOW + "The chat has been cleared by " + ChatColor.WHITE + sender.getName());
+				} catch (NumberFormatException ex) {
+					sender.sendMessage(ChatColor.RED + "Please provide a integer number!");
+					return;
 				}
-				if (args.length == 2) {
-					if (Integer.valueOf(args[1]) == null) {
-						sender.sendMessage(ChatColor.RED + "Please provide a integer number!");
-						return;
-					}
-					for (int i = 0; i < Integer.valueOf(args[1]); i++) {
-						Bukkit.broadcastMessage(" ");
-					}
-				}
-				Bukkit.broadcastMessage(ChatColor.YELLOW + "The chat has been cleared by " + ChatColor.WHITE + sender.getName());	
-			}
-			else {
+			} else {
 				sender.sendMessage(ChatColor.RED + "/chat clear <linesNumber>");
 			}
 		}
@@ -70,18 +64,17 @@ public class ChatCommand {
 		}
 		if (args[0].equalsIgnoreCase("priority") && sender.hasPermission(this.main.getLoaderHandler().getPermission().getManageChat())) {
 			if (args.length == 2) {
-				if (ChatPriority.valueOf(args[1].toUpperCase()) == null) {
+				try {
+					ChatPriority priority = ChatPriority.valueOf(args[1].toUpperCase());
+					this.main.getManagerHandler().getServerManager().setChatPriority(priority);
+					Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatPriorityChange().replace("%priority%", args[1].toLowerCase()));
+				} catch (IllegalArgumentException ex) {
 					sender.sendMessage(ChatColor.RED + "/chat priority <HIGH/MEDIUM/LOWER/NORMAL/SPAM>");
-					return;
 				}
-				this.main.getManagerHandler().getServerManager().setChatPriority(ChatPriority.valueOf(args[1].toUpperCase()));
-				Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getChatPriorityChange().replace("%priority%", args[1].toLowerCase()));
 				return;
 			}
 			sender.sendMessage(ChatColor.RED + "/chat priority <HIGH/MEDIUM/LOWER/NORMAL/SPAM>");
-			return;
-		}
-		return;
-	}
+        }
+    }
 
 }

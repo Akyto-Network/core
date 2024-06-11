@@ -26,7 +26,7 @@ public class PracticeListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (Core.API.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
         	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
-        		if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+        		if (Core.API.isAkytoPractice()) {
             		if (Core.API.getPracticeAPI().getDuels().isEmpty()) {
             			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
             			return;
@@ -54,8 +54,7 @@ public class PracticeListener implements Listener {
         		event.setUseItemInHand(Result.DENY);
         		event.setCancelled(true);
         		event.getPlayer().chat("/mod");
-        		return;
-        	}
+            }
         }
     }
     
@@ -63,23 +62,22 @@ public class PracticeListener implements Listener {
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
     	if (Core.API.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
             Player clicker = event.getPlayer();
-            if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE) || clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)  || clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
-                if (event.getRightClicked() instanceof Player) {
-                    Player clicked = (Player) event.getRightClicked();
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.SKULL_ITEM)) {
-                    	clicker.chat("/stats " + clicked.getName());
-                    	return;
-                    }
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PAPER)) {
-                    	clicker.chat("/viewcps " + clicked.getName());
-                    	return;
-                    }
-                    if (clicker.getInventory().getItemInHand().getType().equals(Material.PACKED_ICE)) {
-                    	clicker.chat("/freeze " + clicked.getName());
-                    	return;
-                    }
-                }
-            }
+			if (event.getRightClicked() instanceof Player) {
+				Player clicked = (Player) event.getRightClicked();
+				switch (clicker.getInventory().getItemInHand().getType()) {
+					case SKULL_ITEM:
+						clicker.chat("/stats " + clicked.getName());
+						break;
+
+					case PAPER:
+						clicker.chat("/viewcps " + clicked.getName());
+						break;
+
+					case PACKED_ICE:
+						clicker.chat("/freeze " + clicked.getName());
+						break;
+				}
+			}
     	}
     }
 
