@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import akyto.spigot.aSpigot;
+import gym.core.handler.listener.TabListListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,10 +49,14 @@ public class Core extends JavaPlugin {
 	private MySQL mySQL;
 	private Practice practiceAPI;
 	private boolean akytoPractice;
+	private boolean debug;
 	
 	public void onEnable() {
-        new TipsRunnable().runTaskTimerAsynchronously(this, 6000L, 6000L);
 		API = this;
+		debug = getServer().getOptions().has("debug");
+		if (debug)
+			getLogger().info("Debug mode enabled");
+        new TipsRunnable().runTaskTimerAsynchronously(this, 6000L, 6000L);
 		this.saveDefaultConfig();
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
 			this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -79,6 +85,9 @@ public class Core extends JavaPlugin {
 	}
 
 	private void registerListener() {
+		if (debug)
+			aSpigot.INSTANCE.addPacketHandler(new TabListListener());
+
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         if (akytoPractice) {
         	 this.getServer().getPluginManager().registerEvents(new PracticeListener(), this);
