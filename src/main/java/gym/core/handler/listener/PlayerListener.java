@@ -3,7 +3,10 @@ package gym.core.handler.listener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -13,12 +16,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -29,6 +35,7 @@ import com.google.common.collect.Lists;
 
 import gym.core.Core;
 import gym.core.chat.ChatState;
+import gym.core.profile.Profile;
 import gym.core.punishment.BanEntry;
 import gym.core.punishment.MuteEntry;
 import gym.core.rank.RankEntry;
@@ -98,15 +105,19 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-    @EventHandler
+    @EventHandler(priority=EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+        	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId());
+        	profile.setCps(profile.getCps()+1);
+        	Bukkit.getScheduler().runTaskLater(main, () -> { profile.setCps(profile.getCps()-1); } , 20);
+        }
         if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {
             if (event.getPlayer().getOpenInventory().getType() != InventoryType.DISPENSER) {
                 event.setCancelled(true);
             }
         }
     }
-    
     
 	@EventHandler(priority=EventPriority.LOW)
 	public void PlayerPlaceBlockEvent(final BlockPlaceEvent event) {
@@ -216,6 +227,13 @@ public class PlayerListener implements Listener {
 				.replace("%msg%", "%2$s")));
 	}
 
+	@EventHandler
+	public void onConsume(PlayerItemConsumeEvent event) {
+		if (event.getPlayer().isSprinting()) {
+			event.setCancelled(true);
+		}
+	}
+	
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory clickedInventory = event.getClickedInventory();

@@ -27,7 +27,6 @@ chat:
   
 autoclicker:
   max-cps: 17
-  alert-message: "&c%player% &fprobably use autoclick! &7[&4%cps%&7]"
   
 freeze:
   movement-message:

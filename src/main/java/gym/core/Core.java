@@ -21,7 +21,6 @@ import gym.core.punishment.file.PunishmentFile;
 import gym.core.rank.RankEntry;
 import gym.core.rank.file.RankFile;
 import gym.core.runnable.TipsRunnable;
-import gym.core.runnable.VerifRunnable;
 import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseSetup;
 import gym.core.utils.database.DatabaseType;
@@ -75,7 +74,6 @@ public class Core extends JavaPlugin {
 		this.rankFile = new RankFile(this);
 		this.punishmentFile = new PunishmentFile(this);
 		this.commandHandler = new CommandHandler(this);
-		new VerifRunnable().runTaskTimerAsynchronously(this, 0L, 1L);
 	}
 
 	private void registerListener() {

@@ -15,6 +15,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
+import gym.core.profile.Profile;
+
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
@@ -71,6 +73,14 @@ public class Utils {
 	        }
 	    });
 	}
+	
+    public static boolean hitAllowed(final UUID uuid) {
+    	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
+    	if (profile.getCps() >= Core.API.getLoaderHandler().getSettings().getMaximumCps()) {
+    		return false;
+    	}
+    	return true;
+    }
 	
 	public static UUID getUUID(String playerName) {
 		Player target = Core.API.getServer().getPlayer(playerName);

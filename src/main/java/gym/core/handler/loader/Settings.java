@@ -19,6 +19,7 @@ public class Settings {
 	private final boolean freezeInventory;
 	private final boolean namemcCheck;
 	private final String hubInstance;
+	private int maximumCps;
 	
 	public Settings(final Core main) {
 		this.rankPromoteBroad = main.getConfig().getBoolean("broadcast-settings.rank-promote");
@@ -34,6 +35,7 @@ public class Settings {
 		this.freezeInventory = main.getConfig().getBoolean("freeze.open-inventory");
 		this.namemcCheck = main.getConfig().getBoolean("namemc.check-enabled");
 		this.hubInstance = main.getConfig().getString("bungeecord.hub-instance");
+		this.maximumCps = main.getConfig().getInt("autoclicker.max-cps");
 	}
 
 }

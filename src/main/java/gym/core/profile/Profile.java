@@ -11,12 +11,8 @@ public class Profile {
 	private UUID uuid;
 	private String rank;
 	private long chatCooldown = 0L;
-	public int[] clicks = {0, 0, 0, 0, 0, 0};
-    public int autoClickAlert = 0;
-    public int maxClick = 0;
-    public long lastBlockInteraction = 0;
-    public long lastAlert = 0;
-    public long connection = 0L;
+	private int cps;
+	private boolean allowClick;
     private boolean frozen;
     private boolean likeNameMC;
     private UUID responsive;
@@ -37,6 +33,8 @@ public class Profile {
 		this.uuid = uuid;
 		this.rank = rank;
 		this.frozen = false;
+		this.cps = 0;
+		this.allowClick = true;
 	}
 
 }
