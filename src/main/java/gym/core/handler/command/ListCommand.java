@@ -35,7 +35,7 @@ public class ListCommand {
 
         String players = Core.API.getServer().getOnlinePlayers().stream()
                 .sorted(Comparator.comparingInt(a -> {
-                    RankEntry rank = Core.API.getManagerHandler().getRankManager().getRanks().get(((Player) a).getUniqueId());
+                    RankEntry rank = Core.API.getManagerHandler().getProfileManager().getRank(((Player) a).getUniqueId());
                     return rank == null ? 0 : rank.getPower();
                 }).reversed())
                 .map(player -> {

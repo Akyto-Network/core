@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import gym.core.Core;
@@ -27,10 +28,12 @@ public class BanCommand {
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
 			return;
 		}
-		if (args.length == 1) {
+
+		if (args.length <= 1) {
 			this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 			return;
 		}
+
 		if (args[0].equalsIgnoreCase("info") && args.length == 2) {
 			if (!this.main.getManagerHandler().getPunishmentManager().getBanned().containsKey(Bukkit.getPlayer(args[1]) != null ? Bukkit.getPlayer(args[1]).getUniqueId() : Bukkit.getOfflinePlayer(args[1]).getUniqueId())) {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "ban"));
