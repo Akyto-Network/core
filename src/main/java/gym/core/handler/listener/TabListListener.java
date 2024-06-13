@@ -56,21 +56,25 @@ public class TabListListener implements PacketHandler {
                                                 .iterator()
 
                                 );
-                                player.sendPacket(clearPacket);
+                                Core.API.getServer().getOnlinePlayers().forEach(
+                                        online -> online.sendPacket(clearPacket)
+                                );
 
                                 // Add back players in order
                                 PacketPlayOutPlayerInfo addPacket = new PacketPlayOutPlayerInfo(
                                         PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                                         () -> Core.API.getServer().getOnlinePlayers().stream()
                                                 .sorted(Comparator.comparingInt(a -> {
-                                                    RankEntry rank = Core.API.getManagerHandler().getRankManager().getRanks().get(((Player) a).getUniqueId());
+                                                    RankEntry rank = Core.API.getManagerHandler().getProfileManager().getRank(((Player) a).getUniqueId());
                                                     return rank == null ? 0 : rank.getPower();
                                                 }).reversed())
                                                 .map(online -> ((CraftPlayer) online).getHandle())
                                                 .iterator()
 
                                 );
-                                player.sendPacket(addPacket);
+                                Core.API.getServer().getOnlinePlayers().forEach(
+                                        online -> online.sendPacket(addPacket)
+                                );
 
                             },
                             20L * 4
