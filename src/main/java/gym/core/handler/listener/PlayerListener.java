@@ -3,10 +3,7 @@ package gym.core.handler.listener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -110,7 +106,7 @@ public class PlayerListener implements Listener {
         if (event.getAction().equals(Action.LEFT_CLICK_AIR)) {
         	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId());
         	profile.setCps(profile.getCps()+1);
-        	Bukkit.getScheduler().runTaskLater(main, () -> { profile.setCps(profile.getCps()-1); } , 20);
+        	Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> { profile.setCps(profile.getCps()-1); } , 20);
         }
         if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {
             if (event.getPlayer().getOpenInventory().getType() != InventoryType.DISPENSER) {
