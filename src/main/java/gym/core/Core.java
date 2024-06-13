@@ -69,10 +69,10 @@ public class Core extends JavaPlugin {
 			this.mySQL = new MySQL(this);
 			new DatabaseSetup(this);
 		}
-		if (Bukkit.getPluginManager().getPlugin("aPractice") != null) {
+		this.practiceAPI = (Practice) Bukkit.getPluginManager().getPlugin("aPractice");
+		if (this.practiceAPI != null) {
 			this.akytoPractice = true;
-			this.practiceAPI = Practice.getAPI();
-			System.out.println("AkytoPractice was successully loaded and linked to the Core.");
+			getLogger().info("AkytoPractice was successully loaded and linked to the Core.");
 		}
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
@@ -89,9 +89,8 @@ public class Core extends JavaPlugin {
 			aSpigot.INSTANCE.addPacketHandler(new TabListListener());
 
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        if (akytoPractice) {
+        if (akytoPractice)
         	 this.getServer().getPluginManager().registerEvents(new PracticeListener(), this);
-        }
 	}
 
 	public void onDisable() {
@@ -213,8 +212,8 @@ public class Core extends JavaPlugin {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}	
-				System.out.println("[CORE - Profiles] Flat-Files saved!");
+				}
+				getLogger().info("[CORE - Profiles] Flat-Files saved!");
 			}
 		}
 	}

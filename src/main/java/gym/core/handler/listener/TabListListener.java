@@ -1,19 +1,16 @@
 package gym.core.handler.listener;
 
 import akyto.spigot.handler.PacketHandler;
-import com.mojang.authlib.GameProfile;
 import gym.core.Core;
-import net.minecraft.server.v1_8_R3.WorldSettings;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import org.bukkit.ChatColor;
+import gym.core.rank.RankEntry;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Comparator;
 import java.util.UUID;
 
 public class TabListListener implements PacketHandler {
@@ -25,23 +22,59 @@ public class TabListListener implements PacketHandler {
                 @EventHandler
                 public void onJoin(PlayerJoinEvent event) {
                     Player player = event.getPlayer();
-                    PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER);
-                    for (int i = 0; i < 6; i++) {
 
-                        ChatColor color = PacketPlayOutPlayerInfo.ConnectionBars.values()[i].asColor();
-                        String col = ChatColor.translate(String.valueOf(color));
-                        packet.addFakePlayer(
-                                new GameProfile(
-                                        fakeUUID,
-                                        "TabListFake"
-                                ),
-                                PacketPlayOutPlayerInfo.ConnectionBars.values()[i].asPing(),
-                                WorldSettings.EnumGamemode.SURVIVAL,
-                                new ChatComponentText(col + "Test " + i)
-                        );
+                    // Add fake
+//                    PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER);
+//                    PacketPlayOutPlayerInfo.PlayerInfoData[] data = new PacketPlayOutPlayerInfo.PlayerInfoData[6];
+//                    for (int i = 0; i < 6; i++) {
+//
+//                        ChatColor color = PacketPlayOutPlayerInfo.ConnectionBars.values()[i].asColor();
+//                        String col = ChatColor.translate(String.valueOf(color));
+//                        data[i] = new PacketPlayOutPlayerInfo.PlayerInfoData(
+//                                new GameProfile(
+//                                        UUID.randomUUID(),
+//                                        "TabListFake"
+//                                ),
+//                                PacketPlayOutPlayerInfo.ConnectionBars.values()[i].asPing(),
+//                                WorldSettings.EnumGamemode.SURVIVAL,
+//                                new ChatComponentText(col + "Test " + i)
+//                        );
+//                        packet.addFakePlayer(data[i]);
+//
+//                    }
+//                    player.sendPacket(packet);
 
-                    }
-                    player.sendPacket(packet);
+                    // Remove one
+                    Core.API.getServer().getScheduler().runTaskLaterAsynchronously(
+                            Core.API,
+                            () -> {
+                                // Clear default tab list
+                                PacketPlayOutPlayerInfo clearPacket = new PacketPlayOutPlayerInfo(
+                                        PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
+                                        () -> Core.API.getServer().getOnlinePlayers().stream()
+                                                .map(online -> ((CraftPlayer) online).getHandle())
+                                                .iterator()
+
+                                );
+                                player.sendPacket(clearPacket);
+
+                                // Add back players in order
+                                PacketPlayOutPlayerInfo addPacket = new PacketPlayOutPlayerInfo(
+                                        PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
+                                        () -> Core.API.getServer().getOnlinePlayers().stream()
+                                                .sorted(Comparator.comparingInt(a -> {
+                                                    RankEntry rank = Core.API.getManagerHandler().getRankManager().getRanks().get(((Player) a).getUniqueId());
+                                                    return rank == null ? 0 : rank.getPower();
+                                                }).reversed())
+                                                .map(online -> ((CraftPlayer) online).getHandle())
+                                                .iterator()
+
+                                );
+                                player.sendPacket(addPacket);
+
+                            },
+                            20L * 4
+                    );
                 }
             }, Core.API);
         }

@@ -24,29 +24,28 @@ public class PracticeListener implements Listener {
 	
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (Core.API.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId()).isInState(ProfileState.MOD)) {
+		Player player = event.getPlayer();
+        if (Core.API.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId()).isInState(ProfileState.MOD)) {
         	if (event.getItem().getType().equals(Material.NETHER_STAR)) {
-        		if (Core.API.isAkytoPractice()) {
-            		if (Core.API.getPracticeAPI().getDuels().isEmpty()) {
-            			event.getPlayer().sendMessage(ChatColor.RED + "0 player is in match!");
-            			return;
-            		}
-            		final List<UUID> playersInMatch = new ArrayList<>();
-            		Core.API.getPracticeAPI().getDuels().forEach(duel -> {
-            			playersInMatch.addAll(duel.getFirst());
-            			playersInMatch.addAll(duel.getSecond());
-            		});
-            		Collections.shuffle(playersInMatch);
-            		event.getPlayer().teleport(Bukkit.getPlayer(playersInMatch.get(0)));
-    				final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));	
-            		List<UUID> duelPlayers = new ArrayList<>();
-            		duelPlayers.addAll(duel.getFirst());
-            		duelPlayers.addAll(duel.getSecond());
-            		duelPlayers.forEach(uuid -> event.getPlayer().showPlayer(Bukkit.getPlayer(uuid)));
-            		Core.API.getLoaderHandler().getMessage().getRandomTeleport().forEach(msg -> {
-            			event.getPlayer().sendMessage(msg.replace("%target%", Bukkit.getPlayer(playersInMatch.get(0)).getName()).replace("%playerOne%", Bukkit.getPlayer(new ArrayList<>(duel.getFirst()).get(0)).getName()).replace("%playerTwo%", Bukkit.getPlayer(new ArrayList<>(duel.getSecond()).get(0)).getName()).replace("%matchLadder%", ChatColor.stripColor(duel.getKit().displayName())).replace("%matchDuration%", this.getFormattedDuration(duel)));
-            		});
-        		}
+				if (Core.API.getPracticeAPI().getDuels().isEmpty()) {
+					player.sendMessage(ChatColor.RED + "0 player is in match!");
+					return;
+				}
+				final List<UUID> playersInMatch = new ArrayList<>();
+				Core.API.getPracticeAPI().getDuels().forEach(duel -> {
+					playersInMatch.addAll(duel.getFirst());
+					playersInMatch.addAll(duel.getSecond());
+				});
+				Collections.shuffle(playersInMatch);
+				player.teleport(Bukkit.getPlayer(playersInMatch.get(0)));
+				final Duel duel = kezukdev.akyto.utils.Utils.getDuelByUUID(playersInMatch.get(0));
+				List<UUID> duelPlayers = new ArrayList<>();
+				duelPlayers.addAll(duel.getFirst());
+				duelPlayers.addAll(duel.getSecond());
+				duelPlayers.forEach(uuid -> player.showPlayer(Bukkit.getPlayer(uuid)));
+				Core.API.getLoaderHandler().getMessage().getRandomTeleport().forEach(msg -> {
+					player.sendMessage(msg.replace("%target%", Bukkit.getPlayer(playersInMatch.get(0)).getName()).replace("%playerOne%", Bukkit.getPlayer(new ArrayList<>(duel.getFirst()).get(0)).getName()).replace("%playerTwo%", Bukkit.getPlayer(new ArrayList<>(duel.getSecond()).get(0)).getName()).replace("%matchLadder%", ChatColor.stripColor(duel.getKit().displayName())).replace("%matchDuration%", this.getFormattedDuration(duel)));
+				});
         		return;
         	}
         	if (event.getItem().getType().equals(Material.REDSTONE_TORCH_ON)) {
