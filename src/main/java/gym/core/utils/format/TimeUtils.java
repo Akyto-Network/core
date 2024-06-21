@@ -1,4 +1,4 @@
-package gym.core.utils;
+package gym.core.utils.format;
 
 import java.util.Calendar;
 

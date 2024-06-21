@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 
 import gym.core.Core;
 import gym.core.punishment.BanEntry;
-import gym.core.utils.TimeUtils;
 import gym.core.utils.Utils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
+import gym.core.utils.format.TimeUtils;
 
 public class BanCommand {
 	
