@@ -2,14 +2,15 @@ package gym.core.handler.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import gym.core.Core;
+import gym.core.profile.Profile;
+import gym.core.profile.ProfileStatus;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
-import kezukdev.akyto.profile.Profile;
-import kezukdev.akyto.profile.ProfileState;
-import kezukdev.akyto.utils.Utils;
+import gym.core.utils.item.ItemUtils;
 
 public class ModCommand {
 	
@@ -22,24 +23,33 @@ public class ModCommand {
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getNoPermission());
 			return;
 		}
-		final Profile profile = this.main.getPracticeAPI().getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
-		if (profile.isInState(ProfileState.EDITOR, ProfileState.QUEUE, ProfileState.SPECTATE, ProfileState.FIGHT)) {
+		final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
+		if (profile.isInState(ProfileStatus.UNABLE)) {
 			sender.sendMessage(ChatColor.RED + "You cannot do this right now!");
 			return;
 		}
-		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profile.isInState(ProfileState.MOD) ? "Quit" : "Enter").replace("%subType%", profile.isInState(ProfileState.MOD) ? "enter" : "left"));
+		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profile.isInState(ProfileStatus.MOD) ? "Quit" : "Enter").replace("%subType%", profile.isInState(ProfileStatus.MOD) ? "enter" : "left"));
 		Bukkit.getOnlinePlayers().forEach(player -> {
-			if (profile.isInState(ProfileState.MOD)) player.showPlayer(sender);
-			if (profile.isInState(ProfileState.FREE)) player.hidePlayer(sender);
+			if (profile.isInState(ProfileStatus.MOD)) player.showPlayer(sender);
+			if (profile.isInState(ProfileStatus.FREE)) player.hidePlayer(sender);
 		});
-		if (profile.isInState(ProfileState.FREE)) {
+		profile.setStatus(profile.isInState(ProfileStatus.MOD) ? ProfileStatus.FREE : ProfileStatus.MOD);
+		if (profile.isInState(ProfileStatus.MOD)) {
 			sender.setAllowFlight(true);
+			profile.setPreviousInventory(sender.getInventory());
+			sender.getInventory().setItem(0, ItemUtils.createItems(Material.PAPER, ChatColor.YELLOW + "View CPS " + ChatColor.GRAY + "(Right-Click)"));
+			sender.getInventory().setItem(1, ItemUtils.createItems(Material.PACKED_ICE, ChatColor.YELLOW + "Freeze " + ChatColor.GRAY + "(Right-Click)"));
+			sender.getInventory().setItem(4, ItemUtils.createItems(Material.NETHER_STAR, ChatColor.YELLOW + "Random Teleport " + ChatColor.GRAY + "(Right-Click)"));
+			sender.getInventory().setItem(7, ItemUtils.createItems(Material.SKULL_ITEM, ChatColor.YELLOW + "View Stats " + ChatColor.GRAY + "(Right-Click)"));
+			sender.getInventory().setItem(8, ItemUtils.createItems(Material.REDSTONE_TORCH_ON, ChatColor.RED + "Leave Staff-Mode."));
 		}
-		if (profile.isInState(ProfileState.MOD)) {
-			Utils.sendToSpawn(sender.getUniqueId(), true);
+		if (profile.isInState(ProfileStatus.FREE)) {
+			sender.teleport(sender.getWorld().getSpawnLocation());
+			sender.getInventory().clear();
+			sender.getInventory().setContents(profile.getPreviousInventory().getContents());
+			sender.getInventory().setArmorContents(profile.getPreviousInventory().getArmorContents());
 		}
-		profile.setProfileState(profile.isInState(ProfileState.MOD) ? ProfileState.FREE : ProfileState.MOD);
-		this.main.getPracticeAPI().getManagerHandler().getItemManager().giveItems(sender.getUniqueId(), false);
+		sender.updateInventory();
     }
 
 }

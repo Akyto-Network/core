@@ -16,7 +16,6 @@ import gym.core.handler.CommandHandler;
 import gym.core.handler.LoaderHandler;
 import gym.core.handler.ManagerHandler;
 import gym.core.handler.listener.PlayerListener;
-import gym.core.handler.listener.PracticeListener;
 import gym.core.punishment.BanEntry;
 import gym.core.punishment.MuteEntry;
 import gym.core.punishment.file.PunishmentFile;
@@ -27,7 +26,6 @@ import gym.core.utils.Utils;
 import gym.core.utils.database.DatabaseSetup;
 import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
-import kezukdev.akyto.Practice;
 import lombok.Getter;
 
 @Getter
@@ -46,8 +44,6 @@ public class Core extends JavaPlugin {
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
 	private MySQL mySQL;
-	private Practice practiceAPI;
-	private boolean akytoPractice;
 	private boolean debug;
 	
 	public void onEnable() {
@@ -68,11 +64,6 @@ public class Core extends JavaPlugin {
 			this.mySQL = new MySQL(this);
 			new DatabaseSetup(this);
 		}
-		this.practiceAPI = (Practice) Bukkit.getPluginManager().getPlugin("aPractice");
-		if (this.practiceAPI != null) {
-			this.akytoPractice = true;
-			getLogger().info("AkytoPractice was successully loaded and linked to the Core.");
-		}
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
 		this.loaderHandler = new LoaderHandler(this);
@@ -85,10 +76,7 @@ public class Core extends JavaPlugin {
 	private void registerListener() {
 		if (debug)
 			aSpigot.INSTANCE.addPacketHandler(new TabListListener());
-
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        if (akytoPractice)
-        	 this.getServer().getPluginManager().registerEvents(new PracticeListener(), this);
 	}
 
 	public void onDisable() {

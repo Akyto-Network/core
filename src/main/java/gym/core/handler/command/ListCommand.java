@@ -6,7 +6,7 @@ import gym.core.utils.Utils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
