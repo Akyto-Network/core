@@ -8,9 +8,10 @@ import java.util.concurrent.ConcurrentMap;
 import org.bukkit.Bukkit;
 
 import gym.core.Core;
-import gym.core.punishment.BanEntry;
-import gym.core.punishment.MuteEntry;
-import gym.core.punishment.WarnEntry;
+import gym.core.punishment.PunishmentType;
+import gym.core.punishment.cache.BanEntry;
+import gym.core.punishment.cache.MuteEntry;
+import gym.core.punishment.cache.WarnEntry;
 import lombok.Getter;
 import com.google.common.collect.Maps;
 
@@ -29,23 +30,24 @@ public class PunishmentManager {
 		this.main = main;
 	}
 	
-	public void addBan(final UUID banned, final String expires, final String reason, final String judge) {
-		this.banned.put(banned, new BanEntry(expires, reason, judge));
-		if (Bukkit.getPlayer(banned) != null) Bukkit.getPlayer(banned).kickPlayer(this.main.getLoaderHandler().getMessage().getBanDisconnect().replace("%expires%", expires).replace("%reason%", reason).replace("%judge%", judge));
+	public void addPunishment(final UUID victim, final String expires, final String reason, final String judge, final PunishmentType type) {
+		if (type.equals(PunishmentType.BAN)) {
+			this.banned.put(victim, new BanEntry(expires, reason, judge));
+			if (Bukkit.getPlayer(victim) != null) Bukkit.getPlayer(victim).kickPlayer(this.main.getLoaderHandler().getMessage().getBanDisconnect().replace("%expires%", expires).replace("%reason%", reason).replace("%judge%", judge));	
+		}
+		if (type.equals(PunishmentType.MUTE)) {
+			this.muted.put(victim, new MuteEntry(expires, reason, judge));
+		}
 	}
 	
-	public void addMute(final UUID muted, final String expires, final String reason, final String judge) {
-		this.muted.put(muted, new MuteEntry(expires, reason, judge));
+	public void removePunishment(final UUID target, final PunishmentType type) {
+		if (type.equals(PunishmentType.MUTE)) {
+			this.muted.remove(target);
+			this.unmuted.add(target);
+		}
+		if (type.equals(PunishmentType.BAN)) {
+			this.banned.remove(target);
+			this.unbanned.add(target);
+		}
 	}
-	
-	public void removeMute(final UUID muted) {
-		this.muted.remove(muted);
-		this.unmuted.add(muted);
-	}
-	
-	public void removeBan(final UUID banned) {
-		this.banned.remove(banned);
-		this.unbanned.add(banned);
-	}
-
 }

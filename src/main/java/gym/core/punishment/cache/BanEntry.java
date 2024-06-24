@@ -1,4 +1,4 @@
-package gym.core.punishment;
+package gym.core.punishment.cache;
 
 import lombok.Getter;
 

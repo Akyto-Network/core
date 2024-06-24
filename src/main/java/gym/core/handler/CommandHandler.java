@@ -12,21 +12,19 @@ public class CommandHandler {
 	public CommandHandler(final Core main) {
 		this.setupFramework(main,
 				new AnnounceCommand(),
-				new BanCommand(),
+				new PunishmentsCommand(),
 				new ChatCommand(),
 				new FreezeCommand(),
 				new HubCommand(),
 				new ListCommand(),
 				new MessageCommand(),
 				new ModCommand(),
-				new MuteCommand(),
 				new RankCommand(),
 				new ReportCommand(),
 				new SocialsCommand(),
 				new TimeCommand(),
 				new MoreCommand(),
 				new HeadCommand(),
-				new ViewCpsCommand(),
 				new TestCommand()
 		);
 	}

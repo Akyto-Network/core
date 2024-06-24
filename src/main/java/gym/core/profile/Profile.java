@@ -2,6 +2,7 @@ package gym.core.profile;
 
 import java.util.UUID;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class Profile {
     private boolean likeNameMC;
     private UUID responsive;
     private ProfileStatus status;
-    private PlayerInventory previousInventory;
+    private ItemStack[] previousContents;
+    private ItemStack[] previousArmor;
 	
 	public boolean isChatCooldownActive() {
 		return this.chatCooldown > System.currentTimeMillis();
@@ -48,6 +50,7 @@ public class Profile {
 		this.frozen = false;
 		this.cps = 0;
 		this.allowClick = true;
+		this.status = ProfileStatus.FREE;
 	}
 
 }

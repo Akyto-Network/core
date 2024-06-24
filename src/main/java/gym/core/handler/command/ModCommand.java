@@ -36,7 +36,9 @@ public class ModCommand {
 		profile.setStatus(profile.isInState(ProfileStatus.MOD) ? ProfileStatus.FREE : ProfileStatus.MOD);
 		if (profile.isInState(ProfileStatus.MOD)) {
 			sender.setAllowFlight(true);
-			profile.setPreviousInventory(sender.getInventory());
+			profile.setPreviousContents(sender.getInventory().getContents());
+			profile.setPreviousArmor(sender.getInventory().getArmorContents());
+			sender.getInventory().clear();
 			sender.getInventory().setItem(0, ItemUtils.createItems(Material.PAPER, ChatColor.YELLOW + "View CPS " + ChatColor.GRAY + "(Right-Click)"));
 			sender.getInventory().setItem(1, ItemUtils.createItems(Material.PACKED_ICE, ChatColor.YELLOW + "Freeze " + ChatColor.GRAY + "(Right-Click)"));
 			sender.getInventory().setItem(4, ItemUtils.createItems(Material.NETHER_STAR, ChatColor.YELLOW + "Random Teleport " + ChatColor.GRAY + "(Right-Click)"));
@@ -46,8 +48,8 @@ public class ModCommand {
 		if (profile.isInState(ProfileStatus.FREE)) {
 			sender.teleport(sender.getWorld().getSpawnLocation());
 			sender.getInventory().clear();
-			sender.getInventory().setContents(profile.getPreviousInventory().getContents());
-			sender.getInventory().setArmorContents(profile.getPreviousInventory().getArmorContents());
+			sender.getInventory().setContents(profile.getPreviousContents());
+			sender.getInventory().setArmorContents(profile.getPreviousArmor());
 		}
 		sender.updateInventory();
     }

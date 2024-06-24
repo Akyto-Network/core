@@ -26,7 +26,7 @@ chat:
   filtered: ["ntm", "fdp", "kys", "nigger", "hitler", "staline", "nigga", "negga", "nig", "faggot"]
   
 autoclicker:
-  max-cps: 17
+  max-cps: 20
   
 freeze:
   movement-message:
