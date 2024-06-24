@@ -8,9 +8,9 @@ import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import gym.core.Core;
-import gym.core.punishment.BanEntry;
-import gym.core.punishment.MuteEntry;
-import gym.core.punishment.WarnEntry;
+import gym.core.punishment.cache.BanEntry;
+import gym.core.punishment.cache.MuteEntry;
+import gym.core.punishment.cache.WarnEntry;
 
 public class PunishmentFile {
 	
