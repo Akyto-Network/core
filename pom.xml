@@ -74,9 +74,9 @@
 			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
         <dependency>
-            <groupId>akyto.spigot</groupId>
+            <groupId>akyto.paperspigot</groupId>
             <artifactId>aspigot-server</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
