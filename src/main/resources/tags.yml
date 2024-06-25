@@ -1,10 +1,5 @@
-inventory:
-  main:
-    title: '&7Tags:'
-    size: 9
-
-tags:
-  category:
-    japan:
-      name: ""
-  
+common:
+  og:
+    prefix: '&7[&aO&2G&7]'
+    category: 'Master'
+    icon: 'MYCEL'
