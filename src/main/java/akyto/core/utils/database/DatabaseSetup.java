@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import akyto.core.rank.RankEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -64,8 +65,10 @@ public class DatabaseSetup {
 			        DB.executeUpdate("UPDATE playersdata SET flySpeed=? WHERE name=?", String.valueOf(data.getSpectateSettings().get(1).booleanValue()), player.getName());
 			        DB.executeUpdate("UPDATE playersdata SET played=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(0), ":"), player.getName());
 			    	DB.executeUpdate("UPDATE playersdata SET win=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(1), ":"), player.getName());
+					DB.executeUpdate("UPDATE playersdata SET rank=? WHERE name=?", data.getRank(), player.getName());
 				} catch (SQLException e) { e.printStackTrace(); }
 			});
+			this.main.getLogger().warning("[CORE] MySQL data has been saved.");
 		}
 	}
 	
@@ -109,6 +112,21 @@ public class DatabaseSetup {
 			Core.API.getManagerHandler().getInventoryManager().generateProfileInventory(uuid, kitSize, kitNames);
 			this.main.getManagerHandler().getProfileManager().registerPermissions(uuid);
 			Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getProfileManager().getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
+			if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
+				final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
+				Bukkit.getOnlinePlayers().forEach(player -> {
+					if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())
+							&& !rank.equals(Core.API.getManagerHandler().getRankManager().getRanks().get("default"))
+							&& Bukkit.getPlayer(uuid).hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
+
+						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce()
+								.replace("%rank%", rank.getPrefix())
+								.replace("%rankColor%", CoreUtils.translate(rank.getColor()))
+								.replace("%player%", CoreUtils.getName(uuid))
+								.replace("%type%", "join"));
+					}
+				});
+			}
 		});
 	}
 	

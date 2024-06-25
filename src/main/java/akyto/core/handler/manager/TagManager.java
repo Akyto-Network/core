@@ -6,6 +6,7 @@ import akyto.core.tag.TagEntry;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class TagManager {
     }
 
     public void createTag(final String name) {
-        this.tags.put(name, new TagEntry(ChatColor.GREEN.toString()));
+        this.tags.put(name, new TagEntry(ChatColor.GREEN.toString(), "og", Material.GRASS));
     }
 
 }
