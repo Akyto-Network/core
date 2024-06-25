@@ -35,7 +35,7 @@ import gym.core.profile.Profile;
 import gym.core.punishment.cache.BanEntry;
 import gym.core.punishment.cache.MuteEntry;
 import gym.core.rank.RankEntry;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.database.DatabaseType;
 
 public class PlayerListener implements Listener {
@@ -79,25 +79,24 @@ public class PlayerListener implements Listener {
 			}
 		}
     }
-    
+
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		event.setJoinMessage(null);
-		this.main.getManagerHandler().getProfileManager().createProfile(event.getPlayer().getUniqueId());
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerLeft(final PlayerQuitEvent event) {
 		event.setQuitMessage(null);
-		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
-			this.main.getManagerHandler().getProfileManager().exitAsync(event.getPlayer().getUniqueId());
-		}
 		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && event.getPlayer().hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
-					player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getPrefix()).replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getColor())).replace("%player%", event.getPlayer().getName()).replace("%type%", "left"));
+					player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getPrefix()).replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getProfileManager().getRank(event.getPlayer().getUniqueId()).getColor())).replace("%player%", event.getPlayer().getName()).replace("%type%", "left"));
 				}
 			});
+		}
+		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
+			this.main.getDatabaseSetup().exitAsync(event.getPlayer().getUniqueId());
 		}
 	}
 	
@@ -137,7 +136,7 @@ public class PlayerListener implements Listener {
 		final Player pls = event.getPlayer();
 
 		if (pls.isOp() || pls.hasPermission("akyto.colorchat")) {
-			event.setMessage(Utils.translate(event.getMessage()));
+			event.setMessage(CoreUtils.translate(event.getMessage()));
 		}
 
 		if (this.main.getManagerHandler().getPunishmentManager().getMuted().containsKey(pls.getUniqueId())) {
@@ -164,7 +163,7 @@ public class PlayerListener implements Listener {
 		}
 		if (this.main.getLoaderHandler().getSettings().isChatCooldown() && !pls.hasPermission(this.main.getLoaderHandler().getPermission().getBypassCooldownChat())) {
 			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isChatCooldownActive()) {
-				pls.sendMessage(this.main.getLoaderHandler().getMessage().getChatCooldown().replace("%time%", Utils.formatTime(this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).getChatCooldown(), 1000.0d)));
+				pls.sendMessage(this.main.getLoaderHandler().getMessage().getChatCooldown().replace("%time%", CoreUtils.formatTime(this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).getChatCooldown(), 1000.0d)));
 				event.setCancelled(true);
 				return;
 			}	
@@ -181,8 +180,8 @@ public class PlayerListener implements Listener {
 			this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).applyChatCooldown(this.main.getManagerHandler().getServerManager().getChatPriority().getTime());
 		}
 		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(pls.getUniqueId());
-		final String prefix = Utils.translate(rank.getPrefix());
-		final String color = Utils.translate(rank.getColor());
+		final String prefix = CoreUtils.translate(rank.getPrefix());
+		final String color = CoreUtils.translate(rank.getColor());
 		if (event.getMessage().startsWith(this.main.getLoaderHandler().getMessage().getScSymbol()) && pls.hasPermission("akyto.staff")) {
 			Bukkit.getOnlinePlayers().stream()
 					.filter(player -> player.hasPermission("akyto.staff"))
@@ -200,14 +199,14 @@ public class PlayerListener implements Listener {
 				.forEach(player -> {
 					List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
 					p.remove(Bukkit.getPlayer(player.getName()));
-					player.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+					player.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
 							.replace("%rankColor%", color)
 							.replace("%player%", pls.getName())
 							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
 					player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
-					p.forEach(ppl -> ppl.sendMessage(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+					p.forEach(ppl -> ppl.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
 							.replace("%rankColor%", color)
 							.replace("%player%", pls.getName())
@@ -215,7 +214,7 @@ public class PlayerListener implements Listener {
 							.replace("%msg%", event.getMessage()))));
 					event.setCancelled(true);
 		});
-		event.setFormat(Utils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+		event.setFormat(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 				.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
 				.replace("%rankColor%", color)
 				.replace("%player%", "%1$s")

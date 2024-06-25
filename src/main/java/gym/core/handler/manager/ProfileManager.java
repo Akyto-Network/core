@@ -20,7 +20,7 @@ import co.aikar.idb.DB;
 import gym.core.Core;
 import gym.core.profile.Profile;
 import gym.core.rank.RankEntry;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.database.DatabaseType;
 import com.google.common.collect.Maps;
 
@@ -56,27 +56,28 @@ public class ProfileManager {
 		if (!this.profiles.containsKey(uuid)) {
 			this.profiles.put(uuid, new Profile(uuid, "default"));
 		}
-		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
-			this.update(uuid);
+		if (!this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
+			this.registerPermissions(uuid);
 		}
-		this.registerPermissions(uuid);
 		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 			if (!Bukkit.getOnlinePlayers().isEmpty()) {
 				Bukkit.getOnlinePlayers().forEach(player -> {
 					if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(uuid).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && Bukkit.getPlayer(uuid).hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
-						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(uuid).getPrefix()).replace("%rankColor%", Utils.translate(this.main.getManagerHandler().getProfileManager().getRank(uuid).getColor())).replace("%player%", Bukkit.getPlayer(uuid).getName()).replace("%type%", "join"));
+						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(uuid).getPrefix()).replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getProfileManager().getRank(uuid).getColor())).replace("%player%", Bukkit.getPlayer(uuid).getName()).replace("%type%", "join"));
 					}
 				});	
 			}	
 		}
         if (this.main.getLoaderHandler().getSettings().isNamemcCheck()) {
-			CompletableFuture<Boolean> future = Utils.checkNameMCLikeAsync(main, uuid);
+			CompletableFuture<Boolean> future = CoreUtils.checkNameMCLikeAsync(main, uuid);
 			future.thenAccept(result -> {
 				this.profiles.get(uuid).setLikeNameMC(result);
 				Bukkit.getPlayer(uuid).sendMessage(result ? this.main.getLoaderHandler().getMessage().getNameMCLike() : this.main.getLoaderHandler().getMessage().getNameMCUnlike());	
 			});      
 		}
-		Bukkit.getPlayer(uuid).setPlayerListName(Utils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
+		if (!this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
+			Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
+		}
 	}
 	
 	public void registerPermissions(final UUID uuid) {
@@ -88,41 +89,4 @@ public class ProfileManager {
 	public RankEntry getRank(final UUID uuid) {
 		return this.main.getManagerHandler().getRankManager().getRanks().get(this.getProfiles().get(uuid).getRank());
 	}
-	
-	public void update(final UUID uuid) {
-	    try {
-	        Player player = Bukkit.getPlayer(uuid);
-	        if (player == null) return;
-	        if (!this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
-	            this.main.getMySQL().createPlayerManagerAsync(uuid, player.getName());
-	            return;
-	        }
-	        if (this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
-	            this.main.getMySQL().updatePlayerManagerAsync(player.getName(), uuid);
-	        }
-            this.loadAsync(uuid);
-	    } catch (InterruptedException | ExecutionException e) {
-	        e.printStackTrace();
-	    }
-	}
-	
-	public void loadAsync(final UUID uuid) {
-	    final Player player = Bukkit.getPlayer(uuid);
-	    final Profile data = this.getProfiles().get(uuid);
-        String playerName = player.getName();
-        CompletableFuture<String> rankFuture = DB.getFirstRowAsync("SELECT rank FROM coredata WHERE name=?", playerName)
-                .thenApply(row -> row.getString("rank"));
-        CompletableFuture<Void> allOfFuture = CompletableFuture.allOf(rankFuture);
-        allOfFuture.join();
-        data.setRank(rankFuture.join());
-        this.registerPermissions(uuid);
-	}
-	
-	public void exitAsync(final UUID uuid) {
-		final Profile data = this.getProfiles().get(uuid);
-		if (data != null) {
-			DB.executeUpdateAsync("UPDATE coredata SET rank=? WHERE name=?", data.getRank(), Bukkit.getPlayer(uuid) != null ? Bukkit.getPlayer(uuid).getName() : Bukkit.getOfflinePlayer(uuid).getName()).join();
-		}
-	}
-
 }

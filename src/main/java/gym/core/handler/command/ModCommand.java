@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import gym.core.Core;
 import gym.core.profile.Profile;
-import gym.core.profile.ProfileStatus;
+import gym.core.profile.ProfileState;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 import gym.core.utils.item.ItemUtils;
@@ -24,17 +24,17 @@ public class ModCommand {
 			return;
 		}
 		final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
-		if (profile.isInState(ProfileStatus.UNABLE)) {
+		if (profile.isInState(ProfileState.QUEUE) || profile.isInState(ProfileState.FIGHT) || profile.isInState(ProfileState.EDITOR) || profile.isInState(ProfileState.SPECTATE)) {
 			sender.sendMessage(ChatColor.RED + "You cannot do this right now!");
 			return;
 		}
-		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profile.isInState(ProfileStatus.MOD) ? "Quit" : "Enter").replace("%subType%", profile.isInState(ProfileStatus.MOD) ? "enter" : "left"));
+		sender.sendMessage(this.main.getLoaderHandler().getMessage().getEnterModMode().replace("%type%", profile.isInState(ProfileState.MOD) ? "Quit" : "Enter").replace("%subType%", profile.isInState(ProfileState.MOD) ? "enter" : "left"));
 		Bukkit.getOnlinePlayers().forEach(player -> {
-			if (profile.isInState(ProfileStatus.MOD)) player.showPlayer(sender);
-			if (profile.isInState(ProfileStatus.FREE)) player.hidePlayer(sender);
+			if (profile.isInState(ProfileState.MOD)) player.showPlayer(sender);
+			if (profile.isInState(ProfileState.FREE)) player.hidePlayer(sender);
 		});
-		profile.setStatus(profile.isInState(ProfileStatus.MOD) ? ProfileStatus.FREE : ProfileStatus.MOD);
-		if (profile.isInState(ProfileStatus.MOD)) {
+		profile.setProfileState(profile.isInState(ProfileState.MOD) ? ProfileState.FREE : ProfileState.MOD);
+		if (profile.isInState(ProfileState.MOD)) {
 			sender.setAllowFlight(true);
 			profile.setPreviousContents(sender.getInventory().getContents());
 			profile.setPreviousArmor(sender.getInventory().getArmorContents());
@@ -45,7 +45,7 @@ public class ModCommand {
 			sender.getInventory().setItem(7, ItemUtils.createItems(Material.SKULL_ITEM, ChatColor.YELLOW + "View Stats " + ChatColor.GRAY + "(Right-Click)"));
 			sender.getInventory().setItem(8, ItemUtils.createItems(Material.REDSTONE_TORCH_ON, ChatColor.RED + "Leave Staff-Mode."));
 		}
-		if (profile.isInState(ProfileStatus.FREE)) {
+		if (profile.isInState(ProfileState.FREE)) {
 			sender.teleport(sender.getWorld().getSpawnLocation());
 			sender.getInventory().clear();
 			sender.getInventory().setContents(profile.getPreviousContents());

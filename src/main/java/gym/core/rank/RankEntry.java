@@ -2,7 +2,7 @@ package gym.core.rank;
 
 import java.util.List;
 
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +10,7 @@ import lombok.Setter;
 public class RankEntry {
 	
 	private String prefix;
-	public String getPrefix() { return Utils.translate(this.prefix); }
+	public String getPrefix() { return CoreUtils.translate(this.prefix); }
 	private String color;
 	private Boolean spaceBetweenColor;
 	private int power;

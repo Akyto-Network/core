@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import co.aikar.idb.DB;
 import gym.core.Core;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 import gym.core.utils.database.DatabaseType;
@@ -43,8 +43,8 @@ public class RankCommand {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
 				return;
 			}
-			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setPrefix(Utils.translate(args[2]));
-			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank prefix").replace("%value%", Utils.translate(args[2])).replace("%editType%", "updated"));
+			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setPrefix(CoreUtils.translate(args[2]));
+			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank prefix").replace("%value%", CoreUtils.translate(args[2])).replace("%editType%", "updated"));
 			return;
 		}
 		if (args[0].equalsIgnoreCase("setcolor") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
@@ -82,7 +82,7 @@ public class RankCommand {
 				return;
 			}
 			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).getPermissions().add(args[2]);
-			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank permission").replace("%editType%", "added").replace("%value%", Utils.translate(args[2])));
+			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank permission").replace("%editType%", "added").replace("%value%", CoreUtils.translate(args[2])));
 			return;
 		}
 		if (args[0].equalsIgnoreCase("delperm") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
@@ -95,7 +95,7 @@ public class RankCommand {
 				return;
 			}
 			this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).getPermissions().remove(args[2]);
-			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank permission").replace("%editType%", "removed").replace("%value%", Utils.translate(args[2])));
+			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank permission").replace("%editType%", "removed").replace("%value%", CoreUtils.translate(args[2])));
 			return;
 		}
 		if (args[0].equalsIgnoreCase("delete") && args.length == 2 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
@@ -127,7 +127,7 @@ public class RankCommand {
 			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()) != null) {
 				this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()).setRank(args[2].toLowerCase());	
 			}	
-			Bukkit.getPlayer(args[1]).setPlayerListName(Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
+			Bukkit.getPlayer(args[1]).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
 			if (this.main.getLoaderHandler().getSettings().isRankPromoteBroad()) {
 				Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getRankUp().replace("%target%", args[1]).replace("%rankUp%", args[2]));
 			}
@@ -149,7 +149,7 @@ public class RankCommand {
 				this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()).setRank("default");	
 			}	
 			if (Bukkit.getPlayer(args[1]) != null) {
-				Bukkit.getPlayer(args[1]).setPlayerListName(Utils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
+				Bukkit.getPlayer(args[1]).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
 			}
 			if (this.main.getLoaderHandler().getSettings().isRankDemoteBroad()) {
 				Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getRankDown().replace("%target%", args[1]));

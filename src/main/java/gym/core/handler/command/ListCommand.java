@@ -2,7 +2,7 @@ package gym.core.handler.command;
 
 import gym.core.Core;
 import gym.core.rank.RankEntry;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ListCommand {
 
     private static String formatRank(Map.Entry<String, RankEntry> rank) {
-        return Utils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey());
+        return CoreUtils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey());
     }
 
 	@Command(name = "list")
@@ -40,7 +40,7 @@ public class ListCommand {
                 }).reversed())
                 .map(player -> {
                     String rankColor = Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).getColor();
-                    return Utils.translate(rankColor) + player.getDisplayName();
+                    return CoreUtils.translate(rankColor) + player.getDisplayName();
                 })
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));
 

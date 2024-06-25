@@ -12,7 +12,7 @@ import gym.core.Core;
 import gym.core.punishment.PunishmentType;
 import gym.core.punishment.cache.BanEntry;
 import gym.core.punishment.cache.MuteEntry;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.command.Command;
 import gym.core.utils.command.CommandArgs;
 import gym.core.utils.format.TimeUtils;
@@ -72,7 +72,7 @@ public class PunishmentsCommand {
 			return;
 		}
 
-		UUID target = Utils.getUUID(args[0]);
+		UUID target = CoreUtils.getUUID(args[0]);
 
         this.main.getManagerHandler().getPunishmentManager().removePunishment(target, PunishmentType.BAN);
         if (this.main.getLoaderHandler().getSettings().isBanBroad()) {

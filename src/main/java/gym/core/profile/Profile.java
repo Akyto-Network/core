@@ -1,5 +1,7 @@
 package gym.core.profile;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
@@ -19,9 +21,12 @@ public class Profile {
     private boolean frozen;
     private boolean likeNameMC;
     private UUID responsive;
-    private ProfileStatus status;
+    private ProfileState profileState;
     private ItemStack[] previousContents;
     private ItemStack[] previousArmor;
+	private List<int[]> stats;
+	private List<Boolean> settings;
+	private List<Boolean> spectateSettings;
 	
 	public boolean isChatCooldownActive() {
 		return this.chatCooldown > System.currentTimeMillis();
@@ -36,9 +41,9 @@ public class Profile {
 	}
 	
 	// Return whether the profile is in any of the given states
-	public boolean isInState(ProfileStatus... states) {
-		for (ProfileStatus state : states) {
-			if (this.status.equals(state))
+	public boolean isInState(ProfileState... states) {
+		for (ProfileState state : states) {
+			if (this.profileState.equals(state))
 				return true;
 		}
 		return false;
@@ -50,7 +55,11 @@ public class Profile {
 		this.frozen = false;
 		this.cps = 0;
 		this.allowClick = true;
-		this.status = ProfileStatus.FREE;
+		this.profileState = ProfileState.FREE;
+		this.stats = Arrays.asList(new int[7], new int[7], new int[7]);
+		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
+		this.settings = Arrays.asList(true, true, true);
+		this.spectateSettings = Arrays.asList(true, true);
 	}
 
 }

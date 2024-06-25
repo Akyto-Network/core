@@ -16,11 +16,24 @@ import org.bukkit.entity.Player;
 
 import gym.core.Core;
 import gym.core.profile.Profile;
-
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
-public class Utils {
+public class CoreUtils {
+	
+	public static UUID getUUID(String playerName) {
+		Player target = Core.API.getServer().getPlayer(playerName);
+		if (target != null)
+			return target.getUniqueId();
+		return Core.API.getServer().getOfflinePlayer(playerName).getUniqueId();
+	}
+
+	public static String getName(UUID playerId) {
+		Player target = Core.API.getServer().getPlayer(playerId);
+		if (target != null)
+			return target.getName();
+		return Core.API.getServer().getOfflinePlayer(playerId).getName();
+	}
 	
 	public static void sendServer(final Player player, final String type, final String server) {
 	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -81,11 +94,4 @@ public class Utils {
     	}
     	return true;
     }
-	
-	public static UUID getUUID(String playerName) {
-		Player target = Core.API.getServer().getPlayer(playerName);
-		if (target != null)
-			return target.getUniqueId();
-		return Core.API.getServer().getOfflinePlayer(playerName).getUniqueId();
-	}
 }

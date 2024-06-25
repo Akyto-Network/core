@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.Material;
 
 import gym.core.Core;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import lombok.Getter;
 
 @Getter
@@ -18,9 +18,9 @@ public class Inventories {
 	private final List<String> loreFrozen = new ArrayList<>();
 	
 	public Inventories(final Core main) {
-		this.frozeName = Utils.translate(main.getConfig().getString("freeze.inventory.title"));
-		this.displayFrozen = Utils.translate(main.getConfig().getString("freeze.inventory.display"));
+		this.frozeName = CoreUtils.translate(main.getConfig().getString("freeze.inventory.title"));
+		this.displayFrozen = CoreUtils.translate(main.getConfig().getString("freeze.inventory.display"));
 		this.frozenMaterial = Material.valueOf(main.getConfig().getString("freeze.inventory.item"));
-		main.getConfig().getStringList("freeze.inventory.lore").forEach(str -> this.loreFrozen.add(Utils.translate(str)));
+		main.getConfig().getStringList("freeze.inventory.lore").forEach(str -> this.loreFrozen.add(CoreUtils.translate(str)));
 	}
 }

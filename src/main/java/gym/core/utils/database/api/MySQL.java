@@ -29,7 +29,7 @@ public class MySQL {
 	            }
 
 	            DatabaseMetaData dbm = this.main.connection.getMetaData();
-	            ResultSet tables = dbm.getTables(null, null, "coredata", null);
+	            ResultSet tables = dbm.getTables(null, null, "playersdata", null);
 
 	            if (!tables.next()) {
 	                // Table doesn't exist
@@ -49,33 +49,35 @@ public class MySQL {
 	}
 
 	private boolean createPlayerManagerTable(DbStatement stm) {
-        String player_manager = "CREATE TABLE IF NOT EXISTS coredata ("
+        String player_manager = "CREATE TABLE IF NOT EXISTS playersdata ("
         		+ "ID INT(64) NOT NULL AUTO_INCREMENT,"
                 + "name VARCHAR(16) NOT NULL,"
                 + "uuid VARCHAR(64) NOT NULL,"
-                + "banExpires VARCHAR(255) DEFAULT 'null',"
-                + "banReason VARCHAR(255) DEFAULT 'null',"
-                + "banAuthor VARCHAR(255) DEFAULT 'null',"
-                + "muteExpires VARCHAR(255) DEFAULT 'null',"
-                + "muteReason VARCHAR(255) DEFAULT 'null',"
-                + "muteAuthor VARCHAR(255) DEFAULT 'null',"
+                + "scoreboard VARCHAR(16) DEFAULT 'true',"
+                + "duelRequest VARCHAR(16) DEFAULT 'true',"
+                + "time VARCHAR(16) DEFAULT 'day',"
+                + "flySpeed VARCHAR(16) DEFAULT 'true',"
+                + "displaySpectate VARCHAR(16) DEFAULT 'true',"
+                + "played VARCHAR(255) DEFAULT '0:0:0:0:0:0:0',"
+                + "win VARCHAR(255) DEFAULT '0:0:0:0:0:0:0',"
+                + "elos VARCHAR(255) DEFAULT '1000:1000:1000:1000:1000:1000:1000',"
                 + "rank VARCHAR(16) DEFAULT 'default',"
                 + "PRIMARY KEY (`ID`))";
         try {
             DatabaseMetaData dbm = this.main.connection.getMetaData();
-            ResultSet tables = dbm.getTables(null, null, "coredata", null);
+            ResultSet tables = dbm.getTables(null, null, "playersdata", null);
             if (tables.next()) {
                 //table exist
                 return false;
             } else {
                 //table doesn't exist
                 stm.executeUpdateQuery(player_manager);
-                System.out.println("SUCESS create coredata table.");
+                System.out.println("SUCESS create playersdata table.");
                 return true;
             }
 
         } catch (SQLException e) {
-            System.out.println("ERROR while creating coredata table.");
+            System.out.println("ERROR while creating playersdata table.");
             e.printStackTrace();
         }
         return false;
@@ -86,7 +88,7 @@ public class MySQL {
     }
 
     private boolean createPlayerManager(UUID uuid, String name, DbStatement stm) {
-        String query = "INSERT INTO coredata (uuid, name) VALUES (?, ?)";
+        String query = "INSERT INTO playersdata (uuid, name) VALUES (?, ?)";
         try {
             return stm.executeUpdateQuery(query, uuid.toString(), name) > 0;
         } catch (SQLException e) {
@@ -100,7 +102,7 @@ public class MySQL {
     }
 
     private boolean existPlayerManager(UUID uuid, DbStatement stm) {
-        String query = "SELECT * FROM coredata WHERE uuid=?";
+        String query = "SELECT * FROM playersdata WHERE uuid=?";
         try {
             return stm.executeQueryGetFirstRow(query, uuid.toString()) != null;
         } catch (SQLException e) {
@@ -114,7 +116,7 @@ public class MySQL {
     }
 
     private boolean updatePlayerManager(String name, UUID uuid, DbStatement stm) {
-        String query = "UPDATE coredata SET name=? WHERE uuid=?";
+        String query = "UPDATE playersdata SET name=? WHERE uuid=?";
         try {
             return stm.executeUpdateQuery(query, name, uuid.toString()) > 0;
         } catch (SQLException e) {

@@ -22,7 +22,7 @@ import gym.core.punishment.file.PunishmentFile;
 import gym.core.rank.RankEntry;
 import gym.core.rank.file.RankFile;
 import gym.core.runnable.TipsRunnable;
-import gym.core.utils.Utils;
+import gym.core.utils.CoreUtils;
 import gym.core.utils.database.DatabaseSetup;
 import gym.core.utils.database.DatabaseType;
 import gym.core.utils.database.api.MySQL;
@@ -44,6 +44,7 @@ public class Core extends JavaPlugin {
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
 	private MySQL mySQL;
+	private DatabaseSetup databaseSetup;
 	private boolean debug;
 	
 	public void onEnable() {
@@ -56,13 +57,12 @@ public class Core extends JavaPlugin {
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
 			this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
-        DatabaseType.valueOf(this.getConfig().getString("database.type"));
         this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type"));
 		if (databaseType.equals(DatabaseType.MYSQL)) {
 			this.hikariPath = this.getDataFolder() + "/hikari.properties";
 			this.saveResource("hikari.properties", false);
 			this.mySQL = new MySQL(this);
-			new DatabaseSetup(this);
+			this.databaseSetup = new DatabaseSetup(this);
 		}
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
@@ -175,7 +175,7 @@ public class Core extends JavaPlugin {
 	private void saveDatabase() {
 		if (!Bukkit.getOnlinePlayers().isEmpty()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
-				player.kickPlayer(Utils.translate(this.getConfig().getString("messages.server-restart")));
+				player.kickPlayer(CoreUtils.translate(this.getConfig().getString("messages.server-restart")));
 			});
 		}
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
