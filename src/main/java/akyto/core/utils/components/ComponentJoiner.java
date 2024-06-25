@@ -19,7 +19,7 @@ public class ComponentJoiner {
     }
 
     public ComponentJoiner add(String newElement) {
-        if (this.component.getExtra() != null) {
+        if (this.component.getExtra() != null && !this.component.getExtra().isEmpty()) {
             this.component.addExtra(this.delimiter);
         }
         this.component.addExtra(newElement);
@@ -27,7 +27,7 @@ public class ComponentJoiner {
     }
 
     public ComponentJoiner add(BaseComponent newElement) {
-        if (this.component.getExtra() != null) {
+        if (this.component.getExtra() != null && !this.component.getExtra().isEmpty()) {
             this.component.addExtra(this.delimiter);
         }
         this.component.addExtra(newElement);
