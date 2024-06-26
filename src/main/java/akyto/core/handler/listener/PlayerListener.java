@@ -41,7 +41,6 @@ import akyto.core.utils.database.DatabaseType;
 public class PlayerListener implements Listener {
 	
 	private final Core main;
-	private final RankEntry def = Core.API.getManagerHandler().getRankManager().getRanks().get("default");
 	
 	public PlayerListener(final Core main) {
 		this.main = main;
@@ -70,7 +69,7 @@ public class PlayerListener implements Listener {
 						final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(player.getUniqueId());
 						Bukkit.getOnlinePlayers().forEach(players -> {
 							if (players.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())
-									&& !rank.equals(def)
+									&& !rank.equals(Core.API.getManagerHandler().getRankManager().getRanks().get("default"))
 									&& player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
 								players.sendMessage(this.main.getLoaderHandler().getMessage().getTryToConnect()
 										.replace("%banned%", player.getName())
@@ -107,7 +106,7 @@ public class PlayerListener implements Listener {
 			final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(leaver.getUniqueId());
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())
-						&& !rank.equals(def)
+						&& !rank.equals(Core.API.getManagerHandler().getRankManager().getRanks().get("default"))
 						&& leaver.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
 
 					player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce()
