@@ -201,8 +201,5 @@ public class Core extends JavaPlugin {
 				getLogger().info("[CORE - Profiles] Flat-Files saved!");
 			}
 		}
-		if (this.databaseType.equals(DatabaseType.MYSQL)) {
-			this.getDatabaseSetup().closeConnection();
-		}
 	}
 }

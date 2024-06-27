@@ -1,10 +1,12 @@
 package akyto.core.utils.database;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import akyto.core.handler.ManagerHandler;
 import akyto.core.rank.RankEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -52,38 +54,21 @@ public class DatabaseSetup {
         }
         System.out.println("Successfully connected to the SQL database.");
     }
-    
-	public void closeConnection() {
-		if (!Bukkit.getOnlinePlayers().isEmpty()) {
-			Bukkit.getOnlinePlayers().forEach(player -> {
-				final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
-		        try {
-			        DB.executeUpdate("UPDATE playersdata SET scoreboard=? WHERE name=?", String.valueOf(data.getSettings().get(0).booleanValue()), player.getName());
-			        DB.executeUpdate("UPDATE playersdata SET duelRequest=? WHERE name=?", String.valueOf(data.getSettings().get(1).booleanValue()), player.getName());
-			        DB.executeUpdate("UPDATE playersdata SET time=? WHERE name=?", String.valueOf(data.getSettings().get(2).booleanValue()), player.getName());
-			        DB.executeUpdate("UPDATE playersdata SET displaySpectate=? WHERE name=?", String.valueOf(data.getSpectateSettings().get(0).booleanValue()), player.getName());
-			        DB.executeUpdate("UPDATE playersdata SET flySpeed=? WHERE name=?", String.valueOf(data.getSpectateSettings().get(1).booleanValue()), player.getName());
-			        DB.executeUpdate("UPDATE playersdata SET played=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(0), ":"), player.getName());
-			    	DB.executeUpdate("UPDATE playersdata SET win=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(1), ":"), player.getName());
-					DB.executeUpdate("UPDATE playersdata SET rank=? WHERE name=?", data.getRank(), player.getName());
-				} catch (SQLException e) { e.printStackTrace(); }
-			});
-			this.main.getLogger().warning("[CORE] MySQL data has been saved.");
-		}
-	}
 	
 	public void exitAsync(final UUID uuid) {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		if (data != null) {
 			final String playerName = CoreUtils.getName(uuid);
-	        DB.executeUpdateAsync("UPDATE playersdata SET scoreboard=? WHERE name=?", String.valueOf(data.getSettings().get(0).booleanValue()), playerName).join();
-	        DB.executeUpdateAsync("UPDATE playersdata SET duelRequest=? WHERE name=?", String.valueOf(data.getSettings().get(1).booleanValue()), playerName).join();
-	        DB.executeUpdateAsync("UPDATE playersdata SET time=? WHERE name=?", String.valueOf(data.getSettings().get(2).booleanValue()), playerName).join();
-	        DB.executeUpdateAsync("UPDATE playersdata SET displaySpectate=? WHERE name=?", String.valueOf(data.getSpectateSettings().get(0).booleanValue()), playerName).join();
-	        DB.executeUpdateAsync("UPDATE playersdata SET flySpeed=? WHERE name=?", String.valueOf(data.getSpectateSettings().get(1).booleanValue()), playerName).join();
-	        DB.executeUpdateAsync("UPDATE playersdata SET played=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(0), ":"), playerName).join();
-	    	DB.executeUpdateAsync("UPDATE playersdata SET win=? WHERE name=?", FormatUtils.getStringValue(data.getStats().get(1), ":"), playerName).join();
-			DB.executeUpdateAsync("UPDATE playersdata SET rank=? WHERE name=?", data.getRank(), playerName).join();
+			DB.executeUpdateAsync("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, rank=? WHERE name=?",
+					String.valueOf(data.getSettings().get(0).booleanValue()),
+					String.valueOf(data.getSettings().get(1).booleanValue()),
+					String.valueOf(data.getSettings().get(2).booleanValue()),
+					String.valueOf(data.getSpectateSettings().get(0).booleanValue()),
+					String.valueOf(data.getSpectateSettings().get(1).booleanValue()),
+					FormatUtils.getStringValue(data.getStats().get(0), ":"),
+					FormatUtils.getStringValue(data.getStats().get(1), ":"),
+					data.getRank(),
+					playerName).join();
 		}
 		this.main.getManagerHandler().getProfileManager().getProfiles().remove(uuid);
 	}
@@ -108,9 +93,10 @@ public class DatabaseSetup {
 	
 	public void loadAsync(final UUID uuid, final int kitSize, final String[] kitNames) {
 		CompletableFuture<Void> load = CompletableFuture.runAsync(() -> this.load(uuid));
+		final ManagerHandler managerHandler = Core.API.getManagerHandler();
 		load.whenCompleteAsync((t, u) -> {
-			Core.API.getManagerHandler().getInventoryManager().generateProfileInventory(uuid, kitSize, kitNames);
-			this.main.getManagerHandler().getProfileManager().registerPermissions(uuid);
+			managerHandler.getInventoryManager().generateProfileInventory(uuid, kitSize, kitNames);
+			managerHandler.getProfileManager().registerPermissions(uuid);
 			Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getProfileManager().getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
 			if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 				final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
@@ -134,15 +120,17 @@ public class DatabaseSetup {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		final String playerName = CoreUtils.getName(uuid);
 		try {
-			data.getSettings().set(0, Boolean.valueOf(DB.getFirstRow("SELECT scoreboard FROM playersdata WHERE name=?", playerName).getString("scoreboard")));
-			data.getSettings().set(1, Boolean.valueOf(DB.getFirstRow("SELECT duelRequest FROM playersdata WHERE name=?", playerName).getString("duelRequest")));
-			data.getSettings().set(2, Boolean.valueOf(DB.getFirstRow("SELECT time FROM playersdata WHERE name=?", playerName).getString("time")));
-			data.getSpectateSettings().set(0, Boolean.valueOf(DB.getFirstRow("SELECT flySpeed FROM playersdata WHERE name=?", playerName).getString("flySpeed")));
-			data.getSpectateSettings().set(1, Boolean.valueOf(DB.getFirstRow("SELECT displaySpectate FROM playersdata WHERE name=?", playerName).getString("displaySpectate")));
-			data.getStats().set(2, FormatUtils.getSplitValue(DB.getFirstRow("SELECT elos FROM playersdata WHERE name=?", playerName).getString("elos"), ":"));
-			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
-			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));
-			data.setRank(DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", playerName).getString("rank"));
+			Map<String, Object> row = DB.getFirstRow("SELECT scoreboard, duelRequest, time, displaySpectate, flySpeed, played, win, elos, rank FROM playersdata WHERE name=?", playerName);
+
+			data.getSettings().set(0, Boolean.valueOf((String) row.get("scoreboard")));
+			data.getSettings().set(1, Boolean.valueOf((String) row.get("duelRequest")));
+			data.getSettings().set(2, Boolean.valueOf((String) row.get("time")));
+			data.getSpectateSettings().set(0, Boolean.valueOf((String) row.get("displaySpectate")));
+			data.getSpectateSettings().set(1, Boolean.valueOf((String) row.get("flySpeed")));
+			data.getStats().set(2, FormatUtils.getSplitValue((String) row.get("elos"), ":"));
+			data.getStats().set(1, FormatUtils.getSplitValue((String) row.get("win"), ":"));
+			data.getStats().set(0, FormatUtils.getSplitValue((String) row.get("played"), ":"));
+			data.setRank((String) row.get("rank"));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

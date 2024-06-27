@@ -72,9 +72,7 @@ public class ProfileManager {
 				Bukkit.getPlayer(uuid).sendMessage(result ? this.main.getLoaderHandler().getMessage().getNameMCLike() : this.main.getLoaderHandler().getMessage().getNameMCUnlike());	
 			});      
 		}
-		if (!this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
-			Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
-		}
+		Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
 	}
 	
 	public void registerPermissions(final UUID uuid) {
