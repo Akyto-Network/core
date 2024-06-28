@@ -49,7 +49,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
 		final Player player = event.getPlayer();
-
     	if (this.main.getLoaderHandler().getSettings().isBungeeCord()) {
     		if (!this.main.getLoaderHandler().getMessage().getBungeeIps().contains(event.getRealAddress().getHostAddress())) {
             	event.disallow(PlayerLoginEvent.Result.KICK_OTHER, this.main.getLoaderHandler().getMessage().getKickWhitelistProxy());
@@ -102,7 +101,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerLeft(final PlayerQuitEvent event) {
 		event.setQuitMessage(null);
 		final Player leaver = event.getPlayer();
-		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
+		if (this.main.getLoaderHandler().getSettings().isStaffNotifications() && !this.main.isShutdown()) {
 			final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(leaver.getUniqueId());
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())
@@ -118,7 +117,7 @@ public class PlayerListener implements Listener {
 			});
 		}
 		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
-			this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
+			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(event.getPlayer().getUniqueId());
 		}
 	}
 	

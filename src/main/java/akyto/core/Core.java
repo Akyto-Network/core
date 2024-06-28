@@ -16,6 +16,9 @@ import akyto.spigot.aSpigot;
 import akyto.core.utils.database.DatabaseSetup;
 import akyto.core.utils.database.DatabaseType;
 import akyto.core.utils.database.api.MySQL;
+import co.aikar.idb.BukkitDB;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -45,6 +49,8 @@ public class Core extends JavaPlugin {
 	private MySQL mySQL;
 	private DatabaseSetup databaseSetup;
 	private boolean debug;
+	private boolean shutdown = false;
+	private HikariDataSource dataSource;
 	
 	public void onEnable() {
 		API = this;
@@ -60,7 +66,9 @@ public class Core extends JavaPlugin {
 		if (databaseType.equals(DatabaseType.MYSQL)) {
 			this.hikariPath = this.getDataFolder() + "/hikari.properties";
 			this.saveResource("hikari.properties", false);
+			this.setupHikariCP();
 			this.mySQL = new MySQL(this);
+			this.setupDatabase();
 			this.databaseSetup = new DatabaseSetup(this);
 		}
 		this.registerListener();
@@ -79,10 +87,10 @@ public class Core extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		this.saveDatabase();
 		this.saveRank();
 		this.savePunishment();
 		this.managerHandler.getRankManager().getRanks().clear();
-		this.saveDatabase();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 	}
@@ -172,11 +180,17 @@ public class Core extends JavaPlugin {
 	}
 
 	private void saveDatabase() {
+		this.shutdown = true;
+		if (databaseType.equals(DatabaseType.MYSQL)) this.setupHikariCP();
 		if (!Bukkit.getOnlinePlayers().isEmpty()) {
 			Bukkit.getOnlinePlayers().forEach(player -> {
+				if (databaseType.equals(DatabaseType.MYSQL)){
+					databaseSetup.exit(player.getUniqueId());
+				}
 				player.kickPlayer(CoreUtils.translate(this.getConfig().getString("messages.server-restart")));
 			});
 		}
+		if (databaseType.equals(DatabaseType.MYSQL)) dataSource.close();
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
 			if (!this.managerHandler.getProfileManager().getProfiles().isEmpty()) {
 				for (UUID uuid : this.managerHandler.getProfileManager().getProfiles().keySet()) {
@@ -201,5 +215,30 @@ public class Core extends JavaPlugin {
 				getLogger().info("[CORE - Profiles] Flat-Files saved!");
 			}
 		}
+		dataSource.close();
+	}
+
+	public void setupDatabase() {
+		if (this.connection != null) {
+			this.getMySQL().createPlayerManagerTableAsync();
+			return;
+		}
+		System.out.println("WARNING enter valid database information (" + this.getHikariPath() + ") \n You will not be able to access many features");
+	}
+
+	public void setupHikariCP() {
+		try {
+			final HikariConfig config = new HikariConfig(this.getHikariPath());
+			final HikariDataSource ds = new HikariDataSource(config);
+			this.dataSource = ds;
+			final String passwd = (config.getDataSourceProperties().getProperty("password") == null) ? "" : config.getDataSourceProperties().getProperty("password");
+			BukkitDB.createHikariDatabase(this, config.getDataSourceProperties().getProperty("user"), passwd, config.getDataSourceProperties().getProperty("databaseName"), config.getDataSourceProperties().getProperty("serverName") + ":" + config.getDataSourceProperties().getProperty("portNumber"));
+			this.connection = ds.getConnection();
+		}
+		catch (SQLException e) {
+			System.out.println("Error could not connect to SQL database.");
+			e.printStackTrace();
+		}
+		System.out.println("Successfully connected to the SQL database.");
 	}
 }

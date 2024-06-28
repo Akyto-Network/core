@@ -120,14 +120,17 @@ public class RankCommand {
 			if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
 				try {
 					if (Bukkit.getPlayer(args[1]) == null && this.main.getMySQL().existPlayerManagerAsync(Bukkit.getOfflinePlayer(args[1]).getUniqueId()).get()) {
-						DB.executeUpdateAsync("UPDATE coredata SET rank=? WHERE name=?", args[2].toLowerCase() , args[1]);
+						DB.executeUpdateAsync("UPDATE playersdata SET rank=? WHERE name=?", args[2].toLowerCase() , args[1]);
 					}
 				} catch (InterruptedException | ExecutionException e) { e.printStackTrace(); }
             }
 			if (this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()) != null) {
 				this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]) == null ? Bukkit.getOfflinePlayer(args[1]).getUniqueId() : Bukkit.getPlayer(args[1]).getUniqueId()).setRank(args[2].toLowerCase());	
-			}	
-			Bukkit.getPlayer(args[1]).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
+			}
+			if (Bukkit.getPlayer(args[1]) != null) {
+				this.main.getManagerHandler().getProfileManager().registerPermissions(Bukkit.getPlayer(args[1]).getUniqueId());
+				Bukkit.getPlayer(args[1]).setPlayerListName(CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(this.main.getManagerHandler().getProfileManager().getProfiles().get(Bukkit.getPlayer(args[1]).getUniqueId()).getRank()).getColor()) + Bukkit.getPlayer(args[1]).getName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 15)));
+			}
 			if (this.main.getLoaderHandler().getSettings().isRankPromoteBroad()) {
 				Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getRankUp().replace("%target%", args[1]).replace("%rankUp%", args[2]));
 			}
