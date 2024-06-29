@@ -144,7 +144,7 @@ public class RankCommand {
 			if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
 				try {
 					if (Bukkit.getPlayer(args[1]) == null && this.main.getMySQL().existPlayerManagerAsync(Bukkit.getOfflinePlayer(args[1]).getUniqueId()).get()) {
-						DB.executeUpdateAsync("UPDATE coredata SET rank=? WHERE name=?", "default" , args[1]);
+						DB.executeUpdateAsync("UPDATE playersdata SET rank=? WHERE name=?", "default" , args[1]);
 					}
 				} catch (InterruptedException | ExecutionException e) { e.printStackTrace(); }
             }

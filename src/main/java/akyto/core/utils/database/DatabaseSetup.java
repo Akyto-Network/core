@@ -39,7 +39,7 @@ public class DatabaseSetup {
 		if (data != null) {
 			final String playerName = CoreUtils.getName(uuid);
             try {
-                DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, rank=? WHERE name=?",
+                DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, WHERE name=?",
                         Boolean.toString(data.getSettings().get(0)),
                         Boolean.toString(data.getSettings().get(1)),
                         Boolean.toString(data.getSettings().get(2)),
@@ -47,12 +47,21 @@ public class DatabaseSetup {
                         Boolean.toString(data.getSpectateSettings().get(1)),
                         FormatUtils.getStringValue(data.getStats().get(0), ":"),
                         FormatUtils.getStringValue(data.getStats().get(1), ":"),
-                        data.getRank(),
                         playerName);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+	}
+
+	public void resetElos(final String name, final int[] elos, final int[] win, final int[] played) {
+		try {
+			DB.executeUpdate("UPDATE playersdata SET played=? WHERE name=?", FormatUtils.getStringValue(played, ":") , name);
+			DB.executeUpdate("UPDATE playersdata SET win=? WHERE name=?", FormatUtils.getStringValue(win, ":") , name);
+			DB.executeUpdate("UPDATE playersdata SET elos=? WHERE name=?", FormatUtils.getStringValue(elos, ":") , name);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	
