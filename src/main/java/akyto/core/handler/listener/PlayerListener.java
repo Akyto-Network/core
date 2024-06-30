@@ -127,7 +127,10 @@ public class PlayerListener implements Listener {
 				}
 			});
 		}
-        Core.API.getManagerHandler().getProfileManager().getDisguised().remove(leaver.getUniqueId());
+		if (Core.API.getManagerHandler().getProfileManager().getDisguised().containsKey(leaver.getUniqueId())){
+			Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().remove(Core.API.getManagerHandler().getProfileManager().getDisguised().get(leaver.getUniqueId()).getName());
+			Core.API.getManagerHandler().getProfileManager().getDisguised().remove(leaver.getUniqueId());
+		}
 		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
 			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
 		}

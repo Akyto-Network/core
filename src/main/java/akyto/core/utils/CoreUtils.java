@@ -27,15 +27,17 @@ public class CoreUtils {
 	
 	public static UUID getUUID(String playerName) {
 		Player target = Core.API.getServer().getPlayer(playerName);
-		if (target != null)
+		if (target != null) {
 			return target.getUniqueId();
+		}
 		return Core.API.getServer().getOfflinePlayer(playerName).getUniqueId();
 	}
 
 	public static String getName(UUID playerId) {
 		Player target = Core.API.getServer().getPlayer(playerId);
-		if (target != null)
-			return target.hasFakeDisplayName(target) ? target.getFakeDisplayName(target) : target.getName();
+		if (target != null) {
+			return target.getDisplayName();
+		}
 		return Core.API.getServer().getOfflinePlayer(playerId).getName();
 	}
 	
@@ -103,6 +105,5 @@ public class CoreUtils {
 
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
-		disguised.setFakeDisplayName(target, disguiseEntry.getName());
 	}
 }

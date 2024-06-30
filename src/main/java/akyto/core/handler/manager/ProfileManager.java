@@ -34,6 +34,8 @@ public class ProfileManager {
     private final HashMap<UUID, PermissionAttachment> permissible = Maps.newHashMap();
 	@Getter
 	private final HashMap<UUID, DisguiseEntry> disguised = Maps.newHashMap();
+	@Getter
+	private final HashMap<String, String> realNameInDisguised = Maps.newHashMap();
 
     public ProfileManager(final Core main) {
 		this.main = main;

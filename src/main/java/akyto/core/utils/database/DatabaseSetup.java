@@ -37,7 +37,10 @@ public class DatabaseSetup {
 	public void exit(final UUID uuid) {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		if (data != null) {
-			final String playerName = CoreUtils.getName(uuid);
+			String playerName = CoreUtils.getName(uuid);
+			if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(playerName)){
+				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
+			}
             try {
                 DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, WHERE name=?",
                         Boolean.toString(data.getSettings().get(0)),

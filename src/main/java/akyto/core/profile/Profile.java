@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Skin;
 import org.bukkit.inventory.ItemStack;
 
 import lombok.Getter;
@@ -27,6 +29,7 @@ public class Profile {
 	private List<Boolean> settings;
 	private List<Boolean> spectateSettings;
 	private boolean disguised;
+	private Skin realSkin;
 	
 	public boolean isChatCooldownActive() {
 		return this.chatCooldown > System.currentTimeMillis();
@@ -61,6 +64,7 @@ public class Profile {
 		this.settings = Arrays.asList(true, true, true);
 		this.spectateSettings = Arrays.asList(true, true);
 		this.disguised = false;
+		this.realSkin = Bukkit.getPlayer(uuid).getSkin();
 	}
 
 }

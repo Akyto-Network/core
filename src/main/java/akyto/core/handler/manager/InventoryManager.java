@@ -50,7 +50,7 @@ public class InventoryManager {
 	}
 	
 	public void generateProfileInventory(final UUID uuid, final int kitSize, final String[] kitNames) {
-		final Inventory profile = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.DARK_GRAY + CoreUtils.getName(uuid) + " profile");
+		final Inventory profile = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.DARK_GRAY + Bukkit.getPlayer(uuid).getName() + " profile");
 		final Profile profiles = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
         final ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
         for (int i = 0; i < 5; ++i) {

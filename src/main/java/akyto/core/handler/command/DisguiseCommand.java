@@ -31,6 +31,7 @@ public class DisguiseCommand {
             return;
         }
         final ManagerHandler managerHandler = Core.API.getManagerHandler();
+        Bukkit.getPlayer(sender.getUniqueId());
         final Profile profile = managerHandler.getProfileManager().getProfiles().get(sender.getUniqueId());
         if (args[0].equalsIgnoreCase("enable") || args[0].equalsIgnoreCase("on")) {
             if (profile.isDisguised()) {
@@ -41,6 +42,7 @@ public class DisguiseCommand {
                 sender.sendMessage(ChatColor.RED + "");
             }
             Random random = new FastRandom();
+            final UUID uuid = sender.getUniqueId();
             final ServerManager serverManager = managerHandler.getServerManager();
             Set<Map.Entry<String, DisguiseEntry>> entries = serverManager.getDisguise().entrySet();
             Map.Entry<String, DisguiseEntry>[] entriesArray = entries.toArray(new Map.Entry[0]);
@@ -61,6 +63,7 @@ public class DisguiseCommand {
                 }
             }
             DisguiseEntry finalDisguiseEntry = disguiseEntry;
+            Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().put(finalDisguiseEntry.getName(), sender.getName());
             Bukkit.getOnlinePlayers().forEach(players -> {
                 CoreUtils.disguise(players, sender, finalDisguiseEntry);
                 players.hidePlayer(sender);
@@ -72,6 +75,7 @@ public class DisguiseCommand {
             },2L);
             Core.API.getManagerHandler().getProfileManager().getDisguised().put(sender.getUniqueId(), finalDisguiseEntry);
             sender.setPlayerListName(ChatColor.GREEN + finalDisguiseEntry.getName());
+            sender.setDisplayName(finalDisguiseEntry.getName());
             profile.setDisguised(true);
             sender.teleport(sender.getLocation());
             sender.sendMessage(ChatColor.GRAY + "You've been disguised now and you'r name is: " + ChatColor.RED + finalDisguiseEntry.getName());
@@ -81,6 +85,7 @@ public class DisguiseCommand {
                 sender.sendMessage(ChatColor.RED + "You're not disguised!");
                 return;
             }
+            Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().remove(Core.API.getManagerHandler().getProfileManager().getDisguised().get(sender.getUniqueId()).getName());
             sender.clearFakeNamesAndSkins();
             Bukkit.getOnlinePlayers().forEach(players -> {
                 players.hidePlayer(sender);
@@ -95,6 +100,7 @@ public class DisguiseCommand {
                     players.showPlayer(sender);
                 });
             },2L);
+            sender.setDisplayName(sender.getName());
         }
     }
 }
