@@ -91,9 +91,8 @@ public class DatabaseSetup {
 			this.main.getManagerHandler().getProfileManager().registerPermissions(uuid);
 			final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
 			final Player player = Bukkit.getPlayer(uuid);
-			player.setPlayerListName(
-					CoreUtils.translate(rank.getColor()) + player.getName().substring(0, Math.min(player.getName().length(), 15))
-			);
+			final String name = player.getName().substring(0, Math.min(player.getName().length(), 14));
+			player.setPlayerListName(CoreUtils.translate(rank.getColor()) + name);
 			if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 				Bukkit.getOnlinePlayers().forEach(players -> {
 					if (players.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())

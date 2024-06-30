@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
 import com.google.common.collect.Lists;
@@ -56,23 +57,27 @@ public class ProfileManager {
 		if (!this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
 			this.registerPermissions(uuid);
 		}
+		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
+		final Player p = Bukkit.getPlayer(uuid);
 		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 			if (!Bukkit.getOnlinePlayers().isEmpty()) {
+				final String perm = this.main.getLoaderHandler().getPermission().getStaffAnnounce();
 				Bukkit.getOnlinePlayers().forEach(player -> {
-					if (player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce()) && !this.main.getManagerHandler().getProfileManager().getRank(uuid).equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && Bukkit.getPlayer(uuid).hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
-						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce().replace("%rank%", this.main.getManagerHandler().getProfileManager().getRank(uuid).getPrefix()).replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getProfileManager().getRank(uuid).getColor())).replace("%player%", Bukkit.getPlayer(uuid).getName()).replace("%type%", "join"));
+					if (player.hasPermission(perm) && !rank.equals(this.main.getManagerHandler().getRankManager().getRanks().get("default")) && p.hasPermission(perm)) {
+						player.sendMessage(this.main.getLoaderHandler().getMessage().getStaffAnnounce()
+								.replace("%rank%", rank.getPrefix())
+								.replace("%rankColor%", CoreUtils.translate(rank.getColor()))
+								.replace("%player%", p.getName())
+								.replace("%type%", "join"));
 					}
 				});	
 			}	
 		}
         if (this.main.getLoaderHandler().getSettings().isNamemcCheck()) {
-			CompletableFuture<Boolean> future = CoreUtils.checkNameMCLikeAsync(main, uuid);
-			future.thenAccept(result -> {
-				this.profiles.get(uuid).setLikeNameMC(result);
-				Bukkit.getPlayer(uuid).sendMessage(result ? this.main.getLoaderHandler().getMessage().getNameMCLike() : this.main.getLoaderHandler().getMessage().getNameMCUnlike());	
-			});      
+			CoreUtils.checkNameMCLikeAsync(main, uuid);
 		}
-		Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(this.getRank(uuid).getColor()) + Bukkit.getPlayer(uuid).getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 15)));
+		final String name = p.getName().substring(0, Math.min(Bukkit.getPlayer(uuid).getName().length(), 14));
+		Bukkit.getPlayer(uuid).setPlayerListName(CoreUtils.translate(rank.getColor()) + name);
 	}
 	
 	public void registerPermissions(final UUID uuid) {
@@ -82,6 +87,8 @@ public class ProfileManager {
 	}
 	
 	public RankEntry getRank(final UUID uuid) {
-		return this.main.getManagerHandler().getRankManager().getRanks().get(this.getProfiles().get(uuid).getRank());
+		return this.main.getManagerHandler().getRankManager().getRanks().get(
+				this.getProfiles().get(uuid).getRank()
+		);
 	}
 }

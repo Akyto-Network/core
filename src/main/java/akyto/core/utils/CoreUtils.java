@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -56,35 +58,36 @@ public class CoreUtils {
 		return df.format(time);
 	}
 	
-	public static CompletableFuture<Boolean> checkNameMCLikeAsync(Core main, UUID uuid) {
+	public static void checkNameMCLikeAsync(Core main, UUID uuid) {
 	    final String uri = "https://api.namemc.com/server/" + main.getNamemcURL() + "/likes?profile=" + uuid;
-
-	    return CompletableFuture.supplyAsync(() -> {
-	        try {
-	            URL url = new URL(uri);
-	            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	            connection.setRequestMethod("GET");
-	            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-	            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-	            String inputLine;
-	            StringBuilder response = new StringBuilder();
-	            while ((inputLine = reader.readLine()) != null) {
-	                response.append(inputLine);
-	            }
-	            reader.close();
-	            String responseString = response.toString();
-	            if (responseString.equalsIgnoreCase("true")) {
-	                return true;
-	            } else if (responseString.equalsIgnoreCase("false")) {
-	                return false;
-	            } else {
-	                throw new IOException("Invalid response from URL: " + uri);
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            return false;
-	        }
-	    });
+		AtomicReference<String> responseString = new AtomicReference<>("false");
+		CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+			try {
+				URL url = new URL(uri);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+				connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String inputLine;
+				StringBuilder response = new StringBuilder();
+				while ((inputLine = reader.readLine()) != null) {
+					response.append(inputLine);
+				}
+				reader.close();
+				if (response.toString().equalsIgnoreCase("true")) {
+					responseString.set("true");
+				} else {
+					throw new IOException("Invalid response from URL: " + uri);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		future.whenCompleteAsync((t, u) -> {
+			final boolean bool = Boolean.parseBoolean(responseString.get());
+			Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid).setLikeNameMC(bool);
+			Bukkit.getPlayer(uuid).sendMessage(bool ? Core.API.getLoaderHandler().getMessage().getNameMCLike() : Core.API.getLoaderHandler().getMessage().getNameMCUnlike());
+		});
 	}
 	
     public static boolean hitAllowed(final UUID uuid) {
