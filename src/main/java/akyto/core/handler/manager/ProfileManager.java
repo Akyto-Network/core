@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
 
+import akyto.core.disguise.DisguiseEntry;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,6 +32,8 @@ public class ProfileManager {
     private final ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
     @Getter
     private final HashMap<UUID, PermissionAttachment> permissible = Maps.newHashMap();
+	@Getter
+	private final HashMap<UUID, DisguiseEntry> disguised = Maps.newHashMap();
 
     public ProfileManager(final Core main) {
 		this.main = main;

@@ -2,13 +2,10 @@ package akyto.core.handler.listener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import java.util.*;
+
+import akyto.core.disguise.DisguiseEntry;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -95,6 +92,20 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		event.setJoinMessage(null);
+		if (!Core.API.getManagerHandler().getProfileManager().getDisguised().isEmpty()) {
+			Bukkit.getScheduler().runTaskLater(Core.API, () -> {
+				final List<Player> pls = new ArrayList<>();
+				for (Map.Entry<UUID, DisguiseEntry> entry : Core.API.getManagerHandler().getProfileManager().getDisguised().entrySet()) {
+					final Player disguised = Bukkit.getPlayer(entry.getKey());
+					CoreUtils.disguise(event.getPlayer(), disguised, entry.getValue());
+					pls.add(disguised);
+					event.getPlayer().hidePlayer(disguised);
+				}
+				Bukkit.getScheduler().runTaskLater(Core.API, () -> {
+					pls.forEach(players -> event.getPlayer().showPlayer(players));
+				}, 20L);
+			}, 2L);
+		}
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
@@ -116,8 +127,9 @@ public class PlayerListener implements Listener {
 				}
 			});
 		}
+        Core.API.getManagerHandler().getProfileManager().getDisguised().remove(leaver.getUniqueId());
 		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
-			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(event.getPlayer().getUniqueId());
+			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
 		}
 	}
 	

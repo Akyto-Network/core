@@ -12,8 +12,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
+import akyto.core.disguise.DisguiseEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Skin;
 import org.bukkit.entity.Player;
 
 import akyto.core.Core;
@@ -33,7 +35,7 @@ public class CoreUtils {
 	public static String getName(UUID playerId) {
 		Player target = Core.API.getServer().getPlayer(playerId);
 		if (target != null)
-			return target.getName();
+			return target.hasFakeDisplayName(target) ? target.getFakeDisplayName(target) : target.getName();
 		return Core.API.getServer().getOfflinePlayer(playerId).getName();
 	}
 	
@@ -89,7 +91,8 @@ public class CoreUtils {
 			Bukkit.getPlayer(uuid).sendMessage(bool ? Core.API.getLoaderHandler().getMessage().getNameMCLike() : Core.API.getLoaderHandler().getMessage().getNameMCUnlike());
 		});
 	}
-	
+
+	//TODO: Make bypass with command for add into a collection.
     public static boolean hitAllowed(final UUID uuid) {
     	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
     	if (profile.getCps() >= Core.API.getLoaderHandler().getSettings().getMaximumCps()) {
@@ -97,4 +100,9 @@ public class CoreUtils {
     	}
     	return true;
     }
+
+	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
+		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
+		disguised.setFakeDisplayName(target, disguiseEntry.getName());
+	}
 }

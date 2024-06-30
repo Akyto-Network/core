@@ -26,6 +26,7 @@ public class Profile {
 	private List<int[]> stats;
 	private List<Boolean> settings;
 	private List<Boolean> spectateSettings;
+	private boolean disguised;
 	
 	public boolean isChatCooldownActive() {
 		return this.chatCooldown > System.currentTimeMillis();
@@ -59,6 +60,7 @@ public class Profile {
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
 		this.settings = Arrays.asList(true, true, true);
 		this.spectateSettings = Arrays.asList(true, true);
+		this.disguised = false;
 	}
 
 }

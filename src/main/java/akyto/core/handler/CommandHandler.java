@@ -12,6 +12,7 @@ public class CommandHandler {
 	public CommandHandler(final Core main) {
 		this.setupFramework(main,
 				new AnnounceCommand(),
+				new DisguiseCommand(),
 				new PunishmentsCommand(),
 				new ChatCommand(),
 				new FreezeCommand(),

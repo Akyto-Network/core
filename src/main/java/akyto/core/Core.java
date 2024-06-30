@@ -1,5 +1,6 @@
 package akyto.core;
 
+import akyto.core.disguise.file.DisguiseFile;
 import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
@@ -43,6 +44,7 @@ public class Core extends JavaPlugin {
 	private DatabaseType databaseType;
 	private LoaderHandler loaderHandler;
 	private RankFile rankFile;
+	private DisguiseFile disguiseFile;
 	private PunishmentFile punishmentFile;
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
@@ -76,6 +78,7 @@ public class Core extends JavaPlugin {
 		this.loaderHandler = new LoaderHandler(this);
 		this.managerHandler = new ManagerHandler(this);
 		this.rankFile = new RankFile(this);
+		this.disguiseFile = new DisguiseFile(this);
 		this.punishmentFile = new PunishmentFile(this);
 		this.commandHandler = new CommandHandler(this);
 	}

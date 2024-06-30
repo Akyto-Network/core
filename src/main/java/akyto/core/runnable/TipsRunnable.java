@@ -10,12 +10,13 @@ import java.util.List;
 public class TipsRunnable extends BukkitRunnable {
 
 	private int idx = 0;
-	private final String prefix = ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Tips" + ChatColor.GRAY + "] " + ChatColor.RESET;
+	private final String tips = ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Tips" + ChatColor.GRAY + "] " + ChatColor.RESET;
+	private final String reminder = ChatColor.GRAY + "[" + ChatColor.RED + "Reminder" + ChatColor.GRAY + "] " + ChatColor.RESET;
 	private final List<String> messages = Arrays.asList(
-			prefix + "Too high C.P.S can result in a ban so avoid :p",
-			prefix + "Don't forget to join our discord server " + ChatColor.RED + "discord.akyto.club",
-			prefix + "Vote for us on NameMC: " + ChatColor.RED + "namemc.com/server/akyto.club",
-			prefix + "The server is still under development if you see any bugs report them to us and don't abuse them :3"
+			reminder + "High CPS can result to a ban.",
+			tips + "Join our discord server. Everything happens there" + ChatColor.RED + "discord.akyto.club",
+			tips + "Like us on NameMC: " + ChatColor.RED + "namemc.com/server/akyto.club",
+			reminder + "Akyto is still under development. Expect to play with some bugs at the moment."
 	);
 
 	@Override

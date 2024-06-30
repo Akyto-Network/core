@@ -1,13 +1,13 @@
 database:
-  type: "FLAT_FILES"
+  type: "MYSQL"
 
 bungeecord:
-  enable: false
+  enable: true
   kick-whitout-using-correct-ip: "&cPlease, use the correct ip of the server to connect on it."
-  move-to-hub-at-restart: true
+  move-to-hub-at-restart: false
   hub-instance: "hub"
   whitelist:
-    - "0.0.0.0"
+    - "172.93.104.4"
     
 namemc:
   check-enabled: true
@@ -60,6 +60,7 @@ permissions:
   chat-closed-bypass: "akyto.chat.closed.bypass"
   freeze: "akyto.staff"
   modmode: "akyto.staff"
+  disguise: "akyto.disguise"
 
 broadcast-settings:
   rank-promote: true

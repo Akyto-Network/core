@@ -20,6 +20,7 @@ public class Permission {
 	private final String bypassChatClosed;
 	private final String freeze;
 	private final String modMode;
+	private final String disguise;
 	
 	public Permission(final Core main) {
 		this.rankAdmin = main.getConfig().getString("permissions.rank-admin");
@@ -36,6 +37,7 @@ public class Permission {
 		this.bypassChatClosed = main.getConfig().getString("permissions.chat-closed-bypass");
 		this.freeze = main.getConfig().getString("permissions.freeze");
 		this.modMode = main.getConfig().getString("permissions.modmode");
+		this.disguise = main.getConfig().getString("permissions.disguise");
 	}
 
 }
