@@ -27,7 +27,7 @@ public class RankManager {
 	}
 	
 	public void createRank(final String name) {
-		this.ranks.put(name, new RankEntry(ChatColor.GREEN.toString(), ChatColor.GREEN.toString(), false, Lists.newArrayList(), 0));
+		this.ranks.put(name, new RankEntry(ChatColor.GREEN.toString(), ChatColor.GREEN.toString() ,false, false, Lists.newArrayList(), 0));
 	}
 
 }

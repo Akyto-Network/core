@@ -22,6 +22,7 @@ public class Permission {
 	private final String modMode;
 	private final String disguise;
 	private final String bypassCpsCap;
+	private final String whitelist;
 	
 	public Permission(final Core main) {
 		this.rankAdmin = main.getConfig().getString("permissions.rank-admin");
@@ -40,6 +41,7 @@ public class Permission {
 		this.modMode = main.getConfig().getString("permissions.modmode");
 		this.disguise = main.getConfig().getString("permissions.disguise");
 		this.bypassCpsCap = main.getConfig().getString("permissions.bypass-breed");
+		this.whitelist = main.getConfig().getString("permissions.whitelist");
 	}
 
 }

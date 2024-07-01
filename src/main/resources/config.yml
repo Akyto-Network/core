@@ -8,6 +8,14 @@ bungeecord:
   hub-instance: "hub"
   whitelist:
     - "172.93.104.4"
+
+whitelist:
+  state: "HAVE_RANK"
+  kick-all-message: "&cCurrently whitelisted, please join our discord for more information."
+  kick-blacklist: "&cYou are currently blacklisted from the whitelist!"
+  kick-only-have-rank-message: "&cYou must be whitelisted to join the server.\n &cYou can benefit from a &6whitelist &cby purchasing a &6rank &cor by getting whitelisted through a &6friend who owns tokens&c."
+  allowed: [kezukdev, rimk, "KalulthanL", "duziy", "447benek", "FutiCraft"]
+  blacklist: [""]
     
 namemc:
   check-enabled: true
@@ -27,6 +35,8 @@ chat:
   
 autoclicker:
   max-cps: 20
+  bypass: ["kezukdev", "rimk"]
+  cancel-hit-message: "&cClick slower, thank you."
   
 freeze:
   movement-message:
@@ -62,6 +72,8 @@ permissions:
   freeze: "akyto.staff"
   modmode: "akyto.staff"
   disguise: "akyto.disguise"
+  bypass-breed: "akyto.bypass.cps-cap"
+  whitelist: "akyto.whitelist.management"
 
 broadcast-settings:
   rank-promote: true
@@ -102,6 +114,11 @@ messages:
   neverPlayed: "&c%target%'s never played on the network."
   rank-promote: "&a%target% &8is promoted to &c%rankUp%"
   rank-demote: "&c%target% &8has been demoted."
+  whitelist-disabled: "&cWhitelist has been disabled."
+  whitelist-enabled: "&aThe whitelist was enabled with the condition &f%type%."
+  whitelist-add: "&aYou have been added &f%player% &ato the whitelist list."
+  whitelist-remove: "&cYou have been removed &e%player% &cfrom the whitelist list."
+  whitelist-blacklist: "&cYou have been blacklist &f%player% &cname from the whitelist."
   banHelp:
     - "&7&m----------------------"
     - "&8/ban <player> <time> <reason>"

@@ -16,6 +16,8 @@ public class CommandHandler {
 				new PunishmentsCommand(),
 				new ChatCommand(),
 				new FreezeCommand(),
+				new BreedCommand(),
+				new WhitelistCommand(),
 				new HubCommand(),
 				new ListCommand(),
 				new MessageCommand(),

@@ -40,6 +40,8 @@ public class ProfileManager {
     public ProfileManager(final Core main) {
 		this.main = main;
 		Core.API.getBypassCpsCap().addAll(Core.API.getConfig().getStringList("autoclicker.bypass"));
+		Core.API.getWhitelisted().addAll(Core.API.getConfig().getStringList("whitelist.allowed"));
+		Core.API.getBlacklistWhitelist().addAll(Core.API.getConfig().getStringList("whitelist.blacklist"));
 		final long timeUnit = System.currentTimeMillis();
 		if (main.getDatabaseType().equals(DatabaseType.FLAT_FILES)) {
 			final File dir = new File(this.main.getDataFolder() + "/players/");

@@ -32,10 +32,12 @@ public class RankFile {
 		if (config.getKeys(true).size() > 2) {
 			for (String str : getConfig().getConfigurationSection("ranks").getKeys(false)) {
 				final String spacer = getConfig().getConfigurationSection("ranks").getString(str + ".spaceBetweenPrefixAndColor");
+				final String rankWhitelist = getConfig().getConfigurationSection("ranks").getString(str + ".whitelist");
 				RankEntry rank = new RankEntry(
 						getConfig().getConfigurationSection("ranks").getString(str + ".prefix"),
 						getConfig().getConfigurationSection("ranks").getString(str + ".color"),
 						Boolean.valueOf(spacer),
+						Boolean.valueOf(rankWhitelist),
 						getConfig().getConfigurationSection("ranks").getStringList(str + ".permissions"),
 						getConfig().getConfigurationSection("ranks").getInt(str + ".power", 0)
 				);

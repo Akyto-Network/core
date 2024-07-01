@@ -1,10 +1,16 @@
 package akyto.core.handler.listener;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.whitelist.WhitelistState;
+import co.aikar.idb.DB;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,6 +58,29 @@ public class PlayerListener implements Listener {
             	return;
     		}
     	}
+		if (!Core.API.getManagerHandler().getServerManager().getWhitelistState().equals(WhitelistState.OFF)) {
+			if (Core.API.getBlacklistWhitelist().contains(event.getPlayer().getName().toLowerCase())) {
+				event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, Core.API.getLoaderHandler().getMessage().getWhitelistKickBlacklist());
+				return;
+			}
+			if (Core.API.getManagerHandler().getServerManager().getWhitelistState().equals(WhitelistState.ON_LIST)) {
+				if (!Core.API.getWhitelisted().contains(event.getPlayer().getName().toLowerCase())) {
+					event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, Core.API.getLoaderHandler().getMessage().getWhitelistKickOnList());
+					return;
+				}
+			}
+			if (Core.API.getManagerHandler().getServerManager().getWhitelistState().equals(WhitelistState.HAVE_RANK)) {
+				if (!Core.API.getWhitelisted().contains(event.getPlayer().getName().toLowerCase())){
+					try {
+						String rank = DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", event.getPlayer().getName()).getString("rank");
+						if (!Core.API.getManagerHandler().getRankManager().getRanks().get(rank).hasRankWhitelist()) {
+							event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, Core.API.getLoaderHandler().getMessage().getWhitelistKickRank());
+							return;
+						}
+					} catch (SQLException e) { throw new RuntimeException(e); }
+				}
+			}
+		}
 		if (this.main.getManagerHandler().getPunishmentManager().getBanned().containsKey(player.getUniqueId())) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			final BanEntry ban = this.main.getManagerHandler().getPunishmentManager().getBanned().get(player.getUniqueId());

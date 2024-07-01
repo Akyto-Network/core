@@ -57,6 +57,10 @@ public class Core extends JavaPlugin {
 	private HikariDataSource dataSource;
 	@Getter
 	private final List<String> bypassCpsCap = Lists.newArrayList();
+	@Getter
+	private final List<String> whitelisted = Lists.newArrayList();
+	@Getter
+	private final List<String> blacklistWhitelist = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;
@@ -98,6 +102,9 @@ public class Core extends JavaPlugin {
 		this.saveRank();
 		this.savePunishment();
 		this.getConfig().set("autoclicker.bypass", this.getBypassCpsCap());
+		this.getConfig().set("whitelist.state", this.getManagerHandler().getServerManager().getWhitelistState().toString());
+		this.getConfig().set("whitelist.allowed", this.getWhitelisted());
+		this.getConfig().set("whitelist.blacklist", this.getBlacklistWhitelist());
 		this.managerHandler.getRankManager().getRanks().clear();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
@@ -156,8 +163,12 @@ public class Core extends JavaPlugin {
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".color", rank.getValue().getColor());
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor", String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()));
+				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".whitelist");
+				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".whitelist", String.valueOf(rank.getValue().hasRankWhitelist().booleanValue()));
 				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".permissions");
 				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".permissions", rank.getValue().getPermissions());
+				this.getRankFile().getConfig().createSection("ranks." + rank.getKey() + ".power");
+				this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".power", rank.getValue().getPower());
 			}
 			if (this.getRankFile().getConfig().getConfigurationSection("ranks." + rank.getKey()) != null) {
 				rank.getValue().getPermissions().forEach(str -> {
@@ -170,8 +181,14 @@ public class Core extends JavaPlugin {
 					if (!this.getRankFile().getConfig().getString("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor").equals(String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()))) {
 						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".spaceBetweenPrefixAndColor", String.valueOf(rank.getValue().hasSpaceBetweenColor().booleanValue()));
 					}
+					if (!this.getRankFile().getConfig().getString("ranks." + rank.getKey() + ".whitelist").equals(String.valueOf(rank.getValue().hasRankWhitelist().booleanValue()))) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".whitelist", String.valueOf(rank.getValue().hasRankWhitelist().booleanValue()));
+					}
 					if (!this.getRankFile().getConfig().getStringList("ranks." + rank.getKey() + ".permissions").contains(str)) {
 						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".permissions", rank.getValue().getPermissions());
+					}
+					if (this.getRankFile().getConfig().getInt("ranks." + rank.getKey() + ".power") != rank.getValue().getPower()) {
+						this.getRankFile().getConfig().set("ranks." + rank.getKey() + ".power", rank.getValue().getPower());
 					}
 				});
 			}

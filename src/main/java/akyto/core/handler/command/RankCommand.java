@@ -57,6 +57,21 @@ public class RankCommand {
 			sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "upgraded"));
 			return;
 		}
+		if (args[0].equalsIgnoreCase("setwhitelist") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
+			if (!this.main.getManagerHandler().getRankManager().getRanks().containsKey(args[1].toLowerCase())) {
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
+				return;
+			}
+			try {
+				Boolean bool = Boolean.parseBoolean(args[2]);
+				this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setCanJoinWhitelist(bool);
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank can join while whitelist").replace("%value%", args[2]).replace("%editType%", "set to"));
+			} catch (Exception e) {
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank can join while whitelist"));
+				return;
+			}
+			return;
+		}
 		if (args[0].equalsIgnoreCase("setpower") && args.length == 3 && sender.hasPermission(this.main.getLoaderHandler().getPermission().getRankAdmin())) {
 			if (!this.main.getManagerHandler().getRankManager().getRanks().containsKey(args[1].toLowerCase())) {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank"));
@@ -65,7 +80,7 @@ public class RankCommand {
 			try {
 				int power = Integer.parseInt(args[2]);
 				this.main.getManagerHandler().getRankManager().getRanks().get(args[1].toLowerCase()).setPower(power);
-				sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank color").replace("%value%", args[2]).replace("%editType%", "set to"));
+				sender.sendMessage(this.main.getLoaderHandler().getMessage().getEdited().replace("%key%", args[1]).replace("%type%", "rank power").replace("%value%", args[2]).replace("%editType%", "set to"));
 			} catch (Exception e) {
 				sender.sendMessage(this.main.getLoaderHandler().getMessage().getNotExist().replace("%value%", args[1]).replace("%type%", "rank power"));
 				return;
