@@ -94,15 +94,6 @@ public class CoreUtils {
 		});
 	}
 
-	//TODO: Make bypass with command for add into a collection.
-    public static boolean hitAllowed(final UUID uuid) {
-    	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
-    	if (profile.getCps() >= Core.API.getLoaderHandler().getSettings().getMaximumCps()) {
-    		return false;
-    	}
-    	return true;
-    }
-
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
 	}

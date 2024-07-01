@@ -147,6 +147,9 @@ public class PlayerListener implements Listener {
 				profile.setCps(clicks);
 				profile.setClicks(0);
 				profile.setLastClickTime(currentTime);
+				if (!Core.API.getBypassCpsCap().contains(event.getPlayer().getName())) {
+					profile.setAllowClick(profile.getCps() < Core.API.getLoaderHandler().getSettings().getMaximumCps());
+				}
 			}
 		}
 		if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {

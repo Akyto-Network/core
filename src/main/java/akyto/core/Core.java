@@ -18,6 +18,7 @@ import akyto.core.utils.database.DatabaseSetup;
 import akyto.core.utils.database.DatabaseType;
 import akyto.core.utils.database.api.MySQL;
 import co.aikar.idb.BukkitDB;
+import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -53,6 +55,8 @@ public class Core extends JavaPlugin {
 	private boolean debug;
 	private boolean shutdown = false;
 	private HikariDataSource dataSource;
+	@Getter
+	private final List<String> bypassCpsCap = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;
@@ -93,6 +97,7 @@ public class Core extends JavaPlugin {
 		this.saveDatabase();
 		this.saveRank();
 		this.savePunishment();
+		this.getConfig().set("autoclicker.bypass", this.getBypassCpsCap());
 		this.managerHandler.getRankManager().getRanks().clear();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }

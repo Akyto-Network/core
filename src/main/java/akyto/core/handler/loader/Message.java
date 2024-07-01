@@ -45,6 +45,7 @@ public class Message {
 	private final String nameMCLike;
 	private final String nameMCUnlike;
 	private final String nameMCLikeTag;
+	private final String clickCancel;
 	private final List<String> movementFrozeMessage = Lists.newArrayList();
 	private final List<String> punishmentInfo = Lists.newArrayList();
 	private final List<String> muteHelp = Lists.newArrayList();
@@ -89,6 +90,7 @@ public class Message {
 		this.nameMCLike = CoreUtils.translate(main.getConfig().getString("messages.namemc-liked"));
 		this.nameMCUnlike = CoreUtils.translate(main.getConfig().getString("messages.namemc-unliked"));
 		this.nameMCLikeTag = CoreUtils.translate(main.getConfig().getString("namemc.like-tag"));
+		this.clickCancel = CoreUtils.translate(main.getConfig().getString("autoclicker.cancel-hit-message"));
         this.bungeeIps.addAll(main.getConfig().getStringList("bungeecord.whitelist"));
 		main.getConfig().getStringList("messages.punishmentInformations").forEach(str -> this.punishmentInfo.add(CoreUtils.translate(str)));
 		main.getConfig().getStringList("messages.muteHelp").forEach(str -> this.muteHelp.add(CoreUtils.translate(str)));

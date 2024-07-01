@@ -39,6 +39,7 @@ public class ProfileManager {
 
     public ProfileManager(final Core main) {
 		this.main = main;
+		Core.API.getBypassCpsCap().addAll(Core.API.getConfig().getStringList("autoclicker.bypass"));
 		final long timeUnit = System.currentTimeMillis();
 		if (main.getDatabaseType().equals(DatabaseType.FLAT_FILES)) {
 			final File dir = new File(this.main.getDataFolder() + "/players/");
