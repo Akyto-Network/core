@@ -216,15 +216,24 @@ public class PlayerListener implements Listener {
 			this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).applyChatCooldown(this.main.getManagerHandler().getServerManager().getChatPriority().getTime());
 		}
 		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(pls.getUniqueId());
-		final String prefix = CoreUtils.translate(rank.getPrefix());
-		final String color = CoreUtils.translate(rank.getColor());
+		String prefix = CoreUtils.translate(rank.getPrefix());
+		String color = CoreUtils.translate(rank.getColor());
+		boolean spacer = rank.hasSpaceBetweenColor();
+		if (Core.API.getManagerHandler().getProfileManager().getDisguised().containsKey(pls.getUniqueId())) {
+			prefix = "";
+			spacer = false;
+			color = ChatColor.GREEN.toString();
+		}
+		String finalPrefix = prefix;
+		boolean finalSpacer = spacer;
+		String finalColor = color;
 		if (event.getMessage().startsWith(this.main.getLoaderHandler().getMessage().getScSymbol()) && pls.hasPermission("akyto.staff")) {
 			Bukkit.getOnlinePlayers().stream()
 					.filter(player -> player.hasPermission("akyto.staff"))
 					.forEach(player -> {
 						player.sendMessage(this.main.getLoaderHandler().getMessage().getScFormat()
-								.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-								.replace("%rankColor%", color).replace("%player%", pls.getName())
+								.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
+								.replace("%rankColor%", finalColor).replace("%player%", pls.getDisplayName())
 								.replace("%msg%", event.getMessage().replaceFirst("!", "")));
 			});
 			event.setCancelled(true);
@@ -236,23 +245,23 @@ public class PlayerListener implements Listener {
 					List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
 					p.remove(Bukkit.getPlayer(player.getName()));
 					player.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-							.replace("%rankColor%", color)
-							.replace("%player%", pls.getName())
+							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
+							.replace("%rankColor%", finalColor)
+							.replace("%player%", "%1$s")
 							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
 					player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
 					p.forEach(ppl -> ppl.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-							.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-							.replace("%rankColor%", color)
-							.replace("%player%", pls.getName())
+							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
+							.replace("%rankColor%", finalColor)
+							.replace("%player%", "%1$s")
 							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage()))));
 					event.setCancelled(true);
 		});
 		event.setFormat(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-				.replace("%prefix%", prefix + (rank.hasSpaceBetweenColor() ? " " : ""))
-				.replace("%rankColor%", color)
+				.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
+				.replace("%rankColor%", finalColor)
 				.replace("%player%", "%1$s")
 				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 				.replace("%msg%", "%2$s")));

@@ -40,6 +40,9 @@ public class ListCommand {
                 }).reversed())
                 .map(player -> {
                     String rankColor = Core.API.getManagerHandler().getProfileManager().getRank(player.getUniqueId()).getColor();
+                    if (Core.API.getManagerHandler().getProfileManager().getDisguised().containsKey(player.getUniqueId())) {
+                        rankColor = ChatColor.GREEN.toString();
+                    }
                     return CoreUtils.translate(rankColor) + player.getDisplayName();
                 })
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));

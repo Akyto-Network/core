@@ -190,7 +190,6 @@ public class Core extends JavaPlugin {
 				if (databaseType.equals(DatabaseType.MYSQL)){
 					databaseSetup.exit(player.getUniqueId());
 				}
-				player.kickPlayer(CoreUtils.translate(this.getConfig().getString("messages.server-restart")));
 			});
 		}
 		if (databaseType.equals(DatabaseType.MYSQL)) dataSource.close();
