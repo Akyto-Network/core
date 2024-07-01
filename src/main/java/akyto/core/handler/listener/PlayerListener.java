@@ -135,20 +135,26 @@ public class PlayerListener implements Listener {
 			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
 		}
 	}
-	
-    @EventHandler(priority=EventPriority.MONITOR)
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.LEFT_CLICK_AIR)) {
-        	final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId());
-        	profile.setCps(profile.getCps()+1);
-        	Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> { profile.setCps(profile.getCps()-1); } , 20);
-        }
-        if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {
-            if (event.getPlayer().getOpenInventory().getType() != InventoryType.DISPENSER) {
-                event.setCancelled(true);
-            }
-        }
-    }
+
+	@EventHandler(priority=EventPriority.MONITOR)
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+			final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(event.getPlayer().getUniqueId());
+			int clicks = profile.getClicks();
+			profile.setClicks(++clicks);
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - profile.getLastClickTime() >= 1000) {
+				profile.setCps(clicks);
+				profile.setClicks(0);
+				profile.setLastClickTime(currentTime);
+			}
+		}
+		if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {
+			if (event.getPlayer().getOpenInventory().getType() != InventoryType.DISPENSER) {
+				event.setCancelled(true);
+			}
+		}
+	}
     
 	@EventHandler(priority=EventPriority.LOW)
 	public void PlayerPlaceBlockEvent(final BlockPlaceEvent event) {

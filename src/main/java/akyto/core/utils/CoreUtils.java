@@ -81,7 +81,7 @@ public class CoreUtils {
 				if (response.toString().equalsIgnoreCase("true")) {
 					responseString.set("true");
 				} else {
-					throw new IOException("Invalid response from URL: " + uri);
+					responseString.set("false");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

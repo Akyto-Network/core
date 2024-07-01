@@ -18,6 +18,8 @@ public class Profile {
 	private String rank;
 	private long chatCooldown = 0L;
 	private int cps;
+	private long lastClickTime = System.currentTimeMillis();
+	private int clicks = 0;
 	private boolean allowClick;
     private boolean frozen;
     private boolean likeNameMC;

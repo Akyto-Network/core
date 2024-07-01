@@ -16,6 +16,7 @@ import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
 import akyto.core.utils.format.TimeUtils;
+import org.bukkit.entity.Player;
 
 public class PunishmentsCommand {
 	
@@ -50,10 +51,14 @@ public class PunishmentsCommand {
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     	String reason = "Unfair Advantage";
 		new TimeUtils(args[1], calendar);
-        reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Unfair Advantage";  
-        this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName(), PunishmentType.BAN);
+        reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Unfair Advantage";
+		String target = args[0];
+		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
+			target = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]);
+		}
+        this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(target) != null ? Bukkit.getPlayer(target).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName(), PunishmentType.BAN);
         if (this.main.getLoaderHandler().getSettings().isBanBroad() && !sender.getName().equalsIgnoreCase("CONSOLE")) {
-        	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getBanAnnounce().replace("%banned%", args[0]).replace("%reason%", reason).replace("%judge%", sender.getName()));
+        	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getBanAnnounce().replace("%banned%", target).replace("%reason%", reason).replace("%judge%", sender.getName()));
         }
     }
 	
@@ -111,9 +116,13 @@ public class PunishmentsCommand {
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		new TimeUtils(args[1], calendar);
         String reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Flood";
-        this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(args[0]) != null ? Bukkit.getPlayer(args[0]).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName(), PunishmentType.MUTE);
+		String target = args[0];
+		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
+			target = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]);
+		}
+        this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(target) != null ? Bukkit.getPlayer(target).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName(), PunishmentType.MUTE);
         if (this.main.getLoaderHandler().getSettings().isMuteBroad()) {
-        	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getMuteAnnounce().replace("%muted%", args[0]).replace("%reason%", reason).replace("%judge%", sender.getName()));
+        	Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getMuteAnnounce().replace("%muted%", target).replace("%reason%", reason).replace("%judge%", sender.getName()));
         }
     }
 

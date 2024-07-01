@@ -26,65 +26,12 @@ public class DisguiseCommand {
     public void giveaway(final CommandArgs arg) {
         final Player sender = arg.getPlayer();
         final String[] args = arg.getArgs();
-        if (!sender.hasPermission(Core.API.getLoaderHandler().getPermission().getDisguise())) {
-            sender.sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
-            return;
-        }
         final ManagerHandler managerHandler = Core.API.getManagerHandler();
-        Bukkit.getPlayer(sender.getUniqueId());
         final Profile profile = managerHandler.getProfileManager().getProfiles().get(sender.getUniqueId());
-        if (args[0].equalsIgnoreCase("enable") || args[0].equalsIgnoreCase("on")) {
-            if (profile.isDisguised()) {
-                sender.sendMessage(ChatColor.RED + "Please return to your normal state for a change.");
-                return;
-            }
-            if (!profile.isInState(ProfileState.FREE)) {
-                sender.sendMessage(ChatColor.RED + "");
-            }
-            Random random = new FastRandom();
-            final UUID uuid = sender.getUniqueId();
-            final ServerManager serverManager = managerHandler.getServerManager();
-            Set<Map.Entry<String, DisguiseEntry>> entries = serverManager.getDisguise().entrySet();
-            Map.Entry<String, DisguiseEntry>[] entriesArray = entries.toArray(new Map.Entry[0]);
-            Map.Entry<String, DisguiseEntry> randomEntry = entriesArray[random.nextInt(entriesArray.length)];
-            DisguiseEntry disguiseEntry = randomEntry.getValue();
-            if (!Core.API.getManagerHandler().getProfileManager().getDisguised().isEmpty()) {
-                boolean nameTaken = true;
-                while (nameTaken) {
-                    for (Map.Entry<UUID, DisguiseEntry> entry : Core.API.getManagerHandler().getProfileManager().getDisguised().entrySet()) {
-                        if (entry.getValue().equals(disguiseEntry)) {
-                            randomEntry = entriesArray[random.nextInt(entriesArray.length)];
-                            disguiseEntry = randomEntry.getValue();
-                            nameTaken = true;
-                            break;
-                        }
-                    }
-                    nameTaken = false;
-                }
-            }
-            DisguiseEntry finalDisguiseEntry = disguiseEntry;
-            Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().put(finalDisguiseEntry.getName(), sender.getName());
-            Bukkit.getOnlinePlayers().forEach(players -> {
-                CoreUtils.disguise(players, sender, finalDisguiseEntry);
-                players.hidePlayer(sender);
-            });
-            Bukkit.getScheduler().runTaskLater(Core.API, ()-> {
-                Bukkit.getOnlinePlayers().forEach(players -> {
-                    players.showPlayer(sender);
-                });
-            },2L);
-            Core.API.getManagerHandler().getProfileManager().getDisguised().put(sender.getUniqueId(), finalDisguiseEntry);
-            sender.setPlayerListName(ChatColor.GREEN + finalDisguiseEntry.getName());
-            sender.setDisplayName(finalDisguiseEntry.getName());
-            profile.setDisguised(true);
-            sender.teleport(sender.getLocation());
-            sender.sendMessage(ChatColor.GRAY + "You've been disguised now and you'r name is: " + ChatColor.RED + finalDisguiseEntry.getName());
+        if (!sender.hasPermission(Core.API.getLoaderHandler().getPermission().getDisguise())) {
+            sender.sendMessage(CoreUtils.translate(Core.API.getLoaderHandler().getMessage().getNoPermission()));
         }
-        if (args[0].equalsIgnoreCase("disable") || args[0].equalsIgnoreCase("off")) {
-            if (!profile.isDisguised()) {
-                sender.sendMessage(ChatColor.RED + "You're not disguised!");
-                return;
-            }
+        if (profile.isDisguised()) {
             Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().remove(Core.API.getManagerHandler().getProfileManager().getDisguised().get(sender.getUniqueId()).getName());
             sender.clearFakeNamesAndSkins();
             Bukkit.getOnlinePlayers().forEach(players -> {
@@ -101,6 +48,48 @@ public class DisguiseCommand {
                 });
             },2L);
             sender.setDisplayName(sender.getName());
+            return;
         }
+        if (!profile.isInState(ProfileState.FREE)) {
+            sender.sendMessage(ChatColor.RED + "");
+        }
+        Random random = new FastRandom();
+        final UUID uuid = sender.getUniqueId();
+        final ServerManager serverManager = managerHandler.getServerManager();
+        Set<Map.Entry<String, DisguiseEntry>> entries = serverManager.getDisguise().entrySet();
+        Map.Entry<String, DisguiseEntry>[] entriesArray = entries.toArray(new Map.Entry[0]);
+        Map.Entry<String, DisguiseEntry> randomEntry = entriesArray[random.nextInt(entriesArray.length)];
+        DisguiseEntry disguiseEntry = randomEntry.getValue();
+        if (!Core.API.getManagerHandler().getProfileManager().getDisguised().isEmpty()) {
+            boolean nameTaken = true;
+            while (nameTaken) {
+                for (Map.Entry<UUID, DisguiseEntry> entry : Core.API.getManagerHandler().getProfileManager().getDisguised().entrySet()) {
+                    if (entry.getValue().equals(disguiseEntry)) {
+                        randomEntry = entriesArray[random.nextInt(entriesArray.length)];
+                        disguiseEntry = randomEntry.getValue();
+                        nameTaken = true;
+                        break;
+                    }
+                }
+                nameTaken = false;
+            }
+        }
+        DisguiseEntry finalDisguiseEntry = disguiseEntry;
+        Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().put(finalDisguiseEntry.getName(), sender.getName());
+        Bukkit.getOnlinePlayers().forEach(players -> {
+            CoreUtils.disguise(players, sender, finalDisguiseEntry);
+            players.hidePlayer(sender);
+        });
+        Bukkit.getScheduler().runTaskLater(Core.API, ()-> {
+            Bukkit.getOnlinePlayers().forEach(players -> {
+                players.showPlayer(sender);
+            });
+        },2L);
+        Core.API.getManagerHandler().getProfileManager().getDisguised().put(sender.getUniqueId(), finalDisguiseEntry);
+        sender.setPlayerListName(ChatColor.GREEN + finalDisguiseEntry.getName());
+        sender.setDisplayName(finalDisguiseEntry.getName());
+        profile.setDisguised(true);
+        sender.teleport(sender.getLocation());
+        sender.sendMessage(ChatColor.GRAY + "You've been disguised now and you'r name is: " + ChatColor.RED + finalDisguiseEntry.getName());
     }
 }

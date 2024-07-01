@@ -1,5 +1,6 @@
 package akyto.core.handler.command;
 
+import akyto.core.rank.RankEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,6 +11,9 @@ import akyto.core.profile.Profile;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class MessageCommand {
 	
@@ -25,7 +29,10 @@ public class MessageCommand {
 			return;
 		}
 
-		final Player target = Bukkit.getPlayer(args[0]);
+		Player target = Bukkit.getPlayer(args[0]);
+		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])) {
+			target = Bukkit.getPlayer(Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]));
+		}
 
 		if (target == null) {
 			sender.sendMessage(ChatColor.RED + args[0] + " isn't connected!");
@@ -34,28 +41,44 @@ public class MessageCommand {
 
 		final Profile senderProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
 		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(target.getUniqueId());
-		String msg = args.length > 1 ? StringUtils.join(args, ' ', 1, args.length) : "Hi, how are you today?"; 
-
+		String msg = args.length > 1 ? StringUtils.join(args, ' ', 1, args.length) : "Hi, how are you today?";
+		final HashMap<String, RankEntry> rank = this.main.getManagerHandler().getRankManager().getRanks();
+		String rankSender = rank.get(senderProfile.getRank()).getPrefix();
+		String rankReceiver = rank.get(receiverProfile.getRank()).getPrefix();
+		String senderColor = rank.get(senderProfile.getRank()).getColor();
+		String receiverColor = rank.get(receiverProfile.getRank()).getColor();
+		boolean spaceReceiver = rank.get(receiverProfile.getRank()).hasSpaceBetweenColor();
+		boolean spaceSender = rank.get(senderProfile.getRank()).hasSpaceBetweenColor();
+		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
+			rankReceiver = "";
+			receiverColor = ChatColor.GREEN.toString();
+			spaceReceiver = false;
+		}
+		if (sender.hasFakeName(sender)){
+			rankSender = "";
+			senderColor = ChatColor.GREEN.toString();
+			spaceSender = false;
+		}
 		sender.sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
-				.replace("%senderColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%sender%", sender.getName())
-				.replace("%receiverColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%receiver%", args[0])
+				.replace("%senderColorRank%", senderColor)
+				.replace("%sender%", sender.getDisplayName())
+				.replace("%receiverColorRank%", receiverColor)
+				.replace("%receiver%", target.getDisplayName())
 				.replace("%incommingType%", "To")
-				.replace("%player%", args[0])
-				.replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%rank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
+				.replace("%player%", target.getDisplayName())
+				.replace("%rankColor%", receiverColor)
+				.replace("%rank%", rankReceiver + (spaceReceiver ? " " : ""))
 				.replace("%message%", msg));
 
-		Bukkit.getPlayer(args[0]).sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
-				.replace("%senderColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%sender%", sender.getName())
-				.replace("%receiverColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%receiver%", args[0])
+		target.sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
+				.replace("%senderColorRank%", senderColor)
+				.replace("%sender%", sender.getDisplayName())
+				.replace("%receiverColorRank%", receiverColor)
+				.replace("%receiver%", target.getDisplayName())
 				.replace("%incommingType%", "From")
-				.replace("%player%", sender.getName())
-				.replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%rank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
+				.replace("%player%", sender.getDisplayName())
+				.replace("%rankColor%", senderColor)
+				.replace("%rank%", rankSender + (spaceSender ? " " : ""))
 				.replace("%message%", msg));
 
 		receiverProfile.setResponsive(sender.getUniqueId());
@@ -86,26 +109,44 @@ public class MessageCommand {
 		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(senderProfile.getResponsive());
 		String msg = StringUtils.join(args, ' ', 0, args.length);
 
+		Player receiver = Bukkit.getPlayer(senderProfile.getResponsive());
+		final HashMap<String, RankEntry> rank = this.main.getManagerHandler().getRankManager().getRanks();
+		String rankSender = rank.get(senderProfile.getRank()).getPrefix();
+		String rankReceiver = rank.get(receiverProfile.getRank()).getPrefix();
+		String senderColor = rank.get(senderProfile.getRank()).getColor();
+		String receiverColor = rank.get(receiverProfile.getRank()).getColor();
+		boolean spaceReceiver = rank.get(receiverProfile.getRank()).hasSpaceBetweenColor();
+		boolean spaceSender = rank.get(senderProfile.getRank()).hasSpaceBetweenColor();
+		if (receiver.hasFakeName(sender)){
+			rankReceiver = "";
+			receiverColor = ChatColor.GREEN.toString();
+			spaceReceiver = false;
+		}
+		if (sender.hasFakeName(sender)){
+			rankSender = "";
+			senderColor = ChatColor.GREEN.toString();
+			spaceSender = false;
+		}
 		sender.sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
-				.replace("%senderColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%sender%", sender.getName())
-				.replace("%receiverColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%receiver%", Bukkit.getPlayer(senderProfile.getResponsive()).getName())
+				.replace("%senderColorRank%", senderColor)
+				.replace("%sender%", sender.getDisplayName())
+				.replace("%receiverColorRank%", receiverColor)
+				.replace("%receiver%", Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName())
 				.replace("%incommingType%", "To")
-				.replace("%player%", Bukkit.getPlayer(senderProfile.getResponsive()).getName())
-				.replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%rank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
+				.replace("%player%", Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName())
+				.replace("%rankColor%", rankSender)
+				.replace("%rank%", rankReceiver + (spaceReceiver ? " " : ""))
 				.replace("%message%", msg));
 
 		Bukkit.getPlayer(senderProfile.getResponsive()).sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
-				.replace("%senderColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%sender%", sender.getName())
-				.replace("%receiverColorRank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(receiverProfile.getRank()).getColor()))
-				.replace("%receiver%", Bukkit.getPlayer(senderProfile.getResponsive()).getName())
+				.replace("%senderColorRank%", senderColor)
+				.replace("%sender%", sender.getDisplayName())
+				.replace("%receiverColorRank%", receiverColor)
+				.replace("%receiver%", Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName())
 				.replace("%incommingType%", "From")
-				.replace("%player%", sender.getName())
-				.replace("%rankColor%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getColor()))
-				.replace("%rank%", CoreUtils.translate(this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).getPrefix()) + (this.main.getManagerHandler().getRankManager().getRanks().get(senderProfile.getRank()).hasSpaceBetweenColor() ? " " : ""))
+				.replace("%player%", sender.getDisplayName())
+				.replace("%rankColor%", senderColor)
+				.replace("%rank%", rankSender + (spaceSender ? " " : ""))
 				.replace("%message%", msg));
 
 		receiverProfile.setResponsive(sender.getUniqueId());
