@@ -72,7 +72,12 @@ public class PlayerListener implements Listener {
 			if (Core.API.getManagerHandler().getServerManager().getWhitelistState().equals(WhitelistState.HAVE_RANK)) {
 				if (!Core.API.getWhitelisted().contains(event.getPlayer().getName().toLowerCase())){
 					try {
-						String rank = DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", event.getPlayer().getName()).getString("rank");
+						String rank = "default";
+                        try {
+                            if (Core.API.getMySQL().existPlayerManagerAsync(event.getPlayer().getUniqueId()).get()) {
+								rank = DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", event.getPlayer().getName()).getString("rank");
+                            }
+                        } catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
 						if (!Core.API.getManagerHandler().getRankManager().getRanks().get(rank).hasRankWhitelist()) {
 							event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, Core.API.getLoaderHandler().getMessage().getWhitelistKickRank());
 							return;

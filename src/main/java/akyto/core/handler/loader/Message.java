@@ -25,6 +25,7 @@ public class Message {
 	private final String chatFormat;
 	private final String banDisconnect;
 	private final String banAnnounce;
+	private final String blacklistDisconnect;
 	private final String muteAnnounce;
 	private final String unmuteAnnounce;
 	private final String muteCancel;
@@ -54,6 +55,8 @@ public class Message {
 	private final String whitelistKickOnList;
 	private final String whitelistKickRank;
 	private final String whitelistKickBlacklist;
+	private final String blacklistAnnounce;
+	private final String unblacklistAnnounce;
 	private final List<String> movementFrozeMessage = Lists.newArrayList();
 	private final List<String> punishmentInfo = Lists.newArrayList();
 	private final List<String> muteHelp = Lists.newArrayList();
@@ -65,6 +68,7 @@ public class Message {
 	
 	public Message(final Core main) {
 		this.banDisconnect = CoreUtils.translate(main.getConfig().getString("messages.banDisconnect"));
+		this.blacklistDisconnect = CoreUtils.translate(main.getConfig().getString("messages.blacklistDisconnect"));
 		this.noPermission = CoreUtils.translate(main.getConfig().getString("messages.noPermission"));
 		this.created = CoreUtils.translate(main.getConfig().getString("messages.created"));
 		this.deleted = CoreUtils.translate(main.getConfig().getString("messages.deleted"));
@@ -78,6 +82,8 @@ public class Message {
 		this.rankDown = CoreUtils.translate(main.getConfig().getString("messages.rank-demote"));
 		this.banAnnounce = CoreUtils.translate(main.getConfig().getString("messages.banAnnounce"));
 		this.unbanAnnounce = CoreUtils.translate(main.getConfig().getString("messages.unbanAnnounce"));
+		this.blacklistAnnounce = CoreUtils.translate(main.getConfig().getString("messages.blacklistAnnounce"));
+		this.unblacklistAnnounce = CoreUtils.translate(main.getConfig().getString("messages.unblacklistAnnounce"));
 		this.muteAnnounce = CoreUtils.translate(main.getConfig().getString("messages.muteAnnounce"));
 		this.unmuteAnnounce = CoreUtils.translate(main.getConfig().getString("messages.unmuteAnnounce"));
 		this.muteCancel = CoreUtils.translate(main.getConfig().getString("messages.muteCancel"));

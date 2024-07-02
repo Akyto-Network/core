@@ -79,6 +79,7 @@ broadcast-settings:
   rank-promote: true
   rank-demote: true
   banAnnounce: true
+  blacklistAnnounce: true
   muteAnnounce: true
   warnAnnounce: true
   try-to-connect-notifications: true
@@ -97,11 +98,14 @@ messages:
   chatClosed: "&cThe chat is now temporarily closed."
   banAnnounce: "&4%banned% &8has been suspended from the network."
   unbanAnnounce: "&4%banned% &8is now unbanned."
+  blacklistAnnounce: "&4%banned% &8has been blacklisted from the network."
+  unblacklistAnnounce: "&4%banned% &8is now unblacklisted."
   muteAnnounce: "&4%muted% &8is now muted."
   unmuteAnnounce: "&4%muted% &8is no longer muted."
   muteCancel: "&8You cannot write in chat. Your right has been revoked for the following reasons &c%reason%&8."
   banTryConnect: "&c%banned% &7tried to join the server while being banned. Expires in: &c%expires%"
   banDisconnect: "&cYou've been suspend on Akyto\n&7Reason: &4%reason%\n&7Author: &e%judge%\n&7Expires on: &c%expires%\n\n&7Appeal on: &f.gg/nMwn5pTbxF"
+  blacklistDisconnect: "&cYou are currently blacklisted on Akyto!"
   noPermission: "&cYou don't have the required permissions."
   alreadyExist: "&cThe %value% %type% already exist"
   created: "&aSuccesfully created %value% %type%" 

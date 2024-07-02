@@ -42,7 +42,7 @@ public class DatabaseSetup {
 				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
 			}
             try {
-                DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, WHERE name=?",
+                DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, ip=?, WHERE name=?",
                         Boolean.toString(data.getSettings().get(0)),
                         Boolean.toString(data.getSettings().get(1)),
                         Boolean.toString(data.getSettings().get(2)),
@@ -50,6 +50,7 @@ public class DatabaseSetup {
                         Boolean.toString(data.getSpectateSettings().get(1)),
                         FormatUtils.getStringValue(data.getStats().get(0), ":"),
                         FormatUtils.getStringValue(data.getStats().get(1), ":"),
+						CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)).join(),
                         playerName);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -74,7 +75,8 @@ public class DatabaseSetup {
 	        if (player == null) return;
 	        if (!this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
 	            this.main.getMySQL().createPlayerManagerAsync(uuid, player.getName());
-	            return;
+				DB.executeUpdateAsync("UPDATE playersdata SET ip=?, WHERE uuid=?", CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)), uuid);
+                return;
 	        }
 	        if (this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
 	            this.main.getMySQL().updatePlayerManagerAsync(player.getName(), uuid);
@@ -126,8 +128,8 @@ public class DatabaseSetup {
 			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));
 			data.setRank(DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", playerName).getString("rank"));
-			
-		} catch (SQLException e) {
+            DB.executeUpdate("UPDATE playersdata SET ip=?, WHERE name=?", CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)), playerName);
+        } catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

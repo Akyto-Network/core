@@ -7,6 +7,7 @@ import akyto.core.handler.ManagerHandler;
 import akyto.core.handler.listener.PlayerListener;
 import akyto.core.handler.listener.TabListListener;
 import akyto.core.punishment.cache.BanEntry;
+import akyto.core.punishment.cache.BlacklistEntry;
 import akyto.core.punishment.cache.MuteEntry;
 import akyto.core.punishment.file.PunishmentFile;
 import akyto.core.rank.RankEntry;
@@ -129,6 +130,26 @@ public class Core extends JavaPlugin {
 				this.getPunishmentFile().getConfig().set("banned." + uuidStr + ".reason", null);
 				this.getPunishmentFile().getConfig().set("banned." + uuidStr + ".expires", null);
 				this.getPunishmentFile().getConfig().set("banned." + uuidStr, null);
+			}
+		});
+		for (Entry<UUID, BlacklistEntry> ban : this.managerHandler.getPunishmentManager().getBlacklisted().entrySet()) {
+			if (this.getPunishmentFile().getConfig().getConfigurationSection("blacklisted." + ban.getKey()) == null) {
+				this.getPunishmentFile().getConfig().createSection("blacklisted." + ban.getKey());
+				this.getPunishmentFile().getConfig().createSection("blacklisted." + ban.getKey() + ".judge");
+				this.getPunishmentFile().getConfig().set("blacklisted." + ban.getKey() + ".judge", ban.getValue().getJudge());
+				this.getPunishmentFile().getConfig().createSection("blacklisted." + ban.getKey() + ".reason");
+				this.getPunishmentFile().getConfig().set("blacklisted." + ban.getKey() + ".reason", ban.getValue().getReason());
+				this.getPunishmentFile().getConfig().createSection("blacklisted." + ban.getKey() + ".ip");
+				this.getPunishmentFile().getConfig().set("blacklisted." + ban.getKey() + ".expires", ban.getValue().getIp());
+			}
+		}
+		this.managerHandler.getPunishmentManager().getUnblacklisted().forEach(bannedName -> {
+			final String uuidStr = String.valueOf(bannedName);
+			if (this.getPunishmentFile().getConfig().getConfigurationSection("blacklisted." + uuidStr) != null) {
+				this.getPunishmentFile().getConfig().set("blacklisted." + uuidStr + ".judge", null);
+				this.getPunishmentFile().getConfig().set("blacklisted." + uuidStr + ".reason", null);
+				this.getPunishmentFile().getConfig().set("blacklisted." + uuidStr + ".ip", null);
+				this.getPunishmentFile().getConfig().set("blacklisted." + uuidStr, null);
 			}
 		});
 		for (Entry<UUID, MuteEntry> ban : this.managerHandler.getPunishmentManager().getMuted().entrySet()) {

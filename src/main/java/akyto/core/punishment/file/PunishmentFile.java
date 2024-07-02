@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import akyto.core.punishment.cache.BlacklistEntry;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -37,6 +38,11 @@ public class PunishmentFile {
 				for (String str : getConfig().getConfigurationSection("banned").getKeys(false)) {
 					this.main.getManagerHandler().getPunishmentManager().getBanned().put(UUID.fromString(str), new BanEntry(getConfig().getConfigurationSection("banned").getString(str + ".expires"), getConfig().getConfigurationSection("banned").getString(str + ".reason"),getConfig().getConfigurationSection("banned").getString(str + ".judge")));
 				}		
+			}
+			if(getConfig().getConfigurationSection("blacklisted") != null) {
+				for (String str : getConfig().getConfigurationSection("blacklisted").getKeys(false)) {
+					this.main.getManagerHandler().getPunishmentManager().getBlacklisted().put(UUID.fromString(str), new BlacklistEntry(getConfig().getConfigurationSection("blacklisted").getString(str + ".ip"), getConfig().getConfigurationSection("blacklisted").getString(str + ".reason"),getConfig().getConfigurationSection("blacklisted").getString(str + ".judge")));
+				}
 			}
 			if (getConfig().getConfigurationSection("muted") != null) {
 				for (String str : getConfig().getConfigurationSection("muted").getKeys(false)) {

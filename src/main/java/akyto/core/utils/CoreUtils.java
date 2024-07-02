@@ -22,6 +22,7 @@ import akyto.core.Core;
 import akyto.core.profile.Profile;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import org.json.JSONObject;
 
 public class CoreUtils {
 	
@@ -93,6 +94,35 @@ public class CoreUtils {
 			Bukkit.getPlayer(uuid).sendMessage(bool ? Core.API.getLoaderHandler().getMessage().getNameMCLike() : Core.API.getLoaderHandler().getMessage().getNameMCUnlike());
 		});
 	}
+
+	public static CompletableFuture<String> getPlayerPublicIP(Player player) {
+		CompletableFuture<String> future = new CompletableFuture<>();
+		try {
+			URL url = new URL("https://api.ipify.org?format=json");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Accept", "application/json");
+			con.setDoOutput(true);
+			player.getServer().getScheduler().runTaskAsynchronously(Core.API, () -> {
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+					StringBuilder content = new StringBuilder();
+					String inputLine;
+					while ((inputLine = in.readLine()) != null) {
+						content.append(inputLine);
+					}
+					JSONObject jsonObject = new JSONObject(content.toString());
+					String publicIP = jsonObject.getString("ip");
+					future.complete(publicIP);
+				} catch (IOException e) {
+					future.completeExceptionally(e);
+				}
+			});
+		} catch (IOException e) {
+			future.completeExceptionally(e);
+		}
+		return future;
+	}
+
 
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
