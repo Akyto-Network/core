@@ -41,6 +41,10 @@ public class MessageCommand {
 
 		final Profile senderProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
 		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(target.getUniqueId());
+		if (receiverProfile.getSettings()[5] != 0) {
+			sender.sendMessage(ChatColor.RED + args[0] + " does not accept the private message.");
+			return;
+		}
 		String msg = args.length > 1 ? StringUtils.join(args, ' ', 1, args.length) : "Hi, how are you today?";
 		final HashMap<String, RankEntry> rank = this.main.getManagerHandler().getRankManager().getRanks();
 		String rankSender = rank.get(senderProfile.getRank()).getPrefix();
@@ -107,6 +111,10 @@ public class MessageCommand {
 		}
 
 		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(senderProfile.getResponsive());
+		if (receiverProfile.getSettings()[5] != 0) {
+			sender.sendMessage(ChatColor.RED + Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName() + " does not accept the private message longer!");
+			return;
+		}
 		String msg = StringUtils.join(args, ' ', 0, args.length);
 
 		Player receiver = Bukkit.getPlayer(senderProfile.getResponsive());

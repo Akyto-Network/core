@@ -42,16 +42,12 @@ public class DatabaseSetup {
 				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
 			}
             try {
-                DB.executeUpdate("UPDATE playersdata SET scoreboard=?, duelRequest=?, time=?, displaySpectate=?, flySpeed=?, played=?, win=?, ip=?, WHERE name=?",
-                        Boolean.toString(data.getSettings().get(0)),
-                        Boolean.toString(data.getSettings().get(1)),
-                        Boolean.toString(data.getSettings().get(2)),
-                        Boolean.toString(data.getSpectateSettings().get(0)),
-                        Boolean.toString(data.getSpectateSettings().get(1)),
-                        FormatUtils.getStringValue(data.getStats().get(0), ":"),
-                        FormatUtils.getStringValue(data.getStats().get(1), ":"),
-						CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)).join(),
-                        playerName);
+				System.out.println(FormatUtils.getStringValue(data.getSettings(), ":"));
+				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=? WHERE name=?",
+						FormatUtils.getStringValue(data.getSettings(), ":"),
+						FormatUtils.getStringValue(data.getStats().get(0), ":"),
+						FormatUtils.getStringValue(data.getStats().get(1), ":"),
+						playerName);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -118,11 +114,8 @@ public class DatabaseSetup {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		final String playerName = CoreUtils.getName(uuid);
 		try {
-			data.getSettings().set(0, Boolean.valueOf(DB.getFirstRow("SELECT scoreboard FROM playersdata WHERE name=?", playerName).getString("scoreboard")));
-			data.getSettings().set(1, Boolean.valueOf(DB.getFirstRow("SELECT duelRequest FROM playersdata WHERE name=?", playerName).getString("duelRequest")));
-			data.getSettings().set(2, Boolean.valueOf(DB.getFirstRow("SELECT time FROM playersdata WHERE name=?", playerName).getString("time")));
-			data.getSpectateSettings().set(0, Boolean.valueOf(DB.getFirstRow("SELECT flySpeed FROM playersdata WHERE name=?", playerName).getString("flySpeed")));
-			data.getSpectateSettings().set(1, Boolean.valueOf(DB.getFirstRow("SELECT displaySpectate FROM playersdata WHERE name=?", playerName).getString("displaySpectate")));
+			data.settings = FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":");
+			System.out.println(FormatUtils.getStringValue(FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":"), ":"));
 			data.getStats().set(2, FormatUtils.getSplitValue(DB.getFirstRow("SELECT elos FROM playersdata WHERE name=?", playerName).getString("elos"), ":"));
 			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));

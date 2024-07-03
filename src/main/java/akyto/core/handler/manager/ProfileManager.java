@@ -1,17 +1,21 @@
 package akyto.core.handler.manager;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
 
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.settings.NormalSettings;
+import akyto.core.settings.SpectateSettings;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachment;
 
 import com.google.common.collect.Lists;
@@ -98,5 +102,65 @@ public class ProfileManager {
 		return this.main.getManagerHandler().getRankManager().getRanks().get(
 				this.getProfiles().get(uuid).getRank()
 		);
+	}
+
+	// SETTINGS CREDITS TO TETELIE*
+
+	public void refreshSettingLore(Inventory settingInv, final UUID uuid, int slot, int setting, boolean normal) {
+		ItemStack item = settingInv.getItem(slot);
+		ItemMeta meta = item.getItemMeta();
+		meta.getLore().clear();
+		List<String> lore = new ArrayList<>();
+		lore.add("§7§m----------------------");
+		lore.addAll(Arrays.asList(getSettingLore(uuid, setting, normal)));
+		lore.add("§7§m----------------------");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	public void refreshSettingsLoreInv(Inventory settingsInv, final UUID uuid, boolean normal) {
+		int setting = 0;
+		if (!normal) {
+			for (SpectateSettings settings : SpectateSettings.all) {
+				refreshSettingLore(settingsInv, uuid, settings.slot(), setting, false);
+				setting++;
+			}
+			return;
+		}
+		for (NormalSettings settings : NormalSettings.all) {
+			refreshSettingLore(settingsInv, uuid, settings.slot(), setting, true);
+			setting++;
+		}
+	}
+
+	private String[] getSettingLore(UUID uuid, int id, boolean normal) {
+		final Profile profile = this.getProfiles().get(uuid);
+		int value = profile.getSettings()[id];
+		if (!normal) {
+			SpectateSettings setting = SpectateSettings.all[id];
+			String[] lore = setting.values();
+			String newLore = ChatColor.RESET + setting.values()[value];
+			lore[value] = ChatColor.GRAY + " » " + newLore;
+			return lore;
+		}
+		NormalSettings setting = NormalSettings.all[id];
+		String[] lore = setting.values();
+		String newLore = ChatColor.RESET + setting.values()[value];
+		lore[value] = ChatColor.GRAY + " » " + newLore;
+		return lore;
+	}
+
+	public void changeSettings(int setting, Player player, boolean normal) {
+		final Profile profile = this.getProfiles().get(player.getUniqueId());
+		int currentValue = profile.getSettings()[setting];
+		if (!normal) {
+			int maxValue = SpectateSettings.all[setting].values().length;
+			int newValue = (currentValue + 1) % maxValue;
+			SpectateSettings.all[setting].change(player, newValue);
+			return;
+		}
+		int maxValue = NormalSettings.all[setting].values().length;
+		int newValue = (currentValue + 1) % maxValue;
+		NormalSettings.all[setting].change(player, newValue);
 	}
 }
