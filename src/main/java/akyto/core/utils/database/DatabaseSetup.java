@@ -42,7 +42,6 @@ public class DatabaseSetup {
 				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
 			}
             try {
-				System.out.println(FormatUtils.getStringValue(data.getSettings(), ":"));
 				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=? WHERE name=?",
 						FormatUtils.getStringValue(data.getSettings(), ":"),
 						FormatUtils.getStringValue(data.getStats().get(0), ":"),
@@ -115,7 +114,6 @@ public class DatabaseSetup {
 		final String playerName = CoreUtils.getName(uuid);
 		try {
 			data.settings = FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":");
-			System.out.println(FormatUtils.getStringValue(FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":"), ":"));
 			data.getStats().set(2, FormatUtils.getSplitValue(DB.getFirstRow("SELECT elos FROM playersdata WHERE name=?", playerName).getString("elos"), ":"));
 			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));

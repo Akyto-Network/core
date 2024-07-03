@@ -135,7 +135,9 @@ public class ProfileManager {
 
 	private String[] getSettingLore(UUID uuid, int id, boolean normal) {
 		final Profile profile = this.getProfiles().get(uuid);
-		int value = profile.getSettings()[id];
+		System.out.println("Settings Lore ID: " + id);
+		int value = profile.getSettings()[!normal ? id : (id == 8 ? 9 : id)];
+		System.out.println("Get Settings Value: " + value);
 		if (!normal) {
 			SpectateSettings setting = SpectateSettings.all[id];
 			String[] lore = setting.values();
@@ -143,7 +145,7 @@ public class ProfileManager {
 			lore[value] = ChatColor.GRAY + " » " + newLore;
 			return lore;
 		}
-		NormalSettings setting = NormalSettings.all[id];
+		NormalSettings setting = NormalSettings.all[id == 8 ? 7 : id];
 		String[] lore = setting.values();
 		String newLore = ChatColor.RESET + setting.values()[value];
 		lore[value] = ChatColor.GRAY + " » " + newLore;
@@ -152,15 +154,16 @@ public class ProfileManager {
 
 	public void changeSettings(int setting, Player player, boolean normal) {
 		final Profile profile = this.getProfiles().get(player.getUniqueId());
-		int currentValue = profile.getSettings()[setting];
+		int currentValue = profile.getSettings()[!normal ? setting : (setting == 8 ? 9 : setting)];
 		if (!normal) {
 			int maxValue = SpectateSettings.all[setting].values().length;
 			int newValue = (currentValue + 1) % maxValue;
 			SpectateSettings.all[setting].change(player, newValue);
 			return;
 		}
-		int maxValue = NormalSettings.all[setting].values().length;
+		int maxValue = NormalSettings.all[setting == 8 ? 7 : setting].values().length;
 		int newValue = (currentValue + 1) % maxValue;
-		NormalSettings.all[setting].change(player, newValue);
+		NormalSettings.all[setting == 8 ? 7 : setting].change(player, newValue);
+		System.out.println(profile.getSettings()[9]);
 	}
 }

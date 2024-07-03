@@ -22,5 +22,13 @@ public class SpectatorFlySpeed extends SpectateSettings {
     @Override
     public void change(Player player, int value) {
         Core.API.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId()).getSettings()[7] = value;
+        switch (value) {
+            case 0: {
+                player.setFlySpeed(2.5f);
+            }
+            case 1: {
+                player.setFlySpeed(0.2f);
+            }
+        }
     }
 }

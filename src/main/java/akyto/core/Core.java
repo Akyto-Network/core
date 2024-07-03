@@ -1,6 +1,10 @@
 package akyto.core;
 
 import akyto.core.disguise.file.DisguiseFile;
+import akyto.core.effect.Effects;
+import akyto.core.effect.impl.ExplodeEffect;
+import akyto.core.effect.impl.FireworkEffect;
+import akyto.core.effect.impl.SmokeEffect;
 import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
@@ -31,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -62,6 +67,12 @@ public class Core extends JavaPlugin {
 	private final List<String> whitelisted = Lists.newArrayList();
 	@Getter
 	private final List<String> blacklistWhitelist = Lists.newArrayList();
+	@Getter
+	private final List<Effects> effects = Arrays.asList(
+			new SmokeEffect(),
+			new ExplodeEffect(),
+			new FireworkEffect()
+	);
 	
 	public void onEnable() {
 		API = this;

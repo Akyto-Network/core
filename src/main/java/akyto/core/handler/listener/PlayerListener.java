@@ -282,32 +282,44 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 			return;
 		}
+		List<Player> mentionedPlayers = new ArrayList<>();
 		Bukkit.getOnlinePlayers().stream()
 				.filter(player -> event.getMessage().contains(player.getName()))
 				.forEach(player -> {
-					List<Player> p = Lists.newArrayList(Bukkit.getOnlinePlayers());
-					p.remove(Bukkit.getPlayer(player.getName()));
-					player.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+					mentionedPlayers.add(player);
+					String message = CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 							.replace("%rankColor%", finalColor)
 							.replace("%player%", event.getPlayer().getDisplayName())
-							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
-							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
+							.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET)));
+
+					player.sendMessage(message);
 					player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
-					p.forEach(ppl -> ppl.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
-							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
-							.replace("%rankColor%", finalColor)
-							.replace("%player%", event.getPlayer().getDisplayName())
-							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
-							.replace("%msg%", event.getMessage()))));
-					event.setCancelled(true);
-		});
+				});
+		if (!mentionedPlayers.isEmpty()) {
+			String finalMessage = CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
+					.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
+					.replace("%rankColor%", finalColor)
+					.replace("%player%", event.getPlayer().getDisplayName())
+					.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
+					.replace("%msg%", event.getMessage()));
+
+			for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if (!mentionedPlayers.contains(onlinePlayer)) {
+					onlinePlayer.sendMessage(finalMessage);
+				}
+			}
+			event.setCancelled(true);
+			return;
+		}
 		event.setFormat(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 				.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 				.replace("%rankColor%", finalColor)
 				.replace("%player%", "%1$s")
 				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
-				.replace("%msg%", "%2$s")));
+				.replace("%msg%", "%2$s"))
+		);
 	}
 
 	@EventHandler
