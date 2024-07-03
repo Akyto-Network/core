@@ -290,14 +290,14 @@ public class PlayerListener implements Listener {
 					player.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 							.replace("%rankColor%", finalColor)
-							.replace("%player%", "%1$s")
+							.replace("%player%", event.getPlayer().getDisplayName())
 							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET))));
 					player.playSound(player.getLocation(), Sound.FIZZ, 1f, 1f);
 					p.forEach(ppl -> ppl.sendMessage(CoreUtils.translate(this.main.getLoaderHandler().getMessage().getChatFormat()
 							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 							.replace("%rankColor%", finalColor)
-							.replace("%player%", "%1$s")
+							.replace("%player%", event.getPlayer().getDisplayName())
 							.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage()))));
 					event.setCancelled(true);

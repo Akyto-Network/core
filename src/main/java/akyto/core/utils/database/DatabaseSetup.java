@@ -75,7 +75,6 @@ public class DatabaseSetup {
 	        if (player == null) return;
 	        if (!this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
 	            this.main.getMySQL().createPlayerManagerAsync(uuid, player.getName());
-				DB.executeUpdateAsync("UPDATE playersdata SET ip=?, WHERE uuid=?", CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)), uuid);
                 return;
 	        }
 	        if (this.main.getMySQL().existPlayerManagerAsync(uuid).get()) {
@@ -128,7 +127,6 @@ public class DatabaseSetup {
 			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));
 			data.setRank(DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", playerName).getString("rank"));
-            DB.executeUpdate("UPDATE playersdata SET ip=?, WHERE name=?", CoreUtils.getPlayerPublicIP(Bukkit.getPlayer(uuid)), playerName);
         } catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -97,7 +97,7 @@ public class PunishmentsCommand {
 			return;
 		}
 
-		if (args.length <= 1) {
+		if (args.length == 0 || args.length > 2) {
 			this.main.getLoaderHandler().getMessage().getBanHelp().forEach(sender::sendMessage);
 			return;
 		}

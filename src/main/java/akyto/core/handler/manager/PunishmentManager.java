@@ -42,14 +42,14 @@ public class PunishmentManager {
 			if (Bukkit.getPlayer(victim) != null) Bukkit.getPlayer(victim).kickPlayer(this.main.getLoaderHandler().getMessage().getBanDisconnect().replace("%expires%", expires).replace("%reason%", reason).replace("%judge%", judge));	
 		}
 		if (type.equals(PunishmentType.BLACKLIST)) {
-			CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+			CompletableFuture.runAsync(() -> {
                 try {
-                    this.blacklisted.put(victim, new BlacklistEntry(DB.getFirstRow("SELECT ip FROM playersdata WHERE uuid=?", victim).getString("ip"), reason, judge));
+					final String ip = DB.getFirstRow("SELECT ip FROM playersdata WHERE uuid=?", victim).getString("ip");
+					System.out.println(ip);
+                    this.blacklisted.put(victim, new BlacklistEntry(ip, reason, judge));
                 } catch (SQLException e) { throw new RuntimeException(e); }
 			});
-			future.whenCompleteAsync((t, u) -> {
-				if (Bukkit.getPlayer(victim) != null) Bukkit.getPlayer(victim).kickPlayer(this.main.getLoaderHandler().getMessage().getBlacklistDisconnect().replace("%reason%", reason).replace("%judge%", judge));
-			});
+			if (Bukkit.getPlayer(victim) != null) Bukkit.getPlayer(victim).kickPlayer(this.main.getLoaderHandler().getMessage().getBlacklistDisconnect().replace("%reason%", reason).replace("%judge%", judge));
 		}
 		if (type.equals(PunishmentType.MUTE)) {
 			this.muted.put(victim, new MuteEntry(expires, reason, judge));
