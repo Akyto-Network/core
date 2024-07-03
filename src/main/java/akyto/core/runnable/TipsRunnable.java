@@ -14,7 +14,7 @@ public class TipsRunnable extends BukkitRunnable {
 	private final String reminder = ChatColor.GRAY + "[" + ChatColor.RED + "Reminder" + ChatColor.GRAY + "] " + ChatColor.RESET;
 	private final List<String> messages = Arrays.asList(
 			reminder + "High CPS can result to a ban.",
-			tips + "Join our discord server. Everything happens there" + ChatColor.RED + "discord.akyto.club",
+			tips + "Join our discord server. Everything happens there " + ChatColor.RED + "discord.akyto.club",
 			tips + "Like us on NameMC: " + ChatColor.RED + "namemc.com/server/akyto.club",
 			reminder + "Akyto is still under development. Expect to play with some bugs at the moment."
 	);
