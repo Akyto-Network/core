@@ -43,21 +43,7 @@ public class InventoryManager {
 		this.frozeInventory = Bukkit.createInventory(null, InventoryType.DISPENSER, Core.API.getLoaderHandler().getInventory().getFrozeName());
         this.particlesInventory = Bukkit.createInventory(null, Core.API.getParticlesFile().getConfig().getInt("inventory.size"), CoreUtils.translate(Core.API.getParticlesFile().getConfig().getString("inventory.name")));
 		this.setFrozenInventory();
-        this.setParticleInventory();
 	}
-
-    private void setParticleInventory() {
-        for (ParticleEntry particleEntry : Core.API.getParticles()){
-            final List<String> lores = Lists.newArrayList();
-            particleEntry.getLore().forEach(str -> {
-                final String translated = CoreUtils.translate(str);
-                lores.add(translated);
-            });
-            this.particlesInventory.addItem(ItemUtils.createItems(particleEntry.getIcon(),
-                    particleEntry.getName(),
-                    lores));
-        }
-    }
 
     private void setFrozenInventory() {
 		for (int i = 0; i < 9; i++) {

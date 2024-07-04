@@ -106,7 +106,6 @@ public class Core extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		this.saveDatabase();
 		this.saveRank();
 		this.savePunishment();
 		this.getConfig().set("autoclicker.bypass", this.getBypassCpsCap());
@@ -116,6 +115,8 @@ public class Core extends JavaPlugin {
 		this.managerHandler.getRankManager().getRanks().clear();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
+		this.saveConfig();
+		this.saveDatabase();
 	}
 	
 	private void savePunishment() {
@@ -234,15 +235,14 @@ public class Core extends JavaPlugin {
 
 	private void saveDatabase() {
 		this.shutdown = true;
-		if (databaseType.equals(DatabaseType.MYSQL)) this.setupHikariCP();
-		if (!Bukkit.getOnlinePlayers().isEmpty()) {
-			Bukkit.getOnlinePlayers().forEach(player -> {
-				if (databaseType.equals(DatabaseType.MYSQL)){
+		if (databaseType.equals(DatabaseType.MYSQL)) {
+			this.setupHikariCP();
+			if (!Bukkit.getOnlinePlayers().isEmpty()) {
+				Bukkit.getOnlinePlayers().forEach(player -> {
 					databaseSetup.exit(player.getUniqueId());
-				}
-			});
+				});
+			}
 		}
-		if (databaseType.equals(DatabaseType.MYSQL)) dataSource.close();
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
 			if (!this.managerHandler.getProfileManager().getProfiles().isEmpty()) {
 				for (UUID uuid : this.managerHandler.getProfileManager().getProfiles().keySet()) {

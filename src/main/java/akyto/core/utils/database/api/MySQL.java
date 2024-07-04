@@ -53,7 +53,7 @@ public class MySQL {
         		+ "ID INT(64) NOT NULL AUTO_INCREMENT,"
                 + "name VARCHAR(16) NOT NULL,"
                 + "uuid VARCHAR(64) NOT NULL,"
-                + "settings VARCHAR(40) DEFAULT '0:0:0:0:0:0:0:0',"
+                + "settings VARCHAR(40) DEFAULT '0:0:0:0:0:0:0:0:0',"
                 + "effect VARCHAR(40) DEFAULT 'none',"
                 + "played VARCHAR(255) DEFAULT '0:0:0:0:0:0:0',"
                 + "win VARCHAR(255) DEFAULT '0:0:0:0:0:0:0',"

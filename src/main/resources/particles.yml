@@ -15,9 +15,7 @@ particles:
       name: '&8Smoke'
       icon: 'FLINT_AND_STEEL'
       lore:
-        - '&7&m------------------------'
         - '&7A large smoke screen appears'
-        - '&7&m------------------------'
   explode:
     permissions: 'akyto.particles.explode'
     type: 'EXPLOSION_HUGE'
@@ -30,21 +28,4 @@ particles:
       name: '&8Explode'
       icon: 'TNT'
       lore:
-        - '&7&m------------------------'
         - '&7You explode your enemy'
-        - '&7&m------------------------'
-  firework:
-    permissions: 'akyto.particles.firework'
-    type: 'FIREWORKS_SPARK'
-    xOffSet: 0.5
-    yOffSet: 0.5
-    zOffSet: 0.5
-    speed: 0.08
-    amount: 50
-    inventory:
-      name: '&8Firework'
-      icon: 'FIREWORK'
-      lore:
-        - '&7&m------------------------'
-        - '&7Are the festivities starting?'
-        - '&7&m------------------------'

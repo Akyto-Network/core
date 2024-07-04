@@ -30,6 +30,7 @@ public class DisguiseCommand {
         final Profile profile = managerHandler.getProfileManager().getProfiles().get(sender.getUniqueId());
         if (!sender.hasPermission(Core.API.getLoaderHandler().getPermission().getDisguise())) {
             sender.sendMessage(CoreUtils.translate(Core.API.getLoaderHandler().getMessage().getNoPermission()));
+            return;
         }
         if (!profile.isInState(ProfileState.FREE)) {
             sender.sendMessage(ChatColor.RED + "You cannot do this right now, you can just do this in spawn.");

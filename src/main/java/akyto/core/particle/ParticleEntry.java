@@ -2,6 +2,7 @@ package akyto.core.particle;
 
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.EnumParticle;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Getter
 public class ParticleEntry {
 
-    private EnumParticle particle;
+    private Effect particle;
     private float xOffSet;
     private float yOffSet;
     private float zOffSet;
@@ -21,7 +22,7 @@ public class ParticleEntry {
     private String section;
     private String permission;
 
-    public ParticleEntry(String section, EnumParticle particle, float xOffSet, float yOffSet, float zOffSet, float speed, int amount, final String name, final List<String> lore, final Material icon, final String permission) {
+    public ParticleEntry(String section, Effect particle, float xOffSet, float yOffSet, float zOffSet, float speed, int amount, final String name, final List<String> lore, final Material icon, final String permission) {
         this.section = section;
         this.particle = particle;
         this.xOffSet = xOffSet;

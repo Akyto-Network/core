@@ -12,6 +12,7 @@ public class RankEntry {
 	private String prefix;
 	public String getPrefix() { return CoreUtils.translate(this.prefix); }
 	private String color;
+	public String getColor() { return CoreUtils.translate(this.color); }
 	private Boolean spaceBetweenColor;
 	private int power;
 	private Boolean canJoinWhitelist;

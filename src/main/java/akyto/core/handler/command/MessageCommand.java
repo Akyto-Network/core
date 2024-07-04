@@ -39,9 +39,14 @@ public class MessageCommand {
 			return;
 		}
 
+		if (target.getUniqueId().equals(sender.getUniqueId())) {
+			sender.sendMessage(ChatColor.RED + "You cannot message yourself!");
+			return;
+		}
+
 		final Profile senderProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(sender.getUniqueId());
 		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(target.getUniqueId());
-		if (receiverProfile.getSettings()[5] != 0) {
+		if (receiverProfile.getSettings()[4] != 0) {
 			sender.sendMessage(ChatColor.RED + args[0] + " does not accept the private message.");
 			return;
 		}

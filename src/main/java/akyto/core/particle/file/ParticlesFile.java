@@ -6,6 +6,7 @@ import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.EnumParticle;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -37,7 +38,7 @@ public class ParticlesFile {
 			for (String str : getConfig().getConfigurationSection("particles").getKeys(false)) {
 				ParticleEntry particle = new ParticleEntry(
 						str,
-						EnumParticle.valueOf(getConfig().getConfigurationSection("particles").getString(str + ".type")),
+						Effect.valueOf(getConfig().getConfigurationSection("particles").getString(str + ".type")),
 						getConfig().getConfigurationSection("particles").getFloat(str + ".xOffSet"),
 						getConfig().getConfigurationSection("particles").getFloat(str + ".yOffSet"),
 						getConfig().getConfigurationSection("particles").getFloat(str + ".zOffSet"),
