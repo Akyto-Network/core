@@ -42,10 +42,12 @@ public class DatabaseSetup {
 				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
 			}
             try {
-				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=? WHERE name=?",
+				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, effect=? WHERE name=?",
 						FormatUtils.getStringValue(data.getSettings(), ":"),
 						FormatUtils.getStringValue(data.getStats().get(0), ":"),
 						FormatUtils.getStringValue(data.getStats().get(1), ":"),
+						data.getRank(),
+						data.getEffect(),
 						playerName);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -118,6 +120,7 @@ public class DatabaseSetup {
 			data.getStats().set(1, FormatUtils.getSplitValue(DB.getFirstRow("SELECT win FROM playersdata WHERE name=?", playerName).getString("win"), ":"));
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));
 			data.setRank(DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", playerName).getString("rank"));
+			data.setEffect(DB.getFirstRow("SELECT effect FROM playersdata WHERE name=?", playerName).getString("effect"));
         } catch (SQLException e) {
 			e.printStackTrace();
 		}

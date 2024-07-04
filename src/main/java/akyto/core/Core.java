@@ -1,15 +1,13 @@
 package akyto.core;
 
 import akyto.core.disguise.file.DisguiseFile;
-import akyto.core.effect.Effects;
-import akyto.core.effect.impl.ExplodeEffect;
-import akyto.core.effect.impl.FireworkEffect;
-import akyto.core.effect.impl.SmokeEffect;
 import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
 import akyto.core.handler.listener.PlayerListener;
 import akyto.core.handler.listener.TabListListener;
+import akyto.core.particle.ParticleEntry;
+import akyto.core.particle.file.ParticlesFile;
 import akyto.core.punishment.cache.BanEntry;
 import akyto.core.punishment.cache.BlacklistEntry;
 import akyto.core.punishment.cache.MuteEntry;
@@ -52,6 +50,7 @@ public class Core extends JavaPlugin {
 	private DatabaseType databaseType;
 	private LoaderHandler loaderHandler;
 	private RankFile rankFile;
+	private ParticlesFile particlesFile;
 	private DisguiseFile disguiseFile;
 	private PunishmentFile punishmentFile;
 	private ManagerHandler managerHandler;
@@ -68,11 +67,7 @@ public class Core extends JavaPlugin {
 	@Getter
 	private final List<String> blacklistWhitelist = Lists.newArrayList();
 	@Getter
-	private final List<Effects> effects = Arrays.asList(
-			new SmokeEffect(),
-			new ExplodeEffect(),
-			new FireworkEffect()
-	);
+	private List<ParticleEntry> particles = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;
@@ -96,6 +91,7 @@ public class Core extends JavaPlugin {
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
 		this.loaderHandler = new LoaderHandler(this);
+		this.particlesFile = new ParticlesFile(this);
 		this.managerHandler = new ManagerHandler(this);
 		this.rankFile = new RankFile(this);
 		this.disguiseFile = new DisguiseFile(this);

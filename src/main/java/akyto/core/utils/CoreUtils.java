@@ -13,19 +13,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.particle.ParticleEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Skin;
 import org.bukkit.entity.Player;
 
 import akyto.core.Core;
-import akyto.core.profile.Profile;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.json.JSONObject;
 
 public class CoreUtils {
-	
+
 	public static UUID getUUID(String playerName) {
 		Player target = Core.API.getServer().getPlayer(playerName);
 		if (target != null) {
@@ -41,7 +41,15 @@ public class CoreUtils {
 		}
 		return Core.API.getServer().getOfflinePlayer(playerId).getName();
 	}
-	
+
+	public static ParticleEntry getParticleByName(String name) {
+		return Core.API.getParticles().stream().filter(particles -> particles.getName().equals(name)).findFirst().orElse(null);
+	}
+
+	public static ParticleEntry getParticleBySection(String section) {
+		return Core.API.getParticles().stream().filter(particles -> particles.getSection().equals(section)).findFirst().orElse(null);
+	}
+
 	public static void sendServer(final Player player, final String type, final String server) {
 	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 	    out.writeUTF(type);

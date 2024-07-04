@@ -12,8 +12,7 @@ public abstract class NormalSettings {
             new AllowSpectate(),
             new PrivateMessage(),
             new DropsInventory(),
-            new ClearInventory(),
-            new DeathEffect()
+            new ClearInventory()
     };
 
     public abstract int slot();

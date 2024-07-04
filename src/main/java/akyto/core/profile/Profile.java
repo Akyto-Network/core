@@ -17,6 +17,7 @@ public class Profile {
 	
 	private UUID uuid;
 	private String rank;
+	private String effect;
 
 	private long chatCooldown = 0L;
 	private int cps;
@@ -37,15 +38,16 @@ public class Profile {
 
 	private boolean disguised;
 	
-	public Profile(final UUID uuid, final String rank) {
+	public Profile(final UUID uuid, final String rank, final String effect) {
 		this.uuid = uuid;
 		this.rank = rank;
+		this.effect = effect;
 		this.frozen = false;
 		this.cps = 0;
 		this.allowClick = true;
 		this.profileState = ProfileState.FREE;
 		this.stats = Arrays.asList(new int[7], new int[7], new int[7]);
-		this.settings = new int[10];
+		this.settings = new int[8];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
 		this.disguised = false;
 	}
