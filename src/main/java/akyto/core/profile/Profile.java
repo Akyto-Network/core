@@ -47,7 +47,7 @@ public class Profile {
 		this.allowClick = true;
 		this.profileState = ProfileState.FREE;
 		this.stats = Arrays.asList(new int[7], new int[7], new int[7]);
-		this.settings = new int[8];
+		this.settings = new int[9];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
 		this.disguised = false;
 	}
