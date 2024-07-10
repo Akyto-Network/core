@@ -68,4 +68,12 @@ public class FormatUtils {
         return stringBuilder.toString();
     }
 
+    public static boolean isConvertibleToInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

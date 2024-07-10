@@ -4,11 +4,12 @@ import akyto.core.Core;
 import akyto.core.chat.ChatPriority;
 import akyto.core.chat.ChatState;
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.giveaway.Giveaway;
 import akyto.core.particle.ParticleEntry;
 import akyto.core.whitelist.WhitelistState;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ServerManager {
 	private WhitelistState whitelistState;
 
 	private HashMap<String, DisguiseEntry> disguise = new HashMap<>();
+	private List<Giveaway> giveaways = Lists.newArrayList();
 	
 	public ServerManager(final String chatState, final String chatPriority) {
 		this.chatState = ChatState.valueOf(chatState.toUpperCase());

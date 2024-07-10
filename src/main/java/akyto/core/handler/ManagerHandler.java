@@ -13,6 +13,7 @@ public class ManagerHandler {
 	private final PunishmentManager punishmentManager;
 	private final ServerManager serverManager;
 	private final InventoryManager inventoryManager;
+	private final GiveawayManager giveawayManager;
 	
 	public ManagerHandler(final Core main) {
 		this.rankManager = new RankManager(main);
@@ -21,6 +22,7 @@ public class ManagerHandler {
 		this.punishmentManager = new PunishmentManager(main);
 		this.serverManager = new ServerManager(main.getConfig().getString("chat.state"), main.getConfig().getString("chat.cooldown.priority"));
 		this.inventoryManager = new InventoryManager();
+		this.giveawayManager = new GiveawayManager();
 	}
 
 }

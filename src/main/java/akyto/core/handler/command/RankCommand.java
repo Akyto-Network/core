@@ -17,7 +17,7 @@ public class RankCommand {
 
 	private final Core main = Core.API;
 	
-	@Command(name = "rank", aliases= {"grade", "ranks"}, inGameOnly = true)
+	@Command(name = "rank", aliases= {"grade", "ranks"}, inGameOnly = false)
 	public void rankCommand(final CommandArgs arg) {
 		final CommandSender sender = arg.getSender();
 		final String[] args = arg.getArgs();

@@ -16,6 +16,7 @@ whitelist:
   kick-only-have-rank-message: "&cYou must be whitelisted to join the server.\n &cYou can benefit from a &6whitelist &cby purchasing a &6rank &cor by getting whitelisted through a &6friend who owns tokens&c."
   allowed: [kezukdev, rimk, "KalulthanL", "duziy", "447benek", "FutiCraft"]
   blacklist: [""]
+  tokens-price: 5
     
 namemc:
   check-enabled: true
@@ -37,6 +38,8 @@ autoclicker:
   max-cps: 20
   bypass: ["kezukdev", "rimk"]
   cancel-hit-message: "&cClick slower, thank you."
+  warn-staff-on-excessed-alerts: true
+  alerts-to-warn-staff: 10
   
 freeze:
   movement-message:
@@ -56,6 +59,14 @@ freeze:
       - "&c.gg/BRwRRarRYR"
       - "&7&m---------------------"
 
+giveaway:
+  rank-token-price: 15
+  rank: "silver"
+  tag-token-price: 10
+  start: "&7[&4Giveaway&7] &c%player% &7started a giveaway for win a &c%type% &7(Click)"
+  winner: "&7[&4Giveaway&7] &c%winner% &7has won the giveway and won the &c%type%"
+  join: "&7You have been join the giveaway of &c%player%"
+
 permissions:
   staff-announce: "akyto.staff"
   rank-admin: "akyto.rank.admin"
@@ -74,6 +85,7 @@ permissions:
   disguise: "akyto.disguise"
   bypass-breed: "akyto.bypass.cps-cap"
   whitelist: "akyto.whitelist.management"
+  tokens: "akyto.tokens"
 
 broadcast-settings:
   rank-promote: true
@@ -88,14 +100,20 @@ broadcast-settings:
 messages:
   namemc-unliked: "&7Want to support us? Like the server on NameMC: &fhttps://fr.namemc.com/server/akyto.club"
   namemc-liked: "&7Thank you for your &alike!"
+
   private-message: "&7(%incommingType% %rank%%rankColor%%player%&7) &e%message%"
+
   time: "&fTime changed to: &c%time%"
+
   modmode: "%type% staffmode&7, &fif you want %subType% it &7(/mod)"
+
   frozed: "&fYou are currently frozen by &c%frozer%"
   frozeStatusNotif: "&fFrozen status of &e%frozed% &fhas been updated to &c%frozeStatus%&f!"
+
   chatPriorityChanged: "&fThe chat priority has been updated to &c%priority%"
   chatOpenned: "&aThe chat is now available."
   chatClosed: "&cThe chat is now temporarily closed."
+
   banAnnounce: "&4%banned% &8has been suspended from the network."
   unbanAnnounce: "&4%banned% &8is now unbanned."
   blacklistAnnounce: "&4%banned% &8has been blacklisted from the network."
@@ -106,35 +124,54 @@ messages:
   banTryConnect: "&c%banned% &7tried to join the server while being banned. Expires in: &c%expires%"
   banDisconnect: "&cYou've been suspend on Akyto\n&7Reason: &4%reason%\n&7Author: &e%judge%\n&7Expires on: &c%expires%\n\n&7Appeal on: &f.gg/nMwn5pTbxF"
   blacklistDisconnect: "&cYou are currently blacklisted on Akyto!"
+
   noPermission: "&cYou don't have the required permissions."
+
   alreadyExist: "&cThe %value% %type% already exist"
   created: "&aSuccesfully created %value% %type%" 
   deleted: "&cSuccesfully deleted %value% %type%"
   notExist: "&c%value%'s %type% does not exist!"
   edited: "&a%key% %type% as %editType% to %value%"
   alreadySet: "&cThis %value% is already setted"
+
   staff-proxy-notification: "&7[&eStaff&7] %rank% %rankColor%%player% &fhas %type% the server!"
+
   server-restart: "&cAkyto is going to reboot!"
+
   neverPlayed: "&c%target%'s never played on the network."
+
   rank-promote: "&a%target% &8is promoted to &c%rankUp%"
   rank-demote: "&c%target% &8has been demoted."
+
   whitelist-disabled: "&cWhitelist has been disabled."
   whitelist-enabled: "&aThe whitelist was enabled with the condition &f%type%."
   whitelist-add: "&aYou have been added &f%player% &ato the whitelist list."
   whitelist-remove: "&cYou have been removed &e%player% &cfrom the whitelist list."
   whitelist-blacklist: "&cYou have been blacklist &f%player% &cname from the whitelist."
+
+  alerts-cps-staff: "&7[&4CPS-CAP&7] &e%player% &fhave reached a total of &e%alerts% &falerts of cps!"
+
+  missing-tokens: "&cYou are missing %tokens% to carry out your action!"
+  token-wallet: "&7» &cYou have %tokens% into your tokens wallet"
+  token-gived: "&7[&4Management&7] &7You have been gived &c%tokens% tokens &7to &c%player%"
+  token-received: "&7» &fYou received &c%tokens% tokens&f!"
+  token-removed: "&7[&4Management&7] &7You've been removed &c%tokens% tokens &7to &c%player%"
+  token-another-wallet: "&7» &c%player%'s &7token wallet amount is &c%tokens%"
+
   banHelp:
     - "&7&m----------------------"
     - "&8/ban <player> <time> <reason>"
     - "&8/ban info <player>"
     - "&8/unban <player>"
     - "&7&m----------------------"
+
   muteHelp:
     - "&7&m----------------------"
     - "&8/mute <player> <time> <reason>"
     - "&8/mute info <player>"
     - "&8/mute <player>"
     - "&7&m----------------------"
+
   punishmentInformations:
     - "&7&m----------------------"
     - "&8Username&7: &f%user% &7- &4%punishmentType%"
@@ -142,6 +179,7 @@ messages:
     - "&8Reason&7: &e%reason%"
     - "&8Author&7: &6%judge%"
     - "&7&m----------------------"
+
   rankHelp:
     - "&7&m----------------------"
     - "&8/rank create <name>"
@@ -155,7 +193,12 @@ messages:
     - "&8/rank promote <player> <rank>"
     - "&8/rank demote <player>"
     - "&7&m----------------------"
-  randomTeleport: 
+
+  giveawayHelp:
+    - "&c/giveaway <rank/tags>"
+    - "&c/giveaway join"
+
+  randomTeleport:
     - "&7Successfuly teleported to &c%target%"
     - "&7&m------------------------------------"
     - "&eMatch Informations&7:"

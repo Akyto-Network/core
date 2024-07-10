@@ -21,6 +21,11 @@ public class Settings {
 	private final boolean namemcCheck;
 	private final String hubInstance;
 	private int maximumCps;
+	private final boolean alertsCpsToStaff;
+	private int alertsMaxToNotifStaff;
+	private final int tokensPriceWhitelist;
+	private final int tokensPriceRank;
+	private final String rankGiveaway;
 	
 	public Settings(final Core main) {
 		this.rankPromoteBroad = main.getConfig().getBoolean("broadcast-settings.rank-promote");
@@ -38,6 +43,11 @@ public class Settings {
 		this.namemcCheck = main.getConfig().getBoolean("namemc.check-enabled");
 		this.hubInstance = main.getConfig().getString("bungeecord.hub-instance");
 		this.maximumCps = main.getConfig().getInt("autoclicker.max-cps");
+		this.alertsCpsToStaff = main.getConfig().getBoolean("autoclicker.warn-staff-on-excessed-alerts");
+		this.alertsMaxToNotifStaff = main.getConfig().getInt("autoclicker.alerts-to-warn-staff");
+		this.tokensPriceWhitelist = main.getConfig().getInt("whitelist.tokens-price");
+		this.tokensPriceRank = main.getConfig().getInt("giveaway.rank-token-price");
+		this.rankGiveaway = main.getConfig().getString("giveaway.rank");
 	}
 
 }

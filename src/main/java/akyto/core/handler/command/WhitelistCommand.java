@@ -1,6 +1,7 @@
 package akyto.core.handler.command;
 
 import akyto.core.Core;
+import akyto.core.profile.Profile;
 import akyto.core.rank.RankEntry;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
@@ -17,11 +18,8 @@ public class WhitelistCommand {
 
     @Command(name = "whitelist", aliases= {"wl"}, inGameOnly = false)
     public void whitelist(final CommandArgs arg) {
-        if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
-            arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
-            return;
-        }
-        final String[] help = new String[]{
+        final String helpClassic = ChatColor.RED + "/whitelist add <player>";
+        final String[] helpAdmin = new String[]{
                 ChatColor.GRAY + ChatColor.STRIKETHROUGH.toString() + "----------------------------",
                 ChatColor.RED + "/whitelist on/enable <on_list/have_rank>",
                 ChatColor.RED + "/whitelist off",
@@ -34,11 +32,21 @@ public class WhitelistCommand {
         };
         final String[] args = arg.getArgs();
         if (args.length == 0 || args.length > 2) {
-            arg.getSender().sendMessage(help);
-            return;
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(helpClassic);
+                return;
+            }
+            else {
+                arg.getSender().sendMessage(helpAdmin);
+                return;
+            }
         }
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("disable")) {
+                if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                    arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
+                    return;
+                }
                 Core.API.getManagerHandler().getServerManager().setWhitelistState(WhitelistState.OFF);
                 Bukkit.broadcastMessage(Core.API.getLoaderHandler().getMessage().getWhitelistDisabled());
                 return;
@@ -57,10 +65,20 @@ public class WhitelistCommand {
                 });
                 return;
             }
-            arg.getSender().sendMessage(help);
-            return;
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(helpClassic);
+                return;
+            }
+            else {
+                arg.getSender().sendMessage(helpAdmin);
+                return;
+            }
         }
         if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("enable")) {
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
+                return;
+            }
             if (WhitelistState.valueOf(args[1].toUpperCase()) != null) {
                 Core.API.getManagerHandler().getServerManager().setWhitelistState(WhitelistState.valueOf(args[1].toUpperCase()));
                 Bukkit.broadcastMessage(Core.API.getLoaderHandler().getMessage().getWhitelistEnabled()
@@ -69,17 +87,44 @@ public class WhitelistCommand {
                 );
             }
         } else if (args[0].equalsIgnoreCase("add")) {
+            final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(arg.getPlayer().getUniqueId());
+            if (arg.getSender() instanceof Player) {
+                final int tokenPrice = Core.API.getLoaderHandler().getSettings().getTokensPriceWhitelist();
+                if (profile.getTokens() < tokenPrice && !arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                    final int tokensMissed = Core.API.getLoaderHandler().getSettings().getTokensPriceWhitelist() - profile.getTokens();
+                    arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getTokensMissing()
+                            .replace("%tokens%", String.valueOf(tokensMissed))
+                    );
+                    return;
+                }
+                if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                    profile.setTokens(profile.getTokens() - tokenPrice);
+                }
+            }
             Core.API.getWhitelisted().add(args[1].toLowerCase());
             arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getWhitelistAdd().replace("%player%", args[1]));
         } else if (args[0].equalsIgnoreCase("remove")) {
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
+                return;
+            }
             Core.API.getWhitelisted().remove(args[1].toLowerCase());
             arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getWhitelistRemove().replace("%player%", args[1]));
         } else if (args[0].equalsIgnoreCase("blacklist")) {
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
+                return;
+            }
             Core.API.getWhitelisted().remove(args[1].toLowerCase());
             Core.API.getBlacklistWhitelist().add(args[1].toLowerCase());
             arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getWhitelistBlacklist().replace("%player%", args[1]));
         } else {
-            arg.getSender().sendMessage(help);
+            if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getWhitelist())) {
+                arg.getSender().sendMessage(helpClassic);
+            }
+            else {
+                arg.getSender().sendMessage(helpAdmin);
+            }
         }
     }
 

@@ -13,6 +13,8 @@ public class CommandHandler {
 		this.setupFramework(main,
 				new AnnounceCommand(),
 				new DisguiseCommand(),
+				new TokensCommand(),
+				new GiveawayCommand(),
 				new PunishmentsCommand(),
 				new ChatCommand(),
 				new FreezeCommand(),

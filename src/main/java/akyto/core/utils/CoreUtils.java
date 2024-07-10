@@ -13,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.giveaway.Giveaway;
 import akyto.core.particle.ParticleEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,6 +49,10 @@ public class CoreUtils {
 
 	public static ParticleEntry getParticleBySection(String section) {
 		return Core.API.getParticles().stream().filter(particles -> particles.getSection().equals(section)).findFirst().orElse(null);
+	}
+
+	public static Giveaway getGiveawayByCreator(final UUID uuid) {
+		return Core.API.getManagerHandler().getServerManager().getGiveaways().stream().filter(giveaway -> giveaway.getCreator().equals(uuid)).findFirst().orElse(null);
 	}
 
 	public static void sendServer(final Player player, final String type, final String server) {
