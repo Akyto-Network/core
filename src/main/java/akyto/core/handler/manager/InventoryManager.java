@@ -1,6 +1,7 @@
 package akyto.core.handler.manager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +10,7 @@ import akyto.core.Core;
 import akyto.core.particle.ParticleEntry;
 import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,16 +36,46 @@ public class InventoryManager {
 	private final ConcurrentHashMap<UUID, Inventory> profileInventory;
     @Getter
     private final Inventory particlesInventory;
+    @Getter
+    private final ConcurrentHashMap<UUID, Inventory> commonTags = new ConcurrentHashMap<>();
 	
 	public InventoryManager() {
 		this.invConfig = Core.API.getLoaderHandler().getInventory();
         this.profileInventory = new ConcurrentHashMap<>();
         this.tagInventory = new Inventory[9];
         this.tagInventory[0] = Bukkit.createInventory(null, 9, ChatColor.GRAY + "Tags:");
+        this.tagInventory[1] = Bukkit.createInventory(null, 27, ChatColor.GRAY + "Tags Common:");
 		this.frozeInventory = Bukkit.createInventory(null, InventoryType.DISPENSER, Core.API.getLoaderHandler().getInventory().getFrozeName());
         this.particlesInventory = Bukkit.createInventory(null, Core.API.getParticlesFile().getConfig().getInt("inventory.size"), CoreUtils.translate(Core.API.getParticlesFile().getConfig().getString("inventory.name")));
 		this.setFrozenInventory();
 	}
+
+    public void generateCommonTagInventory(final UUID uuid) {
+        final Inventory clone = Bukkit.createInventory(null, this.tagInventory[1].getSize(), this.tagInventory[1].getName());
+        final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
+        Core.API.getManagerHandler().getTagManager().getTags().forEach((name, tagEntry) -> {
+            final List<String> lores = Lists.newArrayList();
+            lores.add(ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH.toString() + "-----------------");
+            lores.add(ChatColor.GRAY + "Owned: " + (Bukkit.getPlayer(uuid).hasPermission(tagEntry.getPermissions()) ? ChatColor.GREEN + "Yes" : ChatColor.RED + "No"));
+            lores.add(ChatColor.GRAY + "Preview: " + tagEntry.getPrefix());
+            lores.add(" ");
+            if (!Bukkit.getPlayer(uuid).hasPermission(tagEntry.getPermissions())) {
+                lores.add(ChatColor.GRAY + "Price: " + ChatColor.RED + tagEntry.getPrice() + "tokens");
+                lores.add(ChatColor.GRAY + "Click to buy it!");
+            }
+            if (profile.getTag().equals(name)) lores.add(ChatColor.GREEN + "Currently set");
+            if (!profile.getTag().equals(name) && Bukkit.getPlayer(uuid).hasPermission(tagEntry.getPermissions())) lores.add(ChatColor.GRAY + "Click for set it");
+            lores.add(ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH.toString() + "-----------------");
+            final ItemStack item = ItemUtils.createItems(
+                    tagEntry.getIcon(),
+                    ChatColor.GRAY + name,
+                    lores
+            );
+            clone.addItem(item);
+        });
+        this.commonTags.remove(uuid);
+        this.commonTags.put(uuid, clone);
+    }
 
     private void setFrozenInventory() {
 		for (int i = 0; i < 9; i++) {

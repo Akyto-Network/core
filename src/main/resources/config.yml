@@ -25,7 +25,7 @@ namemc:
   like-tag: "&c❤"
     
 chat:
-  format: "%prefix%%rankColor%%player%%likeTag%&7: &f%msg%"
+  format: "%prefix%%rankColor%%player%%tag%%likeTag%&7: &f%msg%"
   staff-format: "&7[&eStaff&7] %prefix%%rankColor%%player%&7: &e%msg%"
   staff-symbol: "!"
   state: "GLOBAL"

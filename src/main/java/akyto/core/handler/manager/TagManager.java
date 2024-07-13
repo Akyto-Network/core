@@ -14,20 +14,11 @@ import java.util.List;
 
 public class TagManager {
 
-    private final Core main;
-
     @Getter
     private final HashMap<String, TagEntry> tags;
-    private final List<String> deletedTag;
 
-    public TagManager(final Core main) {
-        this.main = main;
+    public TagManager() {
         this.tags = new HashMap<>();
-        this.deletedTag = new ArrayList<>();
-    }
-
-    public void createTag(final String name) {
-        this.tags.put(name, new TagEntry(ChatColor.GREEN.toString(), "og", Material.GRASS));
     }
 
 }

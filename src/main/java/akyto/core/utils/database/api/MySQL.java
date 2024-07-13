@@ -59,6 +59,7 @@ public class MySQL {
                 + "win VARCHAR(255) DEFAULT '0:0:0:0:0:0:0',"
                 + "elos VARCHAR(255) DEFAULT '1000:1000:1000:1000:1000:1000:1000',"
                 + "rank VARCHAR(16) DEFAULT 'default',"
+                + "tag VARCHAR(40) DEFAULT 'none',"
                 + "tokens INT(10) DEFAULT 0,"
                 + "PRIMARY KEY (`ID`))";
         try {

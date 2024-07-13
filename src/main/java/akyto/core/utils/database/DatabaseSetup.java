@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import akyto.core.handler.manager.InventoryManager;
 import akyto.core.rank.RankEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -53,23 +54,47 @@ public class DatabaseSetup {
 			final Jedis redis = Core.API.getRedis();
 			if (!data.getFriends().isEmpty()) {
 				for (UUID friend : data.getFriends()) {
-					if (!redis.lrange("player:" + uuid + ":friends", 0, -1).contains(friend.toString())) {
-						redis.lpush("player:" + uuid + ":friends", friend.toString());
+					try {
+						if (friend == null) {
+							continue;
+						}
+						List<String> friendsList = redis.lrange("player:" + uuid + ":friends", 0, -1);
+						if (!friendsList.contains(friend.toString())) {
+							redis.lpush("player:" + uuid + ":friends", friend.toString());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
-            try {
-				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, effect=?, tokens=? WHERE name=?",
+			if (!data.getPermissions().isEmpty()) {
+				for (String perms : data.getPermissions()) {
+					try {
+						if (perms == null) {
+							continue;
+						}
+						List<String> permsList = redis.lrange("player:" + uuid + ":permissions", 0, -1);
+						if (!permsList.contains(perms)) {
+							redis.lpush("player:" + uuid + ":permissions", perms);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			try {
+				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, tag=?, effect=?, tokens=? WHERE name=?",
 						FormatUtils.getStringValue(data.getSettings(), ":"),
 						FormatUtils.getStringValue(data.getStats().get(0), ":"),
 						FormatUtils.getStringValue(data.getStats().get(1), ":"),
 						data.getRank(),
+						data.getTag(),
 						data.getEffect(),
 						data.getTokens(),
 						playerName);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
         }
 	}
 
@@ -104,8 +129,9 @@ public class DatabaseSetup {
 	public void loadAsync(final UUID uuid, final int kitSize, final String[] kitNames) {
 		CompletableFuture<Void> load = CompletableFuture.runAsync(() -> this.load(uuid));
 		load.whenCompleteAsync((t, u) -> {
+			final InventoryManager inventoryManager = Core.API.getManagerHandler().getInventoryManager();
 			if (kitSize != 0 && kitNames != null){
-				Core.API.getManagerHandler().getInventoryManager().generateProfileInventory(uuid, kitSize, kitNames);
+				inventoryManager.generateProfileInventory(uuid, kitSize, kitNames);
 			}
 			this.main.getManagerHandler().getProfileManager().registerPermissions(uuid);
 			final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
@@ -147,6 +173,11 @@ public class DatabaseSetup {
 				data.getFriends().add(uuidFriend);
 			});
 		}
+		if (redis.exists("player:" + uuid + ":permissions")) {
+			this.getPerms(uuid).forEach(perms -> {
+				data.getPermissions().add(perms);
+			});
+		}
 		try {
 			data.settings = FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":");
 			data.getStats().set(2, FormatUtils.getSplitValue(DB.getFirstRow("SELECT elos FROM playersdata WHERE name=?", playerName).getString("elos"), ":"));
@@ -154,6 +185,7 @@ public class DatabaseSetup {
 			data.getStats().set(0, FormatUtils.getSplitValue(DB.getFirstRow("SELECT played FROM playersdata WHERE name=?", playerName).getString("played"), ":"));
 			data.setEffect(DB.getFirstRow("SELECT effect FROM playersdata WHERE name=?", playerName).getString("effect"));
 			data.setRank(DB.getFirstRow("SELECT rank FROM playersdata WHERE name=?", playerName).getString("rank"));
+			data.setTag(DB.getFirstRow("SELECT tag FROM playersdata WHERE name=?", playerName).getString("tag"));
 			data.setTokens(DB.getFirstRow("SELECT tokens FROM playersdata WHERE name=?", playerName).getInt("tokens"));
         } catch (SQLException e) {
 			e.printStackTrace();
@@ -162,6 +194,11 @@ public class DatabaseSetup {
 
 	private List<String> getFriends(UUID uuid) {
 		String key = "player:" + uuid + ":friends";
+		return Core.API.getRedis().lrange(key, 0, -1);
+	}
+
+	private List<String> getPerms(UUID uuid) {
+		String key = "player:" + uuid + ":permissions";
 		return Core.API.getRedis().lrange(key, 0, -1);
 	}
 }

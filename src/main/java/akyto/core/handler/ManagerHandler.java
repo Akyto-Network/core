@@ -17,7 +17,7 @@ public class ManagerHandler {
 	
 	public ManagerHandler(final Core main) {
 		this.rankManager = new RankManager(main);
-		this.tagManager = new TagManager(main);
+		this.tagManager = new TagManager();
 		this.profileManager = new ProfileManager(main);
 		this.punishmentManager = new PunishmentManager(main);
 		this.serverManager = new ServerManager(main.getConfig().getString("chat.state"), main.getConfig().getString("chat.cooldown.priority"));

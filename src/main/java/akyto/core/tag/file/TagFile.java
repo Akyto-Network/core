@@ -32,7 +32,7 @@ public class TagFile {
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {
 			for (String str : getConfig().getConfigurationSection("common").getKeys(false)) {
-				TagEntry tag = new TagEntry(getConfig().getConfigurationSection("common").getString(str + ".prefix"), getConfig().getConfigurationSection("common").getString(str + ".category"), Material.valueOf(getConfig().getConfigurationSection("common").getString(str + ".icon")));
+				TagEntry tag = new TagEntry(getConfig().getConfigurationSection("common").getString(str + ".prefix"), getConfig().getConfigurationSection("common").getString(str + ".permissions"), getConfig().getConfigurationSection("common").getInt(str + ".tokens-price"), Material.valueOf(getConfig().getConfigurationSection("common").getString(str + ".icon")));
 				this.main.getManagerHandler().getTagManager().getTags().put(str, tag);
 			}	
 		}

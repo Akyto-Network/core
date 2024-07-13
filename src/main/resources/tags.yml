@@ -1,28 +1,46 @@
 common:
-  og:
+  Og:
     prefix: '&aO&2G'
     icon: 'GRASS'
-  japan:
+    permissions: "akyto.tag.og"
+    tokens-price: 2
+  Japan:
     prefix: '&5J&dA&5P&dA&5N'
     icon: 'MYCEL'
+    permissions: "akyto.tag.japan"
+    tokens-price: 2
   95:
     prefix: '&695'
     icon: 'NAME_TAG'
-  fish:
+    permissions: "akyto.tag.95"
+    tokens-price: 2
+  Fish:
     prefix: '&3Fish'
     icon: 'FISHING_ROD'
-  hunter:
+    permissions: "akyto.tag.fish"
+    tokens-price: 2
+  Hunter:
     prefix: '&cHunter'
     icon: 'IRON_SWORD'
-  tracker:
+    permissions: "akyto.tag.hunter"
+    tokens-price: 2
+  Tracker:
     prefix: '&cTracker'
     icon: 'COMPASS'
-  bestww:
+    permissions: "akyto.tag.tracker"
+    tokens-price: 2
+  Bestww:
     prefix: '&3Best&bWW'
     icon: 'DIAMOND'
-  clicker:
+    permissions: "akyto.tag.bestww"
+    tokens-price: 2
+  Clicker:
     prefix: '&eClicker'
-    icon: 'GOLD'
-  cupid:
+    icon: 'GOLD_INGOT'
+    permissions: "akyto.tag.clicker"
+    tokens-price: 2
+  Cupid:
     prefix: '&5Cupid'
     icon: 'BOW'
+    permissions: "akyto.tag.cupid"
+    tokens-price: 2

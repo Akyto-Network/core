@@ -15,6 +15,7 @@ import akyto.core.punishment.file.PunishmentFile;
 import akyto.core.rank.RankEntry;
 import akyto.core.rank.file.RankFile;
 import akyto.core.runnable.TipsRunnable;
+import akyto.core.tag.file.TagFile;
 import akyto.core.utils.CoreUtils;
 import akyto.spigot.aSpigot;
 import akyto.core.utils.database.DatabaseSetup;
@@ -53,6 +54,7 @@ public class Core extends JavaPlugin {
 	private RankFile rankFile;
 	private ParticlesFile particlesFile;
 	private DisguiseFile disguiseFile;
+	private TagFile tagFile;
 	private PunishmentFile punishmentFile;
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
@@ -97,6 +99,7 @@ public class Core extends JavaPlugin {
 		this.loaderHandler = new LoaderHandler(this);
 		this.particlesFile = new ParticlesFile(this);
 		this.managerHandler = new ManagerHandler(this);
+		this.tagFile = new TagFile(this);
 		this.rankFile = new RankFile(this);
 		this.disguiseFile = new DisguiseFile(this);
 		this.punishmentFile = new PunishmentFile(this);

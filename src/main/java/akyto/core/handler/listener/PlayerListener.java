@@ -9,10 +9,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.handler.manager.TagManager;
+import akyto.core.tag.TagEntry;
 import akyto.core.whitelist.WhitelistState;
 import co.aikar.idb.DB;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -281,6 +284,8 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		List<Player> mentionedPlayers = new ArrayList<>();
+		final Profile profile = this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId());
+		final TagEntry tagEntry = this.main.getManagerHandler().getTagManager().getTags().get(profile.getTag());
 		Bukkit.getOnlinePlayers().stream()
 				.filter(player -> event.getMessage().contains(player.getName()))
 				.forEach(player -> {
@@ -289,6 +294,7 @@ public class PlayerListener implements Listener {
 							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 							.replace("%rankColor%", finalColor)
 							.replace("%player%", event.getPlayer().getDisplayName())
+							.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
 							.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET)));
 
@@ -300,6 +306,7 @@ public class PlayerListener implements Listener {
 					.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 					.replace("%rankColor%", finalColor)
 					.replace("%player%", event.getPlayer().getDisplayName())
+					.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
 					.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 					.replace("%msg%", event.getMessage()));
 
@@ -315,6 +322,7 @@ public class PlayerListener implements Listener {
 				.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 				.replace("%rankColor%", finalColor)
 				.replace("%player%", "%1$s")
+				.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
 				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 				.replace("%msg%", "%2$s"))
 		);
@@ -330,7 +338,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory != null && clickedInventory.getName() != null && clickedInventory.getName().startsWith(ChatColor.GRAY + "Viewing CPS »")) {
+		final Player player = Bukkit.getPlayer(event.getWhoClicked().getUniqueId());
+		if (clickedInventory == null) return;
+        if (clickedInventory.getName() != null && clickedInventory.getName().startsWith(ChatColor.GRAY + "Viewing CPS »")) {
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BOOK) {
                 String[] nameParts = clickedInventory.getName().split("» ");
                 if (nameParts.length > 1) {
@@ -346,5 +356,42 @@ public class PlayerListener implements Listener {
                 }
             }
         }
+		if (clickedInventory.equals(Core.API.getManagerHandler().getInventoryManager().getCommonTags().get(player.getUniqueId()))) {
+			event.setResult(Event.Result.DENY);
+			event.setCancelled(true);
+			if (event.getCurrentItem() == null) return;
+			if (event.getCurrentItem().getType().equals(Material.AIR)) return;
+			final TagManager tagManager = Core.API.getManagerHandler().getTagManager();
+			final String name = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
+			final TagEntry tagEntry = tagManager.getTags().get(name);
+			final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
+			if (!profile.getTag().equals("none")) {
+				if (tagManager.getTags().get(profile.getTag()).getPrefix().equals(tagEntry.getPrefix())) {
+					player.closeInventory();
+					player.sendMessage(ChatColor.RED + "You already have set this tag");
+					return;
+				}
+			}
+			if (player.hasPermission(tagEntry.getPermissions()) || profile.getPermissions().contains(tagEntry.getPermissions())) {
+				profile.setTag(name);
+				Core.API.getManagerHandler().getInventoryManager().generateCommonTagInventory(player.getUniqueId());
+				player.sendMessage(ChatColor.GRAY + "You have correctly defined " + tagEntry.getPrefix() + ChatColor.GRAY + " as a tag");
+				player.closeInventory();
+				return;
+			}
+			if (profile.getTokens() < tagEntry.getPrice()) {
+				player.closeInventory();
+				final int tokenMissed = tagEntry.getPrice() - profile.getTokens();
+				player.sendMessage(Core.API.getLoaderHandler().getMessage().getTokensMissing().replace("%tokens%", String.valueOf(tokenMissed)));
+				return;
+			}
+			else {
+				profile.setTokens(profile.getTokens() - tagEntry.getPrice());
+				player.sendMessage(ChatColor.GREEN + "You have been bought " + tagEntry.getPrefix() + ChatColor.GREEN + " tag!");
+				profile.setTag(name);
+				profile.getPermissions().add(tagEntry.getPermissions());
+				Core.API.getManagerHandler().getProfileManager().registerPermissions(player.getUniqueId());
+			}
+		}
     }
 }

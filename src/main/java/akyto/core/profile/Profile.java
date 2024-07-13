@@ -22,6 +22,7 @@ public class Profile {
 	private UUID uuid;
 	private String rank;
 	private String effect;
+	private String tag;
 
 	private long chatCooldown = 0L;
 	private int cps;
@@ -44,6 +45,7 @@ public class Profile {
 	public int[] settings;
 
 	private List<UUID> friends;
+	private List<String> permissions;
 
 	private boolean disguised;
 	
@@ -52,7 +54,9 @@ public class Profile {
 		this.rank = rank;
 		this.effect = effect;
 		this.friends = Lists.newArrayList();
+		this.permissions = Lists.newArrayList();
 		this.frozen = false;
+		this.tag = "none";
 		this.cps = 0;
 		this.alertsCPS = 0;
 		this.tokens = 0;
