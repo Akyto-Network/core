@@ -96,10 +96,8 @@ public class PlayerListener implements Listener {
 					this.main.getManagerHandler().getPunishmentManager().getBanned().remove(player.getUniqueId());
 				} else if (banExpiresOn != null && !banExpiresOn.equals(todayGlobal)) {
 				    if (this.main.getLoaderHandler().getSettings().isTryToConnect()) {
-						final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(player.getUniqueId());
 						Bukkit.getOnlinePlayers().forEach(players -> {
 							if (players.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())
-									&& !rank.equals(Core.API.getManagerHandler().getRankManager().getRanks().get("default"))
 									&& player.hasPermission(this.main.getLoaderHandler().getPermission().getStaffAnnounce())) {
 								players.sendMessage(this.main.getLoaderHandler().getMessage().getTryToConnect()
 										.replace("%banned%", player.getName())

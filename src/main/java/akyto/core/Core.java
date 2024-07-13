@@ -28,6 +28,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import redis.clients.jedis.Jedis;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class Core extends JavaPlugin {
 	private ManagerHandler managerHandler;
 	private CommandHandler commandHandler;
 	private MySQL mySQL;
+	private Jedis redis;
 	private DatabaseSetup databaseSetup;
 	private boolean debug;
 	private boolean shutdown = false;
@@ -81,6 +83,8 @@ public class Core extends JavaPlugin {
 		}
         this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type"));
 		if (databaseType.equals(DatabaseType.MYSQL)) {
+			this.redis = new Jedis("localhost", 6379);
+			this.redis.auth(getConfig().getString("database.redis-password"));
 			this.hikariPath = this.getDataFolder() + "/hikari.properties";
 			this.saveResource("hikari.properties", false);
 			this.setupHikariCP();
@@ -267,7 +271,10 @@ public class Core extends JavaPlugin {
 				getLogger().info("[CORE - Profiles] Flat-Files saved!");
 			}
 		}
-		dataSource.close();
+		if (databaseType.equals(DatabaseType.MYSQL)) {
+			this.redis.close();
+			dataSource.close();
+		}
 	}
 
 	public void setupDatabase() {

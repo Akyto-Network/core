@@ -8,6 +8,7 @@ import akyto.core.Core;
 import akyto.core.handler.loader.Settings;
 import akyto.core.settings.NormalSettings;
 import akyto.core.utils.CoreUtils;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Skin;
 import org.bukkit.inventory.ItemStack;
@@ -42,12 +43,15 @@ public class Profile {
 	private List<int[]> stats;
 	public int[] settings;
 
+	private List<UUID> friends;
+
 	private boolean disguised;
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
 		this.uuid = uuid;
 		this.rank = rank;
 		this.effect = effect;
+		this.friends = Lists.newArrayList();
 		this.frozen = false;
 		this.cps = 0;
 		this.alertsCPS = 0;

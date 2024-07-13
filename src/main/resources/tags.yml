@@ -1,5 +1,28 @@
 common:
   og:
-    prefix: '&7[&aO&2G&7]'
-    category: 'Master'
+    prefix: '&aO&2G'
+    icon: 'GRASS'
+  japan:
+    prefix: '&5J&dA&5P&dA&5N'
     icon: 'MYCEL'
+  95:
+    prefix: '&695'
+    icon: 'NAME_TAG'
+  fish:
+    prefix: '&3Fish'
+    icon: 'FISHING_ROD'
+  hunter:
+    prefix: '&cHunter'
+    icon: 'IRON_SWORD'
+  tracker:
+    prefix: '&cTracker'
+    icon: 'COMPASS'
+  bestww:
+    prefix: '&3Best&bWW'
+    icon: 'DIAMOND'
+  clicker:
+    prefix: '&eClicker'
+    icon: 'GOLD'
+  cupid:
+    prefix: '&5Cupid'
+    icon: 'BOW'

@@ -1,5 +1,6 @@
 database:
   type: "MYSQL"
+  redis-password: "VHlesfdpdu92"
 
 bungeecord:
   enable: true
@@ -157,6 +158,25 @@ messages:
   token-received: "&7» &fYou received &c%tokens% tokens&f!"
   token-removed: "&7[&4Management&7] &7You've been removed &c%tokens% tokens &7to &c%player%"
   token-another-wallet: "&7» &c%player%'s &7token wallet amount is &c%tokens%"
+
+  friends-request: "&7[&cFriends&7] &f%player% &7has requested you to become his friend."
+  friends-deny: "&7[&cFriends&7] &f%player% &7has deny your friend request."
+  friends-added: "&7[&cFriends&7] &f%player% &7is now your friends"
+  friends-removed: "&7[&cFriends&7] &f%player% &7no longer your friend"
+  friends-connected: "&7[&cFriends&7] &f%player% &7is now connected"
+  friends-disconnected: "&7[&cFriends&7] &f%player% &7is now disconnected"
+  already-friends: "&c%player% &7is already your friend"
+  no-friends: "&7[&cFriends&7] You didn't have any friends add it with /friends add <player>"
+  friends-list:
+    - "&7&m--------------------------------"
+    - "&4&lFriends&7:"
+    - " "
+    - "&8Online"
+    - "%friendsOnline%"
+    - " "
+    - "&8Offline"
+    - "%friendsOffline%"
+    - "&7&m--------------------------------"
 
   banHelp:
     - "&7&m----------------------"

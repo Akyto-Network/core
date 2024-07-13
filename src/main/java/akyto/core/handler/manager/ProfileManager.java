@@ -40,6 +40,8 @@ public class ProfileManager {
 	private final HashMap<UUID, DisguiseEntry> disguised = Maps.newHashMap();
 	@Getter
 	private final HashMap<String, String> realNameInDisguised = Maps.newHashMap();
+	@Getter
+	private final HashMap<UUID, UUID> friendsRequest = Maps.newHashMap();
 
     public ProfileManager(final Core main) {
 		this.main = main;
@@ -137,6 +139,7 @@ public class ProfileManager {
 		final Profile profile = this.getProfiles().get(uuid);
 		int value = profile.getSettings()[id];
 		if (!normal) {
+			value = profile.getSettings()[id == 0 ? 7 : 8];
 			SpectateSettings setting = SpectateSettings.all[id];
 			String[] lore = setting.values();
 			String newLore = ChatColor.RESET + setting.values()[value];
@@ -154,6 +157,7 @@ public class ProfileManager {
 		final Profile profile = this.getProfiles().get(player.getUniqueId());
 		int currentValue = profile.getSettings()[setting];
 		if (!normal) {
+			currentValue = profile.getSettings()[setting == 0 ? 7 : 8];
 			int maxValue = SpectateSettings.all[setting].values().length;
 			int newValue = (currentValue + 1) % maxValue;
 			SpectateSettings.all[setting].change(player, newValue);

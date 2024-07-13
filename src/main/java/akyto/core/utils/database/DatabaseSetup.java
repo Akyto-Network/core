@@ -1,6 +1,7 @@
 package akyto.core.utils.database;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -18,6 +19,7 @@ import akyto.core.Core;
 import akyto.core.profile.Profile;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.format.FormatUtils;
+import redis.clients.jedis.Jedis;
 
 public class DatabaseSetup {
 	
@@ -30,6 +32,13 @@ public class DatabaseSetup {
 	public void exitAsync(final UUID uuid) {
 		CompletableFuture<Void> exit = CompletableFuture.runAsync(() -> this.exit(uuid));
 		exit.whenCompleteAsync((t, u) -> {
+			Bukkit.getOnlinePlayers().forEach(players -> {
+				if (this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid).getFriends().contains(players.getUniqueId())) {
+					players.sendMessage(Core.API.getLoaderHandler().getMessage().getFriendLeaved()
+							.replace("%player%", CoreUtils.getName(uuid))
+					);
+				}
+			});
 			this.main.getManagerHandler().getProfileManager().getProfiles().remove(uuid);
 		});
 	}
@@ -40,6 +49,14 @@ public class DatabaseSetup {
 			String playerName = CoreUtils.getName(uuid);
 			if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(playerName)){
 				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
+			}
+			final Jedis redis = Core.API.getRedis();
+			if (!data.getFriends().isEmpty()) {
+				for (UUID friend : data.getFriends()) {
+					if (!redis.lrange("player:" + uuid + ":friends", 0, -1).contains(friend.toString())) {
+						redis.lpush("player:" + uuid + ":friends", friend.toString());
+					}
+				}
 			}
             try {
 				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, effect=?, tokens=? WHERE name=?",
@@ -109,12 +126,27 @@ public class DatabaseSetup {
 					}
 				});
 			}
+			final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
+			Bukkit.getOnlinePlayers().forEach(players -> {
+				if (data.getFriends().contains(players.getUniqueId())) {
+					players.sendMessage(Core.API.getLoaderHandler().getMessage().getFriendJoined()
+							.replace("%player%", CoreUtils.getName(uuid))
+					);
+				}
+			});
 		});
 	}
 	
 	public void load(final UUID uuid) {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		final String playerName = CoreUtils.getName(uuid);
+		final Jedis redis = Core.API.getRedis();
+		if (redis.exists("player:" + uuid + ":friends")) {
+			this.getFriends(uuid).forEach(uuidString -> {
+				final UUID uuidFriend = UUID.fromString(uuidString);
+				data.getFriends().add(uuidFriend);
+			});
+		}
 		try {
 			data.settings = FormatUtils.getSplitValue(DB.getFirstRow("SELECT settings FROM playersdata WHERE name=?", playerName).getString("settings"), ":");
 			data.getStats().set(2, FormatUtils.getSplitValue(DB.getFirstRow("SELECT elos FROM playersdata WHERE name=?", playerName).getString("elos"), ":"));
@@ -128,4 +160,8 @@ public class DatabaseSetup {
 		}
 	}
 
+	private List<String> getFriends(UUID uuid) {
+		String key = "player:" + uuid + ":friends";
+		return Core.API.getRedis().lrange(key, 0, -1);
+	}
 }
