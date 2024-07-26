@@ -28,9 +28,9 @@ public class PunishmentFile {
 
 	private void generate() {
 		final long startTime = System.currentTimeMillis();
-		file = new File(this.main.getDataFolder(), "punishments.yml");
+		file = new File(this.main.getDataFolder(), "info/punishments.yml");
 		if (!file.exists()) {            
-			this.main.saveResource("punishments.yml", false);
+			this.main.saveResource("info/punishments.yml", false);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {

@@ -97,13 +97,24 @@ public class ProfileManager {
 	public void registerPermissions(final UUID uuid) {
 		PermissionAttachment attachment = Bukkit.getPlayer(uuid).addAttachment(this.main);
 		this.getPermissible().put(uuid, attachment);
-		this.getRank(uuid).getPermissions().forEach(perm -> attachment.setPermission(perm, true));
+		final List<String> perms = Lists.newArrayList();
+		perms.addAll(this.getProfiles().get(uuid).getPermissions());
+		perms.addAll(this.getRank(uuid).getPermissions());
+		perms.forEach(perm -> attachment.setPermission(perm, true));
 	}
 	
 	public RankEntry getRank(final UUID uuid) {
 		return this.main.getManagerHandler().getRankManager().getRanks().get(
 				this.getProfiles().get(uuid).getRank()
 		);
+	}
+
+	public Profile getProfile(final UUID uuid) {
+		if (this.getProfiles().get(uuid) == null) {
+			System.out.println("Profile " + uuid + " not found.");
+			return null;
+		}
+		return this.getProfiles().get(uuid);
 	}
 
 	// SETTINGS CREDITS TO TETELIE*

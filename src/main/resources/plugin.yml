@@ -1,4 +1,4 @@
-name: Core
+name: Universal
 authors: [kezukdev, Greentor]
 version: 1.0
 main: akyto.core.Core

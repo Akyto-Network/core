@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.admin;
 
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;

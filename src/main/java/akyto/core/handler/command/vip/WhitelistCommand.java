@@ -1,9 +1,7 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.vip;
 
 import akyto.core.Core;
 import akyto.core.profile.Profile;
-import akyto.core.rank.RankEntry;
-import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
 import akyto.core.whitelist.WhitelistState;
@@ -11,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class WhitelistCommand {

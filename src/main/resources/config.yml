@@ -204,14 +204,15 @@ messages:
     - "&7&m----------------------"
     - "&8/rank create <name>"
     - "&8/rank setprefix <name> <prefix>"
-    - "&8/rank settype <name> <COMMUNITY/MODERATION/ADMIN>"
+    - "&8/rank setpower <name> <power>"
+    - "&8/rank setwhitelist <name> <true/false>"
     - "&8/rank setcolor <name> <color>"
     - "&8/rank addperm <rank> <perm>"
     - "&8/rank delperm <rank> <perm>"
     - "&8/rank delete <name>"
     - " "
-    - "&8/rank promote <player> <rank>"
-    - "&8/rank demote <player>"
+    - "&8/promote <player> <rank>"
+    - "&8/demote <player>"
     - "&7&m----------------------"
 
   giveawayHelp:
@@ -226,3 +227,11 @@ messages:
     - "&fDuration&7: &e%matchDuration%"
     - "&fKit&7: &e%matchLadder%"
     - "&7&m------------------------------------"
+
+  announcement:
+    - "&8&m------------------------------------"
+    - "&4&lAnnouncements&7:"
+    - "%announce%"
+    - " "
+    - "&7Author&7: &c&o%author%"
+    - "&8&m------------------------------------"

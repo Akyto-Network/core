@@ -2,7 +2,6 @@ package akyto.core.disguise.file;
 
 import akyto.core.Core;
 import akyto.core.disguise.DisguiseEntry;
-import akyto.core.rank.RankEntry;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -24,9 +23,9 @@ public class DisguiseFile {
 
 	private void generate() {
 		final long startTime = System.currentTimeMillis();
-		file = new File(this.main.getDataFolder(), "disguise.yml");
+		file = new File(this.main.getDataFolder(), "api/disguise.yml");
 		if (!file.exists()) {            
-			this.main.saveResource("disguise.yml", false);
+			this.main.saveResource("api/disguise.yml", false);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {

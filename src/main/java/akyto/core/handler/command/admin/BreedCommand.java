@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.admin;
 
 import akyto.core.Core;
 import akyto.core.handler.manager.ProfileManager;
@@ -17,7 +17,7 @@ public class BreedCommand {
             sender.sendMessage(ChatColor.RED + Core.API.getLoaderHandler().getMessage().getNoPermission());
             return;
         }
-        if (arg.getArgs().length != 1) {
+        if (arg.getArgs().length != 2) {
             arg.getSender().sendMessage(ChatColor.RED + "/breedpass add/remove <player>");
             return;
         }

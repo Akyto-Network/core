@@ -24,9 +24,9 @@ public class RankFile {
 
 	private void generate() {
 		final long startTime = System.currentTimeMillis();
-		file = new File(this.main.getDataFolder(), "ranks.yml");
+		file = new File(this.main.getDataFolder(), "info/ranks.yml");
 		if (!file.exists()) {            
-			this.main.saveResource("ranks.yml", false);
+			this.main.saveResource("info/ranks.yml", false);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {

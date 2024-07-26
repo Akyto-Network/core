@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.vip;
 
 import akyto.core.Core;
 import akyto.core.disguise.DisguiseEntry;
@@ -12,7 +12,6 @@ import akyto.core.utils.command.CommandArgs;
 import akyto.spigot.math.FastRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Skin;
 import org.bukkit.entity.Player;
 
 import java.util.Map;

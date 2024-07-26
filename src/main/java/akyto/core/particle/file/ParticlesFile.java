@@ -3,16 +3,13 @@ package akyto.core.particle.file;
 import akyto.core.Core;
 import akyto.core.particle.ParticleEntry;
 import akyto.core.utils.CoreUtils;
-import com.google.common.collect.Lists;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class ParticlesFile {
 
@@ -29,9 +26,9 @@ public class ParticlesFile {
 
 	private void generate() {
 		final long startTime = System.currentTimeMillis();
-		file = new File(this.main.getDataFolder(), "particles.yml");
+		file = new File(this.main.getDataFolder(), "api/particles.yml");
 		if (!file.exists()) {            
-			this.main.saveResource("particles.yml", false);
+			this.main.saveResource("api/particles.yml", false);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {

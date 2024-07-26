@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.commons;
 
 import akyto.core.rank.RankEntry;
 import org.apache.commons.lang3.StringUtils;
@@ -8,12 +8,10 @@ import org.bukkit.entity.Player;
 
 import akyto.core.Core;
 import akyto.core.profile.Profile;
-import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class MessageCommand {
 	

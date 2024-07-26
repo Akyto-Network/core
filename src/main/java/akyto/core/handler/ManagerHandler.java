@@ -20,7 +20,11 @@ public class ManagerHandler {
 		this.tagManager = new TagManager();
 		this.profileManager = new ProfileManager(main);
 		this.punishmentManager = new PunishmentManager(main);
-		this.serverManager = new ServerManager(main.getConfig().getString("chat.state"), main.getConfig().getString("chat.cooldown.priority"));
+
+		final String state = main.getConfig().getString("chat.state");
+		final String cooldown = main.getConfig().getString("chat.cooldown.priority");
+		this.serverManager = new ServerManager(state, cooldown);
+
 		this.inventoryManager = new InventoryManager();
 		this.giveawayManager = new GiveawayManager();
 	}

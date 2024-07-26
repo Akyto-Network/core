@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.commons;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

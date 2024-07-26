@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.admin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

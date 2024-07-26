@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.moderation;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,6 +46,8 @@ public class ModCommand {
 			sender.getInventory().setItem(8, ItemUtils.createItems(Material.REDSTONE_TORCH_ON, ChatColor.RED + "Leave Staff-Mode."));
 		}
 		if (profile.isInState(ProfileState.FREE)) {
+			sender.setFlying(false);
+			sender.setAllowFlight(false);
 			sender.teleport(sender.getWorld().getSpawnLocation());
 			sender.getInventory().clear();
 			sender.getInventory().setContents(profile.getPreviousContents());

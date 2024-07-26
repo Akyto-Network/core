@@ -1,4 +1,4 @@
-package akyto.core.handler.command;
+package akyto.core.handler.command.commons;
 
 import akyto.core.Core;
 import akyto.core.handler.loader.Message;

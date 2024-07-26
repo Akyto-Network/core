@@ -1,7 +1,6 @@
 package akyto.core.tag.file;
 
 import akyto.core.Core;
-import akyto.core.rank.RankEntry;
 import akyto.core.tag.TagEntry;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -25,9 +24,9 @@ public class TagFile {
 
 	private void generate() {
 		final long startTime = System.currentTimeMillis();
-		file = new File(this.main.getDataFolder(), "tags.yml");
+		file = new File(this.main.getDataFolder(), "api/tags.yml");
 		if (!file.exists()) {            
-			this.main.saveResource("tags.yml", false);
+			this.main.saveResource("api/tags.yml", false);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		if (config.getKeys(true).size() > 2) {

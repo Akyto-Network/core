@@ -294,7 +294,7 @@ public class PlayerListener implements Listener {
 							.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 							.replace("%rankColor%", finalColor)
 							.replace("%player%", event.getPlayer().getDisplayName())
-							.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
+							.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() : "")
 							.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 							.replace("%msg%", event.getMessage().replace(player.getName(), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + ChatColor.ITALIC + player.getName() + ChatColor.RESET)));
 
@@ -306,7 +306,7 @@ public class PlayerListener implements Listener {
 					.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 					.replace("%rankColor%", finalColor)
 					.replace("%player%", event.getPlayer().getDisplayName())
-					.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
+					.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() : "")
 					.replace("%likeTag%", this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 					.replace("%msg%", event.getMessage()));
 
@@ -322,7 +322,7 @@ public class PlayerListener implements Listener {
 				.replace("%prefix%", finalPrefix + (finalSpacer ? " " : ""))
 				.replace("%rankColor%", finalColor)
 				.replace("%player%", "%1$s")
-				.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() + " " : "")
+				.replace("%tag%", tagEntry != null ? " " + tagEntry.getPrefix() : "")
 				.replace("%likeTag%",  this.main.getManagerHandler().getProfileManager().getProfiles().get(pls.getUniqueId()).isLikeNameMC() ? " " + this.main.getLoaderHandler().getMessage().getNameMCLikeTag() : "")
 				.replace("%msg%", "%2$s"))
 		);
