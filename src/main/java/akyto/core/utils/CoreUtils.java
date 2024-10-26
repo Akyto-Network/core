@@ -12,12 +12,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
-import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
-import akyto.core.particle.ParticleEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Skin;
 import org.bukkit.entity.Player;
 
 import akyto.core.Core;
@@ -41,14 +38,6 @@ public class CoreUtils {
 			return target.getDisplayName();
 		}
 		return Core.API.getServer().getOfflinePlayer(playerId).getName();
-	}
-
-	public static ParticleEntry getParticleByName(String name) {
-		return Core.API.getParticles().stream().filter(particles -> particles.getName().equals(name)).findFirst().orElse(null);
-	}
-
-	public static ParticleEntry getParticleBySection(String section) {
-		return Core.API.getParticles().stream().filter(particles -> particles.getSection().equals(section)).findFirst().orElse(null);
 	}
 
 	public static Giveaway getGiveawayByCreator(final UUID uuid) {
@@ -136,8 +125,4 @@ public class CoreUtils {
 		return future;
 	}
 
-
-	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
-		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
-	}
 }

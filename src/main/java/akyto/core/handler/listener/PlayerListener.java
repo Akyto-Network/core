@@ -8,12 +8,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import akyto.core.disguise.DisguiseEntry;
 import akyto.core.handler.manager.TagManager;
 import akyto.core.tag.TagEntry;
 import akyto.core.whitelist.WhitelistState;
 import co.aikar.idb.DB;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -127,20 +128,6 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		event.setJoinMessage(null);
-		if (!Core.API.getManagerHandler().getProfileManager().getDisguised().isEmpty()) {
-			Bukkit.getScheduler().runTaskLater(Core.API, () -> {
-				final List<Player> pls = new ArrayList<>();
-				for (Map.Entry<UUID, DisguiseEntry> entry : Core.API.getManagerHandler().getProfileManager().getDisguised().entrySet()) {
-					final Player disguised = Bukkit.getPlayer(entry.getKey());
-					CoreUtils.disguise(event.getPlayer(), disguised, entry.getValue());
-					pls.add(disguised);
-					event.getPlayer().hidePlayer(disguised);
-				}
-				Bukkit.getScheduler().runTaskLater(Core.API, () -> {
-					pls.forEach(players -> event.getPlayer().showPlayer(players));
-				}, 20L);
-			}, 2L);
-		}
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
@@ -161,10 +148,6 @@ public class PlayerListener implements Listener {
 							.replace("%type%", "left"));
 				}
 			});
-		}
-		if (Core.API.getManagerHandler().getProfileManager().getDisguised().containsKey(leaver.getUniqueId())){
-			Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().remove(Core.API.getManagerHandler().getProfileManager().getDisguised().get(leaver.getUniqueId()).getName());
-			Core.API.getManagerHandler().getProfileManager().getDisguised().remove(leaver.getUniqueId());
 		}
 		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
 			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
@@ -263,11 +246,6 @@ public class PlayerListener implements Listener {
 		String prefix = CoreUtils.translate(rank.getPrefix());
 		String color = CoreUtils.translate(rank.getColor());
 		boolean spacer = rank.hasSpaceBetweenColor();
-		if (Core.API.getManagerHandler().getProfileManager().getDisguised().containsKey(pls.getUniqueId())) {
-			prefix = "";
-			spacer = false;
-			color = ChatColor.GREEN.toString();
-		}
 		String finalPrefix = prefix;
 		boolean finalSpacer = spacer;
 		String finalColor = color;

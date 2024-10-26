@@ -1,13 +1,9 @@
 package akyto.core;
 
-import akyto.core.disguise.file.DisguiseFile;
 import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
 import akyto.core.handler.listener.PlayerListener;
-import akyto.core.handler.listener.TabListListener;
-import akyto.core.particle.ParticleEntry;
-import akyto.core.particle.file.ParticlesFile;
 import akyto.core.punishment.cache.BanEntry;
 import akyto.core.punishment.cache.BlacklistEntry;
 import akyto.core.punishment.cache.MuteEntry;
@@ -16,8 +12,6 @@ import akyto.core.rank.RankEntry;
 import akyto.core.rank.file.RankFile;
 import akyto.core.runnable.TipsRunnable;
 import akyto.core.tag.file.TagFile;
-import akyto.core.utils.CoreUtils;
-import akyto.spigot.aSpigot;
 import akyto.core.utils.database.DatabaseSetup;
 import akyto.core.utils.database.DatabaseType;
 import akyto.core.utils.database.api.MySQL;
@@ -35,7 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -52,8 +45,6 @@ public class Core extends JavaPlugin {
 	private DatabaseType databaseType;
 	private LoaderHandler loaderHandler;
 	private RankFile rankFile;
-	private ParticlesFile particlesFile;
-	private DisguiseFile disguiseFile;
 	private TagFile tagFile;
 	private PunishmentFile punishmentFile;
 	private ManagerHandler managerHandler;
@@ -70,14 +61,9 @@ public class Core extends JavaPlugin {
 	private final List<String> whitelisted = Lists.newArrayList();
 	@Getter
 	private final List<String> blacklistWhitelist = Lists.newArrayList();
-	@Getter
-	private List<ParticleEntry> particles = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;
-		debug = getServer().getOptions().has("debug");
-		if (debug)
-			getLogger().info("Debug mode enabled");
         new TipsRunnable().runTaskTimerAsynchronously(this, 6000L, 6000L);
 		this.saveDefaultConfig();
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
@@ -97,18 +83,14 @@ public class Core extends JavaPlugin {
 		this.registerListener();
 		this.namemcURL = this.getConfig().getString("namemc.server-ip");
 		this.loaderHandler = new LoaderHandler(this);
-		this.particlesFile = new ParticlesFile(this);
 		this.managerHandler = new ManagerHandler(this);
 		this.tagFile = new TagFile(this);
 		this.rankFile = new RankFile(this);
-		this.disguiseFile = new DisguiseFile(this);
 		this.punishmentFile = new PunishmentFile(this);
 		this.commandHandler = new CommandHandler(this);
 	}
 
 	private void registerListener() {
-		if (debug)
-			aSpigot.INSTANCE.addPacketHandler(new TabListListener());
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 	}
 

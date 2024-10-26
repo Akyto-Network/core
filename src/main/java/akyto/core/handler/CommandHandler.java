@@ -17,11 +17,9 @@ import akyto.core.handler.command.moderation.punishment.blacklist.BlacklistComma
 import akyto.core.handler.command.moderation.punishment.blacklist.UnblacklistCommand;
 import akyto.core.handler.command.moderation.punishment.mute.MuteCommand;
 import akyto.core.handler.command.moderation.punishment.mute.UnmuteCommand;
-import akyto.core.handler.command.vip.DisguiseCommand;
 import akyto.core.handler.command.vip.GiveawayCommand;
 import akyto.core.handler.command.vip.WhitelistCommand;
 import akyto.core.utils.command.CommandFramework;
-import org.bukkit.plugin.Plugin;
 
 public class CommandHandler {
 
@@ -53,7 +51,6 @@ public class CommandHandler {
 				new ModCommand(),
 
 				// VIP
-				new DisguiseCommand(),
 				new WhitelistCommand(),
 				new GiveawayCommand(),
 

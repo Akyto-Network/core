@@ -43,9 +43,6 @@ public class BlacklistCommand {
         String reason = "Unfair Advantage";
         reason = args.length > 1 ? StringUtils.join(args, ' ', 2, args.length) : "Unfair Advantage";
         String target = args[0];
-        if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
-            target = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]);
-        }
         this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(target) != null ? Bukkit.getPlayer(target).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), null, reason, sender.getName(), PunishmentType.BLACKLIST);
         if (this.main.getLoaderHandler().getSettings().isBanBroad() && !sender.getName().equalsIgnoreCase("CONSOLE")) {
             Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getBlacklistAnnounce().replace("%banned%", target).replace("%reason%", reason).replace("%judge%", sender.getName()));

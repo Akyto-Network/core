@@ -7,7 +7,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import akyto.core.Core;
-import akyto.core.particle.ParticleEntry;
 import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -35,8 +34,6 @@ public class InventoryManager {
 	@Getter
 	private final ConcurrentHashMap<UUID, Inventory> profileInventory;
     @Getter
-    private final Inventory particlesInventory;
-    @Getter
     private final ConcurrentHashMap<UUID, Inventory> commonTags = new ConcurrentHashMap<>();
 	
 	public InventoryManager() {
@@ -46,7 +43,6 @@ public class InventoryManager {
         this.tagInventory[0] = Bukkit.createInventory(null, 9, ChatColor.GRAY + "Tags:");
         this.tagInventory[1] = Bukkit.createInventory(null, 27, ChatColor.GRAY + "Tags Common:");
 		this.frozeInventory = Bukkit.createInventory(null, InventoryType.DISPENSER, Core.API.getLoaderHandler().getInventory().getFrozeName());
-        this.particlesInventory = Bukkit.createInventory(null, Core.API.getParticlesFile().getConfig().getInt("inventory.size"), CoreUtils.translate(Core.API.getParticlesFile().getConfig().getString("inventory.name")));
 		this.setFrozenInventory();
 	}
 

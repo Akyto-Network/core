@@ -28,9 +28,6 @@ public class MessageCommand {
 		}
 
 		Player target = Bukkit.getPlayer(args[0]);
-		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])) {
-			target = Bukkit.getPlayer(Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]));
-		}
 
 		if (target == null) {
 			sender.sendMessage(ChatColor.RED + args[0] + " isn't connected!");
@@ -56,16 +53,6 @@ public class MessageCommand {
 		String receiverColor = rank.get(receiverProfile.getRank()).getColor();
 		boolean spaceReceiver = rank.get(receiverProfile.getRank()).hasSpaceBetweenColor();
 		boolean spaceSender = rank.get(senderProfile.getRank()).hasSpaceBetweenColor();
-		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
-			rankReceiver = "";
-			receiverColor = ChatColor.GREEN.toString();
-			spaceReceiver = false;
-		}
-		if (sender.hasFakeName(sender)){
-			rankSender = "";
-			senderColor = ChatColor.GREEN.toString();
-			spaceSender = false;
-		}
 		sender.sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
 				.replace("%senderColorRank%", senderColor)
 				.replace("%sender%", sender.getDisplayName())
@@ -128,16 +115,6 @@ public class MessageCommand {
 		String receiverColor = rank.get(receiverProfile.getRank()).getColor();
 		boolean spaceReceiver = rank.get(receiverProfile.getRank()).hasSpaceBetweenColor();
 		boolean spaceSender = rank.get(senderProfile.getRank()).hasSpaceBetweenColor();
-		if (receiver.hasFakeName(sender)){
-			rankReceiver = "";
-			receiverColor = ChatColor.GREEN.toString();
-			spaceReceiver = false;
-		}
-		if (sender.hasFakeName(sender)){
-			rankSender = "";
-			senderColor = ChatColor.GREEN.toString();
-			spaceSender = false;
-		}
 		sender.sendMessage(this.main.getLoaderHandler().getMessage().getPmFormat()
 				.replace("%senderColorRank%", senderColor)
 				.replace("%sender%", sender.getDisplayName())

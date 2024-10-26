@@ -24,9 +24,6 @@ public class BreedCommand {
         if (arg.getArgs(0).equalsIgnoreCase("add")) {
             String target = arg.getArgs(1);
             final ProfileManager profileManager = Core.API.getManagerHandler().getProfileManager();
-            if (profileManager.getRealNameInDisguised().containsKey(target)){
-                target = profileManager.getRealNameInDisguised().get(target);
-            }
             if (Core.API.getBypassCpsCap().contains(target)) {
                 arg.getSender().sendMessage(ChatColor.RED + target + " have already the bypass!");
                 return;
@@ -39,9 +36,6 @@ public class BreedCommand {
         if (arg.getArgs(0).equalsIgnoreCase("add")) {
             String target = arg.getArgs(1);
             final ProfileManager profileManager = Core.API.getManagerHandler().getProfileManager();
-            if (profileManager.getRealNameInDisguised().containsKey(target)){
-                target = profileManager.getRealNameInDisguised().get(target);
-            }
             if (!Core.API.getBypassCpsCap().contains(target)) {
                 arg.getSender().sendMessage(ChatColor.RED + target + " doesn't have the bypass!");
                 return;

@@ -47,9 +47,6 @@ public class MuteCommand {
         new TimeUtils(args[1], calendar);
         String reason = args.length > 2 ? StringUtils.join(args, ' ', 2, args.length) : "Flood";
         String target = args[0];
-        if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
-            target = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]);
-        }
         this.main.getManagerHandler().getPunishmentManager().addPunishment(Bukkit.getPlayer(target) != null ? Bukkit.getPlayer(target).getUniqueId() : Bukkit.getOfflinePlayer(args[0]).getUniqueId(), sdf.format(calendar.getTime()), reason, sender.getName(), PunishmentType.MUTE);
         if (this.main.getLoaderHandler().getSettings().isMuteBroad()) {
             Bukkit.broadcastMessage(this.main.getLoaderHandler().getMessage().getMuteAnnounce().replace("%muted%", target).replace("%reason%", reason).replace("%judge%", sender.getName()));

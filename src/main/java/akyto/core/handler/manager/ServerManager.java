@@ -3,9 +3,7 @@ package akyto.core.handler.manager;
 import akyto.core.Core;
 import akyto.core.chat.ChatPriority;
 import akyto.core.chat.ChatState;
-import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
-import akyto.core.particle.ParticleEntry;
 import akyto.core.whitelist.WhitelistState;
 import com.google.common.collect.Lists;
 import lombok.Getter;
@@ -21,7 +19,6 @@ public class ServerManager {
 	private ChatPriority chatPriority;
 	private WhitelistState whitelistState;
 
-	private HashMap<String, DisguiseEntry> disguise = new HashMap<>();
 	private List<Giveaway> giveaways = Lists.newArrayList();
 	
 	public ServerManager(final String chatState, final String chatPriority) {

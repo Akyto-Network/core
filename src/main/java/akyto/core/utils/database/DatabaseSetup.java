@@ -48,9 +48,6 @@ public class DatabaseSetup {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);
 		if (data != null) {
 			String playerName = CoreUtils.getName(uuid);
-			if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(playerName)){
-				playerName = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName);
-			}
 			final Jedis redis = Core.API.getRedis();
 			if (!data.getFriends().isEmpty()) {
 				for (UUID friend : data.getFriends()) {

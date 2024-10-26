@@ -2,10 +2,7 @@ package akyto.core.handler.manager;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
-
-import akyto.core.disguise.DisguiseEntry;
 import akyto.core.settings.NormalSettings;
 import akyto.core.settings.SpectateSettings;
 import lombok.Getter;
@@ -36,10 +33,6 @@ public class ProfileManager {
     private final ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
     @Getter
     private final HashMap<UUID, PermissionAttachment> permissible = Maps.newHashMap();
-	@Getter
-	private final HashMap<UUID, DisguiseEntry> disguised = Maps.newHashMap();
-	@Getter
-	private final HashMap<String, String> realNameInDisguised = Maps.newHashMap();
 	@Getter
 	private final HashMap<UUID, UUID> friendsRequest = Maps.newHashMap();
 

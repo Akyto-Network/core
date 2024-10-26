@@ -28,17 +28,13 @@ public class ReportCommand {
 		}
 		if (args.length > 1) {
 			String target = args[0];
-			if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().containsKey(args[0])){
-				target = Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(args[0]);
-			}
 			if (Bukkit.getPlayer(target).getUniqueId() == null && Bukkit.getOfflinePlayer(target) == null) {
 				sender.sendMessage(ChatColor.WHITE + args[0] + ChatColor.RED + " not found on akyto.");
 				return false;
 			}
 			String reason = args.length > 1 ? StringUtils.join(args, ' ', 1, args.length) : "Cheating"; 
 			sender.sendMessage(ChatColor.GREEN + "You'r report has been sent to the staff team :)");
-			final TextComponent comp = new TextComponent(ChatColor.GRAY + "(" + ChatColor.RED + "!" + ChatColor.GRAY + ") " + ChatColor.GREEN + (((Player) sender).hasFakeName(sender) ? sender.getName() + ChatColor.GRAY + "[" + ChatColor.YELLOW + ChatColor.ITALIC + ((Player) sender).getFakeName(sender) + ChatColor.GRAY + "]" : sender.getName()) + ChatColor.GRAY + " have reported " + ChatColor.RED + (args[0] != target ? target + ChatColor.GRAY + "[" + ChatColor.YELLOW + ChatColor.ITALIC + args[0] + ChatColor.GRAY + "]" : target)+ ChatColor.GRAY + " for " + ChatColor.WHITE + reason);
-			comp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new ComponentBuilder(Bukkit.getPlayer(target) != null ? ChatColor.DARK_GRAY + "Click to teleport to reported player!" : ChatColor.RED + "The reported is offline now!").create()));
+			final TextComponent comp = new TextComponent(ChatColor.GRAY + "(" + ChatColor.RED + "!" + ChatColor.GRAY + ") " + ChatColor.GREEN + sender.getName() + ChatColor.GRAY + " have reported " + ChatColor.RED + (args[0] != target ? target + ChatColor.GRAY + "[" + ChatColor.YELLOW + ChatColor.ITALIC + args[0] + ChatColor.GRAY + "]" : target)+ ChatColor.GRAY + " for " + ChatColor.WHITE + reason);			comp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new ComponentBuilder(Bukkit.getPlayer(target) != null ? ChatColor.DARK_GRAY + "Click to teleport to reported player!" : ChatColor.RED + "The reported is offline now!").create()));
 			if (Bukkit.getPlayer(target) != null) comp.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, "/tp " + args[0]));
 			Bukkit.getOnlinePlayers().forEach(player -> {
 				if (player.hasPermission("akyto.staff")) {
