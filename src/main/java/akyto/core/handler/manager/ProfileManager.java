@@ -30,7 +30,7 @@ public class ProfileManager {
 	
 	private final Core main;
 	@Getter
-    private final List<UUID> frozen = Lists.newArrayList();
+    private final Set<UUID> frozen = new HashSet<>();
     @Getter
     private final ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
     @Getter

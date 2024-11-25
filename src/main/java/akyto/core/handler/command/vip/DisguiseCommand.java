@@ -93,6 +93,6 @@ public class DisguiseCommand {
         sender.setDisplayName(finalDisguiseEntry.getName());
         profile.setDisguised(true);
         sender.teleport(sender.getLocation());
-        sender.sendMessage(ChatColor.GRAY + "You've been disguised now and you'r name is: " + ChatColor.RED + finalDisguiseEntry.getName());
+        sender.sendMessage(ChatColor.GRAY + "You've been disguised now and your name is: " + ChatColor.RED + finalDisguiseEntry.getName());
     }
 }
