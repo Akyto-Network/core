@@ -5,7 +5,6 @@ import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
 import akyto.core.handler.listener.PlayerListener;
-import akyto.core.handler.listener.TabListListener;
 import akyto.core.particle.ParticleEntry;
 import akyto.core.particle.file.ParticlesFile;
 import akyto.core.punishment.cache.BanEntry;
@@ -16,8 +15,6 @@ import akyto.core.rank.RankEntry;
 import akyto.core.rank.file.RankFile;
 import akyto.core.runnable.TipsRunnable;
 import akyto.core.tag.file.TagFile;
-import akyto.core.utils.CoreUtils;
-import akyto.spigot.aSpigot;
 import akyto.core.utils.database.DatabaseSetup;
 import akyto.core.utils.database.DatabaseType;
 import akyto.core.utils.database.api.MySQL;
@@ -35,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -107,8 +103,6 @@ public class Core extends JavaPlugin {
 	}
 
 	private void registerListener() {
-		if (debug)
-			aSpigot.INSTANCE.addPacketHandler(new TabListListener());
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 	}
 

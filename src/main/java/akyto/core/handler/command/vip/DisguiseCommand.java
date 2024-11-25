@@ -9,7 +9,6 @@ import akyto.core.profile.ProfileState;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
-import akyto.spigot.math.FastRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -57,7 +56,7 @@ public class DisguiseCommand {
         if (!profile.isInState(ProfileState.FREE)) {
             sender.sendMessage(ChatColor.RED + "");
         }
-        Random random = new FastRandom();
+        Random random = new Random();
         final UUID uuid = sender.getUniqueId();
         final ServerManager serverManager = managerHandler.getServerManager();
         Set<Map.Entry<String, DisguiseEntry>> entries = serverManager.getDisguise().entrySet();
