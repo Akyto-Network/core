@@ -1,6 +1,6 @@
 database:
   type: "MYSQL"
-  redis-password: "VHlesfdpdu92"
+  redis-password: "dev123"
 
 bungeecord:
   enable: true
