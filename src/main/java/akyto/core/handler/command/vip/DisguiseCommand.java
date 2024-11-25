@@ -58,7 +58,6 @@ public class DisguiseCommand {
             sender.sendMessage(ChatColor.RED + "");
         }
         Random random = new FastRandom();
-        final UUID uuid = sender.getUniqueId();
         final ServerManager serverManager = managerHandler.getServerManager();
         Set<Map.Entry<String, DisguiseEntry>> entries = serverManager.getDisguise().entrySet();
         Map.Entry<String, DisguiseEntry>[] entriesArray = entries.toArray(new Map.Entry[0]);
@@ -94,6 +93,6 @@ public class DisguiseCommand {
         sender.setDisplayName(finalDisguiseEntry.getName());
         profile.setDisguised(true);
         sender.teleport(sender.getLocation());
-        sender.sendMessage(ChatColor.GRAY + "You've been disguised now and you'r name is: " + ChatColor.RED + finalDisguiseEntry.getName());
+        sender.sendMessage(ChatColor.GRAY + "You've been disguised now and your name is: " + ChatColor.RED + finalDisguiseEntry.getName());
     }
 }

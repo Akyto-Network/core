@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TokensCommand {
 
-    @Command(name = "tokens", aliases= {"coins"}, inGameOnly = false)
+    @Command(name = "tokens", aliases= {"coins"})
     public void tokens(final CommandArgs arg) {
         if (arg.getSender() instanceof Player) {
             if (!arg.getSender().hasPermission(Core.API.getLoaderHandler().getPermission().getToken())) {

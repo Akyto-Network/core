@@ -1,26 +1,21 @@
 package akyto.core.handler.command.admin.rank;
 
-import java.util.concurrent.ExecutionException;
-
 import akyto.core.handler.loader.Message;
 import akyto.core.handler.loader.Permission;
 import akyto.core.handler.manager.RankManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import co.aikar.idb.DB;
 import akyto.core.Core;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
-import akyto.core.utils.database.DatabaseType;
 
 public class RankCommand {
 
 	private final Core main = Core.API;
 	
-	@Command(name = "rank", aliases= {"grade", "ranks"}, inGameOnly = false)
+	@Command(name = "rank", aliases= {"grade", "ranks"})
 	public void rankCommand(final CommandArgs arg) {
 
 		final CommandSender sender = arg.getSender();

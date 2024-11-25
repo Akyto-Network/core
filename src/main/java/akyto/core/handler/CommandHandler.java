@@ -21,7 +21,6 @@ import akyto.core.handler.command.vip.DisguiseCommand;
 import akyto.core.handler.command.vip.GiveawayCommand;
 import akyto.core.handler.command.vip.WhitelistCommand;
 import akyto.core.utils.command.CommandFramework;
-import org.bukkit.plugin.Plugin;
 
 public class CommandHandler {
 

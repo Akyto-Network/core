@@ -20,7 +20,7 @@ public class DemoteCommand {
 
     private final Core main = Core.API;
 
-    @Command(name = "demote", aliases= {"rankdown"}, inGameOnly = false)
+    @Command(name = "demote", aliases= {"rankdown"})
     public void demoteCommand(final CommandArgs arg) {
 
         final CommandSender sender = arg.getSender();

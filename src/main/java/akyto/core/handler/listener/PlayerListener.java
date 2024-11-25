@@ -4,9 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicReference;
 
 import akyto.core.disguise.DisguiseEntry;
 import akyto.core.handler.manager.TagManager;
@@ -32,8 +30,6 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-
-import com.google.common.collect.Lists;
 
 import akyto.core.Core;
 import akyto.core.chat.ChatState;
@@ -187,7 +183,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-		if (this.main.getManagerHandler().getProfileManager().getFrozed().contains(event.getPlayer().getUniqueId())) {
+		if (this.main.getManagerHandler().getProfileManager().getFrozen().contains(event.getPlayer().getUniqueId())) {
 			if (event.getPlayer().getOpenInventory().getType() != InventoryType.DISPENSER) {
 				event.setCancelled(true);
 			}

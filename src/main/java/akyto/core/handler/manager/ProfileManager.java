@@ -2,7 +2,6 @@ package akyto.core.handler.manager;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
 
 import akyto.core.disguise.DisguiseEntry;
@@ -31,7 +30,7 @@ public class ProfileManager {
 	
 	private final Core main;
 	@Getter
-    private final List<UUID> frozed = Lists.newArrayList();
+    private final List<UUID> frozen = Lists.newArrayList();
     @Getter
     private final ConcurrentMap<UUID, Profile> profiles = Maps.newConcurrentMap();
     @Getter

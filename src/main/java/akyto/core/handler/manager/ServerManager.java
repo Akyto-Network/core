@@ -5,7 +5,6 @@ import akyto.core.chat.ChatPriority;
 import akyto.core.chat.ChatState;
 import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
-import akyto.core.particle.ParticleEntry;
 import akyto.core.whitelist.WhitelistState;
 import com.google.common.collect.Lists;
 import lombok.Getter;

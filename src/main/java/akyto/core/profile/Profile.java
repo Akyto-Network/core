@@ -6,11 +6,9 @@ import java.util.UUID;
 
 import akyto.core.Core;
 import akyto.core.handler.loader.Settings;
-import akyto.core.settings.NormalSettings;
 import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
-import org.bukkit.Skin;
 import org.bukkit.inventory.ItemStack;
 
 import lombok.Getter;

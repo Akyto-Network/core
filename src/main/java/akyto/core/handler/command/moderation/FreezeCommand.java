@@ -42,12 +42,12 @@ public class FreezeCommand {
                 target.openInventory(this.main.getManagerHandler().getInventoryManager().getFrozeInventory());    
             }
             target.sendMessage(this.main.getLoaderHandler().getMessage().getFrozed().replace("%frozer%", player.getName()));
-            this.main.getManagerHandler().getProfileManager().getFrozed().add(target.getUniqueId());
+            this.main.getManagerHandler().getProfileManager().getFrozen().add(target.getUniqueId());
             new FrozenRunnable(main, target.getUniqueId()).runTaskTimer(main, 2L, 2L);
         } else {
             if (this.main.getLoaderHandler().getSettings().isFreezeInventory()) {
                 target.closeInventory();    
-                this.main.getManagerHandler().getProfileManager().getFrozed().remove(target.getUniqueId());
+                this.main.getManagerHandler().getProfileManager().getFrozen().remove(target.getUniqueId());
             }
         }
         

@@ -1,16 +1,13 @@
 package akyto.core.handler.manager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import akyto.core.Core;
-import akyto.core.particle.ParticleEntry;
 import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

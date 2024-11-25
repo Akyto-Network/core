@@ -11,8 +11,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 public class GiveawayRunnable extends BukkitRunnable {

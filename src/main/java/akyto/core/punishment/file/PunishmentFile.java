@@ -56,7 +56,7 @@ public class PunishmentFile {
 			}
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Punishments: Succesfully loaded in " + (endTime - startTime) + "ms!");
+		System.out.println("[CORE] Punishments: Successfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

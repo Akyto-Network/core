@@ -11,10 +11,6 @@ import akyto.core.rank.RankEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import co.aikar.idb.BukkitDB;
 import co.aikar.idb.DB;
 import akyto.core.Core;
 import akyto.core.profile.Profile;

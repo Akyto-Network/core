@@ -9,11 +9,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class WhitelistCommand {
 
-    @Command(name = "whitelist", aliases= {"wl"}, inGameOnly = false)
+    @Command(name = "whitelist", aliases= {"wl"})
     public void whitelist(final CommandArgs arg) {
         final String helpClassic = ChatColor.RED + "/whitelist add <player>";
         final String[] helpAdmin = new String[]{
@@ -76,12 +77,15 @@ public class WhitelistCommand {
                 arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getNoPermission());
                 return;
             }
-            if (WhitelistState.valueOf(args[1].toUpperCase()) != null) {
-                Core.API.getManagerHandler().getServerManager().setWhitelistState(WhitelistState.valueOf(args[1].toUpperCase()));
+            try {
+                WhitelistState newState = WhitelistState.valueOf(args[1].toUpperCase());
+                Core.API.getManagerHandler().getServerManager().setWhitelistState(newState);
                 Bukkit.broadcastMessage(Core.API.getLoaderHandler().getMessage().getWhitelistEnabled()
                         .replace("%type%",
-                                WhitelistState.valueOf(args[1].toUpperCase()).equals(WhitelistState.ON_LIST) ? "Global" : " must be have a rank")
+                                newState == WhitelistState.ON_LIST ? "Global" : " must be have a rank")
                 );
+            } catch (IllegalArgumentException ex) {
+                arg.getSender().sendMessage(ChatColor.RED + "Invalid state '" + args[0] + "', please choose between " + Arrays.stream(WhitelistState.values()).map(String::valueOf).collect(Collectors.joining(", ")));
             }
         } else if (args[0].equalsIgnoreCase("add")) {
             final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(arg.getPlayer().getUniqueId());

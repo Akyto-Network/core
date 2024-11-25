@@ -1,7 +1,6 @@
 package akyto.core.particle;
 
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 

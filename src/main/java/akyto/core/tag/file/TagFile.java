@@ -36,7 +36,7 @@ public class TagFile {
 			}	
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Tags: Succesfully loaded in " + (endTime - startTime) + "ms!");
+		System.out.println("[CORE] Tags: Successfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

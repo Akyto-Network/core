@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class BreedCommand {
 
-    @Command(name = "breedpass", aliases= {"bp"}, inGameOnly = false)
+    @Command(name = "breedpass", aliases= {"bp"})
     public void bypassCpsCapCommand(final CommandArgs arg) {
         final Player sender = arg.getPlayer();
         if (!sender.hasPermission(Core.API.getLoaderHandler().getPermission().getBypassCpsCap())) {

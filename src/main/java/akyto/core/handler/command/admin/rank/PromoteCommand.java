@@ -20,7 +20,7 @@ public class PromoteCommand {
 
     private final Core main = Core.API;
 
-    @Command(name = "promote", aliases= {"rankup"}, inGameOnly = false)
+    @Command(name = "promote", aliases= {"rankup"})
     public void promoteCommand(final CommandArgs arg) {
 
         final CommandSender sender = arg.getSender();

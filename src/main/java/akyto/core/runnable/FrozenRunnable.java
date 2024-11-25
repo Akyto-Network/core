@@ -21,7 +21,7 @@ public class FrozenRunnable extends BukkitRunnable {
 	@Override
 	public void run() {
 		Player player = Bukkit.getPlayer(uuid);
-		if (player == null || !player.isOnline() || !this.main.getManagerHandler().getProfileManager().getFrozed().contains(uuid)) {
+		if (player == null || !player.isOnline() || !this.main.getManagerHandler().getProfileManager().getFrozen().contains(uuid)) {
 			if (player != null)
 				player.closeInventory();
 			this.cancel();
