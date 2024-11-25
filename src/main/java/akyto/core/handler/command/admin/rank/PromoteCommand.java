@@ -76,7 +76,7 @@ public class PromoteCommand {
             if (online) {
                 profileManager.registerPermissions(target.getUniqueId());
 
-                final String nameShrink = target.getDisplayName().substring(0, Math.min(Bukkit.getPlayer(args[1]).getName().length(), 14));
+                final String nameShrink = target.getDisplayName().substring(0, Math.min(Bukkit.getPlayer(args[0]).getName().length(), 14));
                 target.setPlayerListName(
                         CoreUtils.translate(profileManager.getRank(target.getUniqueId()).getColor() + nameShrink)
                 );

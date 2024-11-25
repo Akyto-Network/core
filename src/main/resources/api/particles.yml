@@ -5,7 +5,7 @@ inventory:
 particles:
   smoke:
     permissions: 'akyto.particles.smoke'
-    type: 'SMOKE_LARGE'
+    type: 'SMOKE'
     xOffSet: 0.5
     yOffSet: 0.5
     zOffSet: 0.5
