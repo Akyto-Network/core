@@ -24,6 +24,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
@@ -107,6 +108,8 @@ public class Core extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		this.saveConfig();
+		this.saveDatabase();
 		this.saveRank();
 		this.savePunishment();
 		this.getConfig().set("autoclicker.bypass", this.getBypassCpsCap());
@@ -116,8 +119,6 @@ public class Core extends JavaPlugin {
 		this.managerHandler.getRankManager().getRanks().clear();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
-		this.saveConfig();
-		this.saveDatabase();
 	}
 	
 	private void savePunishment() {
@@ -236,14 +237,6 @@ public class Core extends JavaPlugin {
 
 	private void saveDatabase() {
 		this.shutdown = true;
-		if (databaseType.equals(DatabaseType.MYSQL)) {
-			this.setupHikariCP();
-			if (!Bukkit.getOnlinePlayers().isEmpty()) {
-				Bukkit.getOnlinePlayers().forEach(player -> {
-					databaseSetup.exit(player.getUniqueId());
-				});
-			}
-		}
 		if (this.databaseType.equals(DatabaseType.FLAT_FILES)) {
 			if (!this.managerHandler.getProfileManager().getProfiles().isEmpty()) {
 				for (UUID uuid : this.managerHandler.getProfileManager().getProfiles().keySet()) {
@@ -267,10 +260,6 @@ public class Core extends JavaPlugin {
 				}
 				getLogger().info("[CORE - Profiles] Flat-Files saved!");
 			}
-		}
-		if (databaseType.equals(DatabaseType.MYSQL)) {
-			this.redis.close();
-			dataSource.close();
 		}
 	}
 
