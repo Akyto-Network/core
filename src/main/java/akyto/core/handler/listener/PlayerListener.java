@@ -357,10 +357,21 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 			if (event.getCurrentItem() == null) return;
 			if (event.getCurrentItem().getType().equals(Material.AIR)) return;
+			final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
+			if (event.getCurrentItem().getType().equals(Material.TRAP_DOOR) && event.getCurrentItem().getItemMeta().getDisplayName().contains("Remove")) {
+				if (profile.getTag().equals("none")) {
+					player.closeInventory();
+					player.sendMessage(ChatColor.RED + "You doesn't have set any tags.");
+					return;
+				}
+				profile.setTag("none");
+				player.sendMessage(ChatColor.RED + "You have been removed your tag!");
+				player.closeInventory();
+				return;
+			}
 			final TagManager tagManager = Core.API.getManagerHandler().getTagManager();
 			final String name = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
 			final TagEntry tagEntry = tagManager.getTags().get(name);
-			final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
 			if (!profile.getTag().equals("none")) {
 				if (tagManager.getTags().get(profile.getTag()).getPrefix().equals(tagEntry.getPrefix())) {
 					player.closeInventory();

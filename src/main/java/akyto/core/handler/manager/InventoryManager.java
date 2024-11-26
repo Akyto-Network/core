@@ -70,6 +70,7 @@ public class InventoryManager {
             );
             clone.addItem(item);
         });
+        clone.setItem(this.tagInventory[1].getSize()-1, ItemUtils.createItems(Material.TRAP_DOOR, ChatColor.GRAY + " » " + ChatColor.RED + "Remove tag."));
         this.commonTags.remove(uuid);
         this.commonTags.put(uuid, clone);
     }
