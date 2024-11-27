@@ -201,11 +201,12 @@ public class PlayerListener implements Listener {
 		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
 		event.setCancelled(true);
 	}
-	
-	@EventHandler
-	public void onPlayerKick(final PlayerKickEvent event) {
-		this.onPlayerLeft(new PlayerQuitEvent(event.getPlayer(), null));
-	}
+
+	// Depend on the spigot build
+//	@EventHandler
+//	public void onPlayerKick(final PlayerKickEvent event) {
+//		this.onPlayerLeft(new PlayerQuitEvent(event.getPlayer(), null));
+//	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerTalk(final AsyncPlayerChatEvent event) {
