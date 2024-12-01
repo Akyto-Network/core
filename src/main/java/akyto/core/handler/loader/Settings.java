@@ -20,9 +20,9 @@ public class Settings {
 	private final boolean freezeInventory;
 	private final boolean namemcCheck;
 	private final String hubInstance;
-	private int maximumCps;
+	private final int maximumCps;
 	private final boolean alertsCpsToStaff;
-	private int alertsMaxToNotifStaff;
+	private final int alertsMaxToNotifStaff;
 	private final int tokensPriceWhitelist;
 	private final int tokensPriceRank;
 	private final String rankGiveaway;

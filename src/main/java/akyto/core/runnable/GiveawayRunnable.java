@@ -16,7 +16,7 @@ import java.util.UUID;
 public class GiveawayRunnable extends BukkitRunnable {
 
     private int idx = 120;
-    private UUID creator;
+    private final UUID creator;
 
     public GiveawayRunnable(final UUID creator) {
         this.creator = creator;

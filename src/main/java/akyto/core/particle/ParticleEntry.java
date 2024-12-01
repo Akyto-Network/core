@@ -9,17 +9,17 @@ import java.util.List;
 @Getter
 public class ParticleEntry {
 
-    private Effect particle;
-    private float xOffSet;
-    private float yOffSet;
-    private float zOffSet;
-    private float speed;
-    private int amount;
-    private String name;
-    private List<String> lore;
-    private Material icon;
-    private String section;
-    private String permission;
+    private final Effect particle;
+    private final float xOffSet;
+    private final float yOffSet;
+    private final float zOffSet;
+    private final float speed;
+    private final int amount;
+    private final String name;
+    private final List<String> lore;
+    private final Material icon;
+    private final String section;
+    private final String permission;
 
     public ParticleEntry(String section, Effect particle, float xOffSet, float yOffSet, float zOffSet, float speed, int amount, final String name, final List<String> lore, final Material icon, final String permission) {
         this.section = section;

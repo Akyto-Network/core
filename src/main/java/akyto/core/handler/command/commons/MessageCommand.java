@@ -17,7 +17,7 @@ public class MessageCommand {
 	
 	private final Core main = Core.API;
 
-	@Command(name = "msg", aliases= {"message", "tell", "whisper", "r", "m", "reply"}, inGameOnly = true)
+	@Command(name = "msg", aliases= {"message", "tell", "whisper", "r", "m", "reply", "w"}, inGameOnly = true)
 	public void messageCommand(final CommandArgs arg) {
 		final Player sender = arg.getPlayer();
 		final String[] args = arg.getArgs();

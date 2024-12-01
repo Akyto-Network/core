@@ -23,8 +23,6 @@ import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
@@ -68,7 +66,7 @@ public class Core extends JavaPlugin {
 	@Getter
 	private final List<String> blacklistWhitelist = Lists.newArrayList();
 	@Getter
-	private List<ParticleEntry> particles = Lists.newArrayList();
+	private final List<ParticleEntry> particles = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;

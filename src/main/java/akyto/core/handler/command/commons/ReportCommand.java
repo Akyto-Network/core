@@ -15,8 +15,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import java.util.Objects;
-
 public class ReportCommand {
 
 	@Command(name = "report", aliases= {"reports"}, inGameOnly = true)
