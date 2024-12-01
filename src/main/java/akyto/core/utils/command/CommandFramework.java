@@ -135,7 +135,7 @@ public class CommandFramework implements CommandExecutor {
                 Command command = m.getAnnotation(Command.class);
 
                 if (m.getParameterTypes().length > 1 || m.getParameterTypes()[0] != CommandArgs.class) {
-                    System.out.println("Unable to register command " + m.getName() + ". Unexpected method arguments");
+                    Core.API.getLogger().info("Unable to register command " + m.getName() + ". Unexpected method arguments");
                     continue;
                 }
                 registerCommand(command, command.name(), m, obj);
@@ -146,12 +146,12 @@ public class CommandFramework implements CommandExecutor {
                 Completer comp = m.getAnnotation(Completer.class);
                 if (m.getParameterTypes().length != 1
                         || m.getParameterTypes()[0] != CommandArgs.class) {
-                    System.out.println("Unable to register tab completer " + m.getName()
+                    Core.API.getLogger().info("Unable to register tab completer " + m.getName()
                             + ". Unexpected method arguments");
                     continue;
                 }
                 if (m.getReturnType() != List.class) {
-                    System.out.println("Unable to register tab completer " + m.getName() + ". Unexpected return type");
+                    Core.API.getLogger().info("Unable to register tab completer " + m.getName() + ". Unexpected return type");
                     continue;
                 }
                 registerCompleter(comp.name(), m, obj);
@@ -220,7 +220,7 @@ public class CommandFramework implements CommandExecutor {
                     BukkitCompleter completer = (BukkitCompleter) field.get(command);
                     completer.addCompleter(label, m, obj);
                 } else {
-                    System.out.println("Unable to register tab completer " + m.getName()
+                    Core.API.getLogger().info("Unable to register tab completer " + m.getName()
                             + ". A tab completer is already registered for that command!");
                 }
             } catch (Exception ex) {

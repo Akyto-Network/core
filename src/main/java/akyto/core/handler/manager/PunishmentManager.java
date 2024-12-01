@@ -45,7 +45,7 @@ public class PunishmentManager {
 			CompletableFuture.runAsync(() -> {
                 try {
 					final String ip = DB.getFirstRow("SELECT ip FROM playersdata WHERE uuid=?", victim).getString("ip");
-					System.out.println(ip);
+					Core.API.getLogger().info(ip);
                     this.blacklisted.put(victim, new BlacklistEntry(ip, reason, judge));
                 } catch (SQLException e) { throw new RuntimeException(e); }
 			});

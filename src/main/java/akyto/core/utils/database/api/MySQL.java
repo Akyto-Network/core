@@ -23,7 +23,7 @@ public class MySQL {
 	    Bukkit.getScheduler().runTaskAsynchronously(this.main, () -> {
 	        try {
 	            if (this.main.connection == null) {
-	                System.out.println("Connection is null. Cannot create tables.");
+	                Core.API.getLogger().info("Connection is null. Cannot create tables.");
 	                future.completeExceptionally(new NullPointerException("Connection is null"));
 	                return;
 	            }
@@ -34,12 +34,12 @@ public class MySQL {
 	            if (!tables.next()) {
 	                // Table doesn't exist
 	            	DB.createTransaction(this::createPlayerManagerTable);
-	                System.out.println("The SQL core database as been created!");
+	                Core.API.getLogger().info("The SQL core database as been created!");
 	            }
 
 	            future.complete(null);
 	        } catch (SQLException e) {
-	            System.out.println("An error occurred with the Core database!");
+	            Core.API.getLogger().info("An error occurred with the Core database!");
 	            e.printStackTrace();
 	            future.completeExceptionally(e);
 	        }
@@ -71,12 +71,12 @@ public class MySQL {
             } else {
                 //table doesn't exist
                 stm.executeUpdateQuery(player_manager);
-                System.out.println("SUCESS create playersdata table.");
+                Core.API.getLogger().info("SUCESS create playersdata table.");
                 return true;
             }
 
         } catch (SQLException e) {
-            System.out.println("ERROR while creating playersdata table.");
+            Core.API.getLogger().info("ERROR while creating playersdata table.");
             e.printStackTrace();
         }
         return false;

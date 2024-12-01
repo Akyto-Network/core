@@ -38,7 +38,7 @@ public class DisguiseFile {
 			}	
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Disguised: Succesfully loaded in " + (endTime - startTime) + "ms!");
+		Core.API.getLogger().info("[CORE] Disguised: Succesfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

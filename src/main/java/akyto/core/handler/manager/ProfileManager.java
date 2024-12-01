@@ -60,7 +60,7 @@ public class ProfileManager {
 			}	
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("[Profiles] Loaded in " + (endTime - timeUnit) + "ms!");
+		Core.API.getLogger().info("[Profiles] Loaded in " + (endTime - timeUnit) + "ms!");
 	}
 	
 	public void createProfile(final UUID uuid) {
@@ -110,7 +110,7 @@ public class ProfileManager {
 
 	public Profile getProfile(final UUID uuid) {
 		if (this.getProfiles().get(uuid) == null) {
-			System.out.println("Profile " + uuid + " not found.");
+			Core.API.getLogger().info("Profile " + uuid + " not found.");
 			return null;
 		}
 		return this.getProfiles().get(uuid);

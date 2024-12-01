@@ -45,7 +45,7 @@ public class RankFile {
 			}	
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Rank: Succesfully loaded in " + (endTime - startTime) + "ms!");
+		Core.API.getLogger().info("[CORE] Rank: Succesfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

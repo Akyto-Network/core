@@ -50,7 +50,7 @@ public class ParticlesFile {
 			}	
 		}
 		final long endTime = System.currentTimeMillis();
-		System.out.println("[CORE] Particles: Succesfully loaded in " + (endTime - startTime) + "ms!");
+		Core.API.getLogger().info("[CORE] Particles: Succesfully loaded in " + (endTime - startTime) + "ms!");
 	}
 
 	public void save() {

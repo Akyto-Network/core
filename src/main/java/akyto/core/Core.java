@@ -268,7 +268,7 @@ public class Core extends JavaPlugin {
 			this.getMySQL().createPlayerManagerTableAsync();
 			return;
 		}
-		System.out.println("WARNING enter valid database information (" + this.getHikariPath() + ") \n You will not be able to access many features");
+		Core.API.getLogger().info("WARNING enter valid database information (" + this.getHikariPath() + ") \n You will not be able to access many features");
 	}
 
 	public void setupHikariCP() {
@@ -281,9 +281,9 @@ public class Core extends JavaPlugin {
 			this.connection = ds.getConnection();
 		}
 		catch (SQLException e) {
-			System.out.println("Error could not connect to SQL database.");
+			Core.API.getLogger().info("Error could not connect to SQL database.");
 			e.printStackTrace();
 		}
-		System.out.println("Successfully connected to the SQL database.");
+		Core.API.getLogger().info("Successfully connected to the SQL database.");
 	}
 }
