@@ -33,6 +33,7 @@ public class Profile {
 
     private boolean frozen;
     private boolean likeNameMC;
+	private boolean link;
     private UUID responsive;
     private ProfileState profileState;
 

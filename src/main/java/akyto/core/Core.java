@@ -106,7 +106,6 @@ public class Core extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		this.saveConfig();
 		this.saveDatabase();
 		this.saveRank();
 		this.savePunishment();
@@ -117,6 +116,7 @@ public class Core extends JavaPlugin {
 		this.managerHandler.getRankManager().getRanks().clear();
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
+		this.saveConfig();
 	}
 	
 	private void savePunishment() {

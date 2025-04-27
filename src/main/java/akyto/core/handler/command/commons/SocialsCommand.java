@@ -12,8 +12,8 @@ public class SocialsCommand {
 		final CommandSender sender = arg.getSender();
 		sender.sendMessage(new String[] {
 				ChatColor.GRAY + ChatColor.STRIKETHROUGH.toString() + "----------------------------------",
-				ChatColor.DARK_GRAY + ChatColor.BOLD.toString() + "Discord: " + ChatColor.WHITE + "discord.akyto.club",
-				ChatColor.DARK_GRAY + ChatColor.BOLD.toString() + "NameMC: " + ChatColor.WHITE + "namemc.com/server/akyto.club",
+				ChatColor.DARK_GRAY + ChatColor.BOLD.toString() + "Discord: " + ChatColor.WHITE + "discord.akyto.net",
+				ChatColor.DARK_GRAY + ChatColor.BOLD.toString() + "NameMC: " + ChatColor.WHITE + "namemc.com/server/akyto.net",
 				ChatColor.GRAY + ChatColor.STRIKETHROUGH.toString() + "----------------------------------"
 				});
 	}

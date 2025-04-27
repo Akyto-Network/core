@@ -2,6 +2,9 @@ database:
   type: "MYSQL"
   redis-password: "dev123"
 
+bot:
+  token: ''
+
 bungeecord:
   enable: true
   kick-whitout-using-correct-ip: "&cPlease, use the correct ip of the server to connect on it."
