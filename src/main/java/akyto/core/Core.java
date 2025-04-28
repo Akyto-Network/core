@@ -5,6 +5,7 @@ import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
 import akyto.core.handler.ManagerHandler;
 import akyto.core.handler.listener.PlayerListener;
+import akyto.core.handler.listener.ServerListener;
 import akyto.core.particle.ParticleEntry;
 import akyto.core.particle.file.ParticlesFile;
 import akyto.core.punishment.cache.BanEntry;
@@ -103,6 +104,7 @@ public class Core extends JavaPlugin {
 
 	private void registerListener() {
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		this.getServer().getPluginManager().registerEvents(new ServerListener(this), this);
 	}
 
 	public void onDisable() {

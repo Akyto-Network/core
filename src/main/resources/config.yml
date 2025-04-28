@@ -5,6 +5,14 @@ database:
 bot:
   token: ''
 
+motd:
+  whitelist:
+    - '          &7• &8&lAkyto &7│ &f&lNetwork &7•'
+    - '&c» &7We are currently cooking right now...'
+  open:
+    - '          &7• &8&lAkyto &7│ &f&lNetwork &7•'
+    - '&c» &fJoin our &f&lV2.0 &fright now!'
+
 bungeecord:
   enable: true
   kick-whitout-using-correct-ip: "&cPlease, use the correct ip of the server to connect on it."

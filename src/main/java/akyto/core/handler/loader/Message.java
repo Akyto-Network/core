@@ -86,6 +86,8 @@ public class Message {
 	private final List<String> filteredText = Lists.newArrayList();
 	private final List<String> randomTeleport = Lists.newArrayList();
 	private final List<String> announcement = Lists.newArrayList();
+	private final List<String> motdWhitelist = Lists.newArrayList();
+	private final List<String> motdOpen = Lists.newArrayList();
 	
 	public Message(final Core main) {
 		this.banDisconnect = CoreUtils.translate(main.getConfig().getString("messages.banDisconnect"));
@@ -163,6 +165,8 @@ public class Message {
 		main.getConfig().getStringList("freeze.movement-message").forEach(str -> this.movementFrozeMessage.add(CoreUtils.translate(str)));
 		main.getConfig().getStringList("messages.randomTeleport").forEach(str -> this.randomTeleport.add(CoreUtils.translate(str)));
 		main.getConfig().getStringList("messages.announcement").forEach(str -> this.announcement.add(CoreUtils.translate(str)));
+		main.getConfig().getStringList("motd.whitelist").forEach(str -> this.motdWhitelist.add(CoreUtils.translate(str)));
+		main.getConfig().getStringList("motd.open").forEach(str -> this.motdOpen.add(CoreUtils.translate(str)));
 	}
 
 }
