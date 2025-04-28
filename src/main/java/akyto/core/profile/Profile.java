@@ -46,6 +46,9 @@ public class Profile {
 	private List<UUID> friends;
 	private List<String> permissions;
 
+	private Integer kill;
+	private Integer death;
+
 	private boolean disguised;
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
@@ -65,6 +68,8 @@ public class Profile {
 		this.settings = new int[9];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
 		this.disguised = false;
+		this.kill = 0;
+		this.death = 0;
 	}
 
 	public void setAllowClick(final boolean bool) {
