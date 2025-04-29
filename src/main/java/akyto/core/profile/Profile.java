@@ -50,6 +50,8 @@ public class Profile {
 	private Integer death;
 
 	private boolean disguised;
+
+	private int teamSize;
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
 		this.uuid = uuid;
@@ -70,6 +72,7 @@ public class Profile {
 		this.disguised = false;
 		this.kill = 0;
 		this.death = 0;
+		this.teamSize = 0;
 	}
 
 	public void setAllowClick(final boolean bool) {
