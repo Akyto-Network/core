@@ -8,6 +8,8 @@ public enum ProfileState {
 	EDITOR,
 	SPECTATE,
 	BUILD,
-    EVENT, MOD
+    EVENT,
+	MOD,
+	TOURNAMENT
 
 }
