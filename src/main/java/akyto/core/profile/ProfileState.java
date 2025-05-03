@@ -9,7 +9,6 @@ public enum ProfileState {
 	SPECTATE,
 	BUILD,
     EVENT,
-	MOD,
-	TOURNAMENT
+	MOD
 
 }
