@@ -33,7 +33,7 @@ public class Profile {
 
     private boolean frozen;
     private boolean likeNameMC;
-	private boolean link;
+	private boolean linked;
     private UUID responsive;
     private ProfileState profileState;
 
@@ -50,6 +50,8 @@ public class Profile {
 	private Integer death;
 
 	private boolean disguised;
+
+	private int link;
 
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
@@ -71,6 +73,13 @@ public class Profile {
 		this.disguised = false;
 		this.kill = 0;
 		this.death = 0;
+		this.linked = false;
+		this.link = 0;
+		this.setLinked();
+	}
+
+	public void setLinked() {
+		this.setLinked(this.link == 0 ? false : true);
 	}
 
 	public void setAllowClick(final boolean bool) {

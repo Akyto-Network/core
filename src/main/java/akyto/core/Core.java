@@ -1,5 +1,7 @@
 package akyto.core;
 
+import akyto.bot.DiscordBot;
+import akyto.bot.command.LinkCommand;
 import akyto.core.disguise.file.DisguiseFile;
 import akyto.core.handler.CommandHandler;
 import akyto.core.handler.LoaderHandler;
@@ -24,6 +26,8 @@ import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
@@ -40,7 +44,10 @@ import java.util.UUID;
 public class Core extends JavaPlugin {
 	
 	public static Core API;
-	
+
+	public JDA jda;
+	public LinkCommand linkCommand;
+
 	@Getter
     private String hikariPath;
 	private String namemcURL;
@@ -68,6 +75,8 @@ public class Core extends JavaPlugin {
 	private final List<String> blacklistWhitelist = Lists.newArrayList();
 	@Getter
 	private final List<ParticleEntry> particles = Lists.newArrayList();
+	@Getter
+	private final List<String> linkedId = Lists.newArrayList();
 	
 	public void onEnable() {
 		API = this;
@@ -79,6 +88,7 @@ public class Core extends JavaPlugin {
 		if (this.getConfig().getString("bungeecord.enable").equalsIgnoreCase("true")) {
 			this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
+		new DiscordBot(this.getConfig().getString("bot.token"), this);
         this.databaseType = DatabaseType.valueOf(this.getConfig().getString("database.type"));
 		if (databaseType.equals(DatabaseType.MYSQL)) {
 			this.redis = new Jedis("localhost", 6379);
@@ -112,6 +122,7 @@ public class Core extends JavaPlugin {
 		this.saveRank();
 		this.savePunishment();
 		this.getConfig().set("autoclicker.bypass", this.getBypassCpsCap());
+		this.getConfig().set("bot.linkedId", this.getLinkedId());
 		this.getConfig().set("whitelist.state", this.getManagerHandler().getServerManager().getWhitelistState().toString());
 		this.getConfig().set("whitelist.allowed", this.getWhitelisted());
 		this.getConfig().set("whitelist.blacklist", this.getBlacklistWhitelist());
@@ -119,6 +130,7 @@ public class Core extends JavaPlugin {
 		try { this.getRankFile().getConfig().save(this.getRankFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		try { this.getPunishmentFile().getConfig().save(this.getPunishmentFile().getFile()); } catch (IOException e) { e.printStackTrace(); }
 		this.saveConfig();
+		jda.shutdown();
 	}
 	
 	private void savePunishment() {

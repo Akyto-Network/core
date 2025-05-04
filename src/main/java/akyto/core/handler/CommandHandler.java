@@ -2,6 +2,7 @@ package akyto.core.handler;
 
 import java.util.Arrays;
 
+import akyto.bot.command.LinkCommand;
 import akyto.core.Core;
 import akyto.core.handler.command.*;
 import akyto.core.handler.command.admin.*;
@@ -64,7 +65,8 @@ public class CommandHandler {
 				new TimeCommand(),
 				new FriendCommand(),
 
-				new HubCommand()
+				new HubCommand(),
+				new LinkCommand()
 		);
 	}
 
