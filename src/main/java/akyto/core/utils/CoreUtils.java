@@ -158,6 +158,8 @@ public class CoreUtils {
 		embedBuilder.addField("Type: ", ranked ? "Ranked" : "Unranked", true);
 		embedBuilder.addField("Ladder: ", kit, true);
 		embedBuilder.addField("Arena: ", arena, true);
+		embedBuilder.addBlankField(false);
+		embedBuilder.addField("Winner:", nameOne, true);
 
 		MessageCreateData messageData = MessageCreateData.fromEmbeds(embedBuilder.build());
 		channel.sendMessage(messageData).queue();
