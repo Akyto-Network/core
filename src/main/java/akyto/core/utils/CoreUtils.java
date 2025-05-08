@@ -1,5 +1,6 @@
 package akyto.core.utils;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +16,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
 import akyto.core.particle.ParticleEntry;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Skin;
@@ -136,6 +140,28 @@ public class CoreUtils {
 		return future;
 	}
 
+
+	public static void matchHistory(final String nameOne, final String nameTwo, final String kit, final String arena, final String duration, final boolean ranked, final int eloA, final int eloB) {
+		String channelId = "1369877567770857502";
+
+		TextChannel channel = Core.API.getJda().getTextChannelById(channelId);
+		if (channel == null) {
+			System.err.println("The channel with '" + channelId + "' id not found.");
+			return;
+		}
+
+		EmbedBuilder embedBuilder = new EmbedBuilder();
+		String title = nameOne + (ranked ? " [" + eloA + "]" : "") + " against " + nameTwo + (ranked ? " [" + eloB + "]" : "");
+		embedBuilder.setTitle(title);
+		embedBuilder.setColor(Color.RED);
+		embedBuilder.setFooter("Match ended in " + duration);
+		embedBuilder.addField("Type: ", ranked ? "Ranked" : "Unranked", true);
+		embedBuilder.addField("Ladder: ", kit, true);
+		embedBuilder.addField("Arena: ", arena, true);
+
+		MessageCreateData messageData = MessageCreateData.fromEmbeds(embedBuilder.build());
+		channel.sendMessage(messageData).queue();
+	}
 
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));

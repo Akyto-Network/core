@@ -16,7 +16,7 @@ public class DiscordBot {
         main.jda = JDABuilder.createLight(botToken, EnumSet.of(GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT))
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.customStatus("/link | akyto.net"))
-                .setEnabledIntents(GatewayIntent.GUILD_MEMBERS)
+                .setEnabledIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MODERATION)
                 .build();
         main.jda.addEventListener(new DiscordListener(main));
     }
