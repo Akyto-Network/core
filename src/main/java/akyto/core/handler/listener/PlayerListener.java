@@ -353,8 +353,6 @@ public class PlayerListener implements Listener {
             }
         }
 		if (clickedInventory.equals(Core.API.getManagerHandler().getInventoryManager().getCommonTags().get(player.getUniqueId()))) {
-			event.setResult(Event.Result.DENY);
-			event.setCancelled(true);
 			if (event.getCurrentItem() == null) return;
 			if (event.getCurrentItem().getType().equals(Material.AIR)) return;
 			final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfiles().get(player.getUniqueId());
