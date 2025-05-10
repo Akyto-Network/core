@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class SpectatorFlySpeed extends SpectateSettings {
     @Override
     public int slot() {
-        return 0;
+        return 1;
     }
 
     @Override
