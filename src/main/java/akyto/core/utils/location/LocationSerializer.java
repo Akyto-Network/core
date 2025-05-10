@@ -29,6 +29,16 @@ public class LocationSerializer
     public LocationSerializer(final double x, final double y, final double z, final float yaw, final float pitch) {
         this("world", x, y, z, yaw, pitch);
     }
+
+    public LocationSerializer(final String world, final double x, final double y, final double z, final float yaw, final float pitch) {
+        this.timestamp = System.currentTimeMillis();
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
+    }
     
     public static LocationSerializer fromBukkitLocation(final Location location) {
         return new LocationSerializer(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -66,6 +76,10 @@ public class LocationSerializer
             joiner.add(loc.getWorld());
         return joiner.toString();
     }
+
+    public LocationSerializer add(double addX, double addY, double addZ) {
+        return new LocationSerializer(world, x + addX, y + addY, z + addZ, yaw, pitch);
+    }
     
     public Location toBukkitLocation() {
         return new Location(this.toBukkitWorld(), this.x, this.y+1.5d, this.z, this.yaw, this.pitch);
@@ -98,15 +112,5 @@ public class LocationSerializer
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("x", this.x).append("y", this.y).append("z", this.z).append("yaw", this.yaw).append("pitch", this.pitch).append("world", this.world).append("timestamp", this.timestamp).toString();
-    }
-
-    public LocationSerializer(final String world, final double x, final double y, final double z, final float yaw, final float pitch) {
-        this.timestamp = System.currentTimeMillis();
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
     }
 }
