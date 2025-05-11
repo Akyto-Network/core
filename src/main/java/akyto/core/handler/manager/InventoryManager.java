@@ -84,7 +84,7 @@ public class InventoryManager {
 		this.frozeInventory.setItem(5, this.createItems(this.invConfig.getFrozenMaterial(), this.invConfig.getDisplayFrozen(), 1, (byte) 0, this.invConfig.getLoreFrozen()));
 	}
 	
-	public void generateProfileInventory(final UUID uuid, final int kitSize, final String[] kitNames) {
+	public void generateProfileInventory(final UUID uuid, final String[] kitNames) {
 		final Inventory profile = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.DARK_GRAY + CoreUtils.getName(uuid) + " profile");
 		final Profile profiles = Core.API.getManagerHandler().getProfileManager().getProfiles().get(uuid);
         final ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
@@ -93,7 +93,7 @@ public class InventoryManager {
         }
         List<String> kitLore = new ArrayList<>();
         kitLore.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "------------------------");
-
+		final int kitSize = kitNames.length;
         int maxName = 0;
         int maxDigits = 0;
         for (int i = 0; i < kitSize; i++) {

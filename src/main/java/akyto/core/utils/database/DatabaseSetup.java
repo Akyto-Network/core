@@ -128,7 +128,7 @@ public class DatabaseSetup {
 		load.whenCompleteAsync((t, u) -> {
 			final InventoryManager inventoryManager = Core.API.getManagerHandler().getInventoryManager();
 			if (kitSize != 0 && kitNames != null){
-				inventoryManager.generateProfileInventory(uuid, kitSize, kitNames);
+				inventoryManager.generateProfileInventory(uuid, kitNames);
 			}
 			this.main.getManagerHandler().getProfileManager().registerPermissions(uuid);
 			final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);

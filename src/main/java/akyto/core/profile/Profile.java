@@ -67,7 +67,7 @@ public class Profile {
 		this.tokens = 0;
 		this.allowClick = true;
 		this.profileState = ProfileState.FREE;
-		final int arraySize = 8;
+		final int arraySize = 8; // FIXME BAD, Depend on kit size
 		this.stats = Arrays.asList(new int[arraySize], new int[arraySize], new int[arraySize]);
 		this.settings = new int[9];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
@@ -80,7 +80,7 @@ public class Profile {
 	}
 
 	public void setLinked() {
-		this.setLinked(this.link == 0 ? false : true);
+		this.setLinked(this.link != 0);
 	}
 
 	public void setAllowClick(final boolean bool) {
