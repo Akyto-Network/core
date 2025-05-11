@@ -67,7 +67,8 @@ public class Profile {
 		this.tokens = 0;
 		this.allowClick = true;
 		this.profileState = ProfileState.FREE;
-		this.stats = Arrays.asList(new int[7], new int[7], new int[7]);
+		final int arraySize = 8;
+		this.stats = Arrays.asList(new int[arraySize], new int[arraySize], new int[arraySize]);
 		this.settings = new int[9];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;
 		this.disguised = false;

@@ -188,18 +188,19 @@ public class PlayerListener implements Listener {
 			}
 		}
 	}
-    
-	@EventHandler(priority=EventPriority.LOW)
-	public void PlayerPlaceBlockEvent(final BlockPlaceEvent event) {
-		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-		event.setCancelled(true);
-	}
-	
-	@EventHandler(priority=EventPriority.LOW)
-	public void PlayerBreakBlockEvent(final BlockBreakEvent event) {
-		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-		event.setCancelled(true);
-	}
+
+	//DEPEND THE SERVER X)
+//	@EventHandler(priority=EventPriority.LOW)
+//	public void PlayerPlaceBlockEvent(final BlockPlaceEvent event) {
+//		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
+//		event.setCancelled(true);
+//	}
+//
+//	@EventHandler(priority=EventPriority.LOW)
+//	public void PlayerBreakBlockEvent(final BlockBreakEvent event) {
+//		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
+//		event.setCancelled(true);
+//	}
 
 	// Depend on the spigot build
 //	@EventHandler
