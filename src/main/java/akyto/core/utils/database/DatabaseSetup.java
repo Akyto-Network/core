@@ -186,7 +186,7 @@ public class DatabaseSetup {
 			data.setTag(DB.getFirstRow("SELECT tag FROM playersdata WHERE name=?", playerName).getString("tag"));
 			data.setTokens(DB.getFirstRow("SELECT tokens FROM playersdata WHERE name=?", playerName).getInt("tokens"));
 			data.setLink(DB.getFirstRow("SELECT link FROM playersdata WHERE name=?", playerName).getInt("link"));
-			data.setDiscordId(DB.getFirstRow("SELECT effect FROM playersdata WHERE name=?", playerName).getString("discordId"));
+			data.setDiscordId(DB.getFirstRow("SELECT discordId FROM playersdata WHERE name=?", playerName).getString("discordId"));
 			data.setLinked();
         } catch (SQLException e) {
 			e.printStackTrace();

@@ -62,7 +62,7 @@ public class MySQL {
                 + "tag VARCHAR(40) DEFAULT 'none',"
                 + "tokens INT(10) DEFAULT 0,"
                 + "link INT(10) DEFAULT 0,"
-                + "discorId VARCHAR(40) DEFAULT 'none',"
+                + "discordId VARCHAR(40) DEFAULT 'none',"
                 + "PRIMARY KEY (`ID`))";
         try {
             DatabaseMetaData dbm = this.main.connection.getMetaData();
