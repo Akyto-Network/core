@@ -79,7 +79,7 @@ public class DatabaseSetup {
 				}
 			}
 			try {
-				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, tag=?, effect=?, tokens=?, link=? WHERE name=?",
+				DB.executeUpdate("UPDATE playersdata SET settings=?, played=?, win=?, rank=?, tag=?, effect=?, tokens=?, link=?, discordId=? WHERE name=?",
 						FormatUtils.getStringValue(data.getSettings(), ":"),
 						FormatUtils.getStringValue(data.getStats().get(0), ":"),
 						FormatUtils.getStringValue(data.getStats().get(1), ":"),
@@ -88,6 +88,7 @@ public class DatabaseSetup {
 						data.getEffect(),
 						data.getTokens(),
 						data.getLink(),
+						data.getDiscordId(),
 						playerName);
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
@@ -185,6 +186,7 @@ public class DatabaseSetup {
 			data.setTag(DB.getFirstRow("SELECT tag FROM playersdata WHERE name=?", playerName).getString("tag"));
 			data.setTokens(DB.getFirstRow("SELECT tokens FROM playersdata WHERE name=?", playerName).getInt("tokens"));
 			data.setLink(DB.getFirstRow("SELECT link FROM playersdata WHERE name=?", playerName).getInt("link"));
+			data.setDiscordId(DB.getFirstRow("SELECT effect FROM playersdata WHERE name=?", playerName).getString("discordId"));
 			data.setLinked();
         } catch (SQLException e) {
 			e.printStackTrace();

@@ -55,13 +55,14 @@ public class MySQL {
                 + "uuid VARCHAR(64) NOT NULL,"
                 + "settings VARCHAR(40) DEFAULT '0:0:0:0:0:0:0:0:0',"
                 + "effect VARCHAR(40) DEFAULT 'none',"
-                + "played VARCHAR(255) DEFAULT '0:0:0:0:0:0:0:0',"
-                + "win VARCHAR(255) DEFAULT '0:0:0:0:0:0:0:0',"
-                + "elos VARCHAR(255) DEFAULT '1000:1000:1000:1000:1000:1000:1000:1000',"
+                + "played VARCHAR(255) DEFAULT '0:0:0:0:0:0:0:0:0:0:0',"
+                + "win VARCHAR(255) DEFAULT '0:0:0:0:0:0:0:0:0:0:0',"
+                + "elos VARCHAR(255) DEFAULT '1000:1000:1000:1000:1000:1000:1000:1000:1000:1000:1000',"
                 + "rank VARCHAR(16) DEFAULT 'default',"
                 + "tag VARCHAR(40) DEFAULT 'none',"
                 + "tokens INT(10) DEFAULT 0,"
                 + "link INT(10) DEFAULT 0,"
+                + "discorId VARCHAR(40) DEFAULT 'none',"
                 + "PRIMARY KEY (`ID`))";
         try {
             DatabaseMetaData dbm = this.main.connection.getMetaData();

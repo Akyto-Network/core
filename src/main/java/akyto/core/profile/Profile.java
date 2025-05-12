@@ -42,6 +42,7 @@ public class Profile {
 
 	private List<int[]> stats;
 	public int[] settings;
+	private String discordId;
 
 	private List<UUID> friends;
 	private List<String> permissions;
@@ -62,12 +63,13 @@ public class Profile {
 		this.permissions = Lists.newArrayList();
 		this.frozen = false;
 		this.tag = "none";
+		this.discordId = "none";
 		this.cps = 0;
 		this.alertsCPS = 0;
 		this.tokens = 0;
 		this.allowClick = true;
 		this.profileState = ProfileState.FREE;
-		final int arraySize = 8; // FIXME BAD, Depend on kit size
+		final int arraySize = 11; // FIXME BAD, Depend on kit size
 		this.stats = Arrays.asList(new int[arraySize], new int[arraySize], new int[arraySize]);
 		this.settings = new int[9];
 		for (int i = 0; i <= this.stats.get(2).length - 1; i++) this.stats.get(2)[i] = 1000;

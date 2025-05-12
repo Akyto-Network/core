@@ -2,6 +2,7 @@ package akyto.bot.listener;
 
 import akyto.bot.command.LinkCommand;
 import akyto.core.Core;
+import akyto.core.profile.Profile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -59,8 +60,10 @@ public class DiscordListener extends ListenerAdapter {
                         return;
                     }
                     guild.addRoleToMember(member, defaultRole).queue();
-                    Core.API.getManagerHandler().getProfileManager().getProfile(uuid).setLink(1);
-                    Core.API.getManagerHandler().getProfileManager().getProfile(uuid).setLinked();
+                    final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfile(uuid);
+                    profile.setLink(1);
+                    profile.setLinked();
+                    profile.setDiscordId(event.getUser().getId());
                     event.reply("> Your Discord account has been linked to your Minecraft account!").setEphemeral(true).queue();
                     Core.API.getLinkedId().add(event.getUser().getId());
                     final Player player = Bukkit.getPlayer(uuid);
