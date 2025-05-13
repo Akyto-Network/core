@@ -141,13 +141,13 @@ messages:
   noPermission: "&cYou don't have the required permissions."
 
   alreadyExist: "&cThe %value% %type% already exist"
-  created: "&aSuccesfully created %value% %type%" 
-  deleted: "&cSuccesfully deleted %value% %type%"
+  created: "&aSuccessfully created %value% %type%"
+  deleted: "&cSuccessfully deleted %value% %type%"
   notExist: "&c%value%'s %type% does not exist!"
   edited: "&a%key% %type% as %editType% to %value%"
-  alreadySet: "&cThis %value% is already setted"
+  alreadySet: "&cThis %value% is already set"
 
-  staff-proxy-notification: "&7[&eStaff&7] %rank% %rankColor%%player% &fhas %type% the server!"
+  staff-proxy-notification: "&7[&eStaff&7] %rank% %rankColor%%player%&f has %type% the server!"
 
   server-restart: "&cAkyto is going to reboot!"
 
@@ -159,14 +159,14 @@ messages:
   whitelist-disabled: "&cWhitelist has been disabled."
   whitelist-enabled: "&aThe whitelist was enabled with the condition &f%type%."
   whitelist-add: "&aYou have been added &f%player% &ato the whitelist list."
-  whitelist-remove: "&cYou have been removed &e%player% &cfrom the whitelist list."
+  whitelist-remove: "&cYou have been removed &e%player%&c from the whitelist list."
   whitelist-blacklist: "&cYou have been blacklist &f%player% &cname from the whitelist."
 
-  alerts-cps-staff: "&7[&4CPS-CAP&7] &e%player% &fhave reached a total of &e%alerts% &falerts of cps!"
+  alerts-cps-staff: "&7[&4CPS-CAP&7] &e%player%&f have reached a total of &e%alerts%&f alerts of cps!"
 
   missing-tokens: "&cYou are missing %tokens% to carry out your action!"
   token-wallet: "&7» &cYou have %tokens% into your tokens wallet"
-  token-gived: "&7[&4Management&7] &7You have been gived &c%tokens% tokens &7to &c%player%"
+  token-gived: "&7[&4Management&7] &7You have been given &c%tokens% tokens &7to &c%player%"
   token-received: "&7» &fYou received &c%tokens% tokens&f!"
   token-removed: "&7[&4Management&7] &7You've been removed &c%tokens% tokens &7to &c%player%"
   token-another-wallet: "&7» &c%player%'s &7token wallet amount is &c%tokens%"
@@ -232,7 +232,7 @@ messages:
     - "&c/giveaway join"
 
   randomTeleport:
-    - "&7Successfuly teleported to &c%target%"
+    - "&7Successfully teleported to &c%target%"
     - "&7&m------------------------------------"
     - "&eMatch Informations&7:"
     - "&a%playerOne% &7against &c%playerTwo%"

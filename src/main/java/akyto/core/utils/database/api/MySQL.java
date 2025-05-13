@@ -73,12 +73,12 @@ public class MySQL {
             } else {
                 //table doesn't exist
                 stm.executeUpdateQuery(player_manager);
-                Core.API.getLogger().info("SUCESS create playersdata table.");
+                Core.API.getLogger().info("SUCCESS create players data table.");
                 return true;
             }
 
         } catch (SQLException e) {
-            Core.API.getLogger().info("ERROR while creating playersdata table.");
+            Core.API.getLogger().info("ERROR while creating players data table.");
             e.printStackTrace();
         }
         return false;

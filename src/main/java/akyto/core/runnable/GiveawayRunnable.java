@@ -30,7 +30,7 @@ public class GiveawayRunnable extends BukkitRunnable {
                 .replace("%player%", CoreUtils.getName(creator))
                 .replace("%type%", Core.API.getManagerHandler().getServerManager().getGiveaways().get(0).getType().toString().toLowerCase());
         final TextComponent textComponent = new TextComponent(text);
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click here to join the giveway").create()));
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click here to join the giveaway").create()));
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/giveaway join"));
         if (idx == 60 || idx == 30 || idx == 15 || idx == 5) {
             Bukkit.getOnlinePlayers().forEach(players -> players.spigot().sendMessage(textComponent));

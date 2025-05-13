@@ -28,7 +28,7 @@ public class GiveawayManager {
                 .replace("%type%", type.toString().toLowerCase());
 
         final TextComponent textComponent = new TextComponent(text);
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click here to join the giveway").create()));
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Click here to join the giveaway").create()));
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/giveaway join"));
         Bukkit.getOnlinePlayers().forEach(players -> players.spigot().sendMessage(textComponent));
         final int tokenPrice = type.equals(GiveawayType.RANK) ? Core.API.getLoaderHandler().getSettings().getTokensPriceRank() : Core.API.getLoaderHandler().getSettings().getTokensPriceWhitelist();

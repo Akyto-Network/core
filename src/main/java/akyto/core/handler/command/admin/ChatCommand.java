@@ -41,7 +41,7 @@ public class ChatCommand {
 			if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("on")) {
 					if (!this.main.getManagerHandler().getServerManager().getChatState().equals(ChatState.CLOSED)) {
-						sender.sendMessage(ChatColor.RED + "Sorry but the chat as already openned!");
+						sender.sendMessage(ChatColor.RED + "Sorry but the chat as already opened!");
 						return;
 					}
 					this.main.getManagerHandler().getServerManager().setChatState(ChatState.GLOBAL);

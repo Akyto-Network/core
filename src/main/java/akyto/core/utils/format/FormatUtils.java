@@ -48,8 +48,8 @@ public class FormatUtils {
         return (((days * 24) * 60) * 60) + ((hours * 60) * 60) + (minutes * 60) + seconds;
     }
     
-	public static int[] getSplitValue(final String string, final String spliter) {
-        final String[] split = string.split(spliter);
+	public static int[] getSplitValue(final String string, final String regex) {
+        final String[] split = string.split(regex);
         final int[] board = new int[split.length];
         for (int i = 0; i <= split.length - 1; ++i) {
             board[i] = Integer.parseInt(split[i]);
@@ -57,12 +57,12 @@ public class FormatUtils {
         return board;
     }
 	
-	public static String getStringValue(final int[] board, final String spliter) {
+	public static String getStringValue(final int[] board, final String regex) {
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i <= board.length - 1; ++i) {
             stringBuilder.append(board[i]);
             if (i != board.length - 1) {
-                stringBuilder.append(spliter);
+                stringBuilder.append(regex);
             }
         }
         return stringBuilder.toString();

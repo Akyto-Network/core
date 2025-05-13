@@ -59,7 +59,7 @@ public class Message {
 	private final String cpsAlerts;
 	private final String tokensMissing;
 	private final String tokenWallet;
-	private final String tokenGived;
+	private final String tokenGiven;
 	private final String tokenRemoved;
 	private final String tokenReceived;
 	private final String tokenAnotherWallet;
@@ -138,7 +138,7 @@ public class Message {
 		this.cpsAlerts = CoreUtils.translate(main.getConfig().getString("messages.alerts-cps-staff"));
 		this.tokensMissing = CoreUtils.translate(main.getConfig().getString("messages.missing-tokens"));
 		this.tokenWallet = CoreUtils.translate(main.getConfig().getString("messages.token-wallet"));
-		this.tokenGived = CoreUtils.translate(main.getConfig().getString("messages.token-gived"));
+		this.tokenGiven = CoreUtils.translate(main.getConfig().getString("messages.token-gived"));
 		this.tokenRemoved = CoreUtils.translate(main.getConfig().getString("messages.token-removed"));
 		this.tokenReceived = CoreUtils.translate(main.getConfig().getString("messages.token-received"));
 		this.tokenAnotherWallet = CoreUtils.translate(main.getConfig().getString("messages.token-another-wallet"));

@@ -85,7 +85,7 @@ public class TokensCommand {
                         targetProfile.setTokens(targetProfile.getTokens() + tokens);
                         target.sendMessage(Core.API.getLoaderHandler().getMessage().getTokenReceived().replace("%tokens%", arg.getArgs()[2]));
                     }
-                    arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getTokenGived().replace("%player%", arg.getArgs()[1]).replace("%tokens%", arg.getArgs()[2]));
+                    arg.getSender().sendMessage(Core.API.getLoaderHandler().getMessage().getTokenGiven().replace("%player%", arg.getArgs()[1]).replace("%tokens%", arg.getArgs()[2]));
                     return;
                 }
                 if (arg.getArgs()[0].equalsIgnoreCase("remove")) {
