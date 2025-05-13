@@ -1,10 +1,8 @@
 package akyto.core.handler;
 
-import java.util.Arrays;
-
 import akyto.bot.command.LinkCommand;
 import akyto.core.Core;
-import akyto.core.handler.command.*;
+import akyto.core.handler.command.HubCommand;
 import akyto.core.handler.command.admin.*;
 import akyto.core.handler.command.admin.rank.DemoteCommand;
 import akyto.core.handler.command.admin.rank.PromoteCommand;
@@ -22,6 +20,8 @@ import akyto.core.handler.command.vip.DisguiseCommand;
 import akyto.core.handler.command.vip.GiveawayCommand;
 import akyto.core.handler.command.vip.WhitelistCommand;
 import akyto.core.utils.command.CommandFramework;
+
+import java.util.Arrays;
 
 public class CommandHandler {
 

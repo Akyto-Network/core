@@ -1,9 +1,12 @@
 package akyto.core.utils.config;
 
 import lombok.Getter;
-import org.bukkit.plugin.java.*;
-import java.io.*;
-import org.bukkit.configuration.file.*;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 @Getter
 public class Config {

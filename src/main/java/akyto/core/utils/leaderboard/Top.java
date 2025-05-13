@@ -1,10 +1,10 @@
 package akyto.core.utils.leaderboard;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public class Top {

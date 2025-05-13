@@ -1,7 +1,11 @@
 package akyto.core.utils.command;
 
+import akyto.core.Core;
 import org.bukkit.ChatColor;
-import org.bukkit.command.*;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,8 +17,6 @@ import org.bukkit.help.HelpTopicComparator;
 import org.bukkit.help.IndexHelpTopic;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
-
-import akyto.core.Core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

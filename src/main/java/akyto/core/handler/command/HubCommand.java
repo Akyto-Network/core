@@ -1,11 +1,10 @@
 package akyto.core.handler.command;
 
-import org.bukkit.entity.Player;
-
 import akyto.core.Core;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
+import org.bukkit.entity.Player;
 
 public class HubCommand {
 

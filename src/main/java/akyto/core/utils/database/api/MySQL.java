@@ -3,8 +3,8 @@ package akyto.core.utils.database.api;
 import akyto.core.Core;
 import co.aikar.idb.DB;
 import co.aikar.idb.DbStatement;
-
 import org.bukkit.Bukkit;
+
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,13 +1,12 @@
 package akyto.core.handler.loader;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Material;
-
 import akyto.core.Core;
 import akyto.core.utils.CoreUtils;
 import lombok.Getter;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class Inventories {

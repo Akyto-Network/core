@@ -1,16 +1,14 @@
 package akyto.core.handler.manager;
 
+import akyto.core.Core;
+import akyto.core.rank.RankEntry;
+import com.google.common.collect.Lists;
+import lombok.Getter;
+import org.bukkit.ChatColor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.bukkit.ChatColor;
-
-import com.google.common.collect.Lists;
-
-import akyto.core.Core;
-import akyto.core.rank.RankEntry;
-import lombok.Getter;
 
 @Getter
 public class RankManager {

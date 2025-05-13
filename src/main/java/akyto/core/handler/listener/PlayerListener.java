@@ -1,43 +1,37 @@
 package akyto.core.handler.listener;
 
+import akyto.core.Core;
+import akyto.core.chat.ChatState;
+import akyto.core.disguise.DisguiseEntry;
+import akyto.core.handler.manager.TagManager;
+import akyto.core.profile.Profile;
+import akyto.core.punishment.cache.BanEntry;
+import akyto.core.punishment.cache.MuteEntry;
+import akyto.core.rank.RankEntry;
+import akyto.core.tag.TagEntry;
+import akyto.core.utils.CoreUtils;
+import akyto.core.utils.database.DatabaseType;
+import akyto.core.whitelist.WhitelistState;
+import co.aikar.idb.DB;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-
-import akyto.core.disguise.DisguiseEntry;
-import akyto.core.handler.manager.TagManager;
-import akyto.core.tag.TagEntry;
-import akyto.core.whitelist.WhitelistState;
-import co.aikar.idb.DB;
-import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
-
-import akyto.core.Core;
-import akyto.core.chat.ChatState;
-import akyto.core.profile.Profile;
-import akyto.core.punishment.cache.BanEntry;
-import akyto.core.punishment.cache.MuteEntry;
-import akyto.core.rank.RankEntry;
-import akyto.core.utils.CoreUtils;
-import akyto.core.utils.database.DatabaseType;
 
 public class PlayerListener implements Listener {
 	

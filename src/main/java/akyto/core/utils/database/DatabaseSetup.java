@@ -1,22 +1,21 @@
 package akyto.core.utils.database;
 
+import akyto.core.Core;
+import akyto.core.handler.manager.InventoryManager;
+import akyto.core.profile.Profile;
+import akyto.core.rank.RankEntry;
+import akyto.core.utils.CoreUtils;
+import akyto.core.utils.format.FormatUtils;
+import co.aikar.idb.DB;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import redis.clients.jedis.Jedis;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-
-import akyto.core.handler.manager.InventoryManager;
-import akyto.core.rank.RankEntry;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import co.aikar.idb.DB;
-import akyto.core.Core;
-import akyto.core.profile.Profile;
-import akyto.core.utils.CoreUtils;
-import akyto.core.utils.format.FormatUtils;
-import redis.clients.jedis.Jedis;
 
 public class DatabaseSetup {
 	

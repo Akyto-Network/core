@@ -1,15 +1,14 @@
 package akyto.core.handler.command.admin.rank;
 
+import akyto.core.Core;
 import akyto.core.handler.loader.Message;
 import akyto.core.handler.loader.Permission;
 import akyto.core.handler.manager.RankManager;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
-import akyto.core.Core;
 import akyto.core.utils.CoreUtils;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class RankCommand {
 

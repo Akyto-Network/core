@@ -1,13 +1,12 @@
 package akyto.core.rank.file;
 
-import java.io.File;
-import java.io.IOException;
-
+import akyto.core.Core;
+import akyto.core.rank.RankEntry;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import akyto.core.Core;
-import akyto.core.rank.RankEntry;
+import java.io.File;
+import java.io.IOException;
 
 public class RankFile {
 	

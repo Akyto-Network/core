@@ -1,10 +1,10 @@
 package akyto.core.rank;
 
-import java.util.List;
-
 import akyto.core.utils.CoreUtils;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter @Setter
 public class RankEntry {

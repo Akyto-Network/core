@@ -1,8 +1,6 @@
 package akyto.core.utils.inventory;
 
-import java.util.Collections;
-import java.util.List;
-
+import akyto.core.utils.item.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import akyto.core.utils.item.ItemUtils;
+import java.util.Collections;
+import java.util.List;
 
 public class MultipageSerializer {
 

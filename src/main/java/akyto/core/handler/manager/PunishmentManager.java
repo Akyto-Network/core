@@ -1,23 +1,22 @@
 package akyto.core.handler.manager;
 
+import akyto.core.Core;
+import akyto.core.punishment.PunishmentType;
+import akyto.core.punishment.cache.BanEntry;
+import akyto.core.punishment.cache.BlacklistEntry;
+import akyto.core.punishment.cache.MuteEntry;
+import akyto.core.punishment.cache.WarnEntry;
+import co.aikar.idb.DB;
+import com.google.common.collect.Maps;
+import lombok.Getter;
+import org.bukkit.Bukkit;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentMap;
-
-import akyto.core.punishment.cache.BlacklistEntry;
-import co.aikar.idb.DB;
-import org.bukkit.Bukkit;
-
-import akyto.core.Core;
-import akyto.core.punishment.PunishmentType;
-import akyto.core.punishment.cache.BanEntry;
-import akyto.core.punishment.cache.MuteEntry;
-import akyto.core.punishment.cache.WarnEntry;
-import lombok.Getter;
-import com.google.common.collect.Maps;
 
 @Getter
 public class PunishmentManager {

@@ -1,14 +1,13 @@
 package akyto.core.handler.command.admin;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import akyto.core.Core;
 import akyto.core.chat.ChatPriority;
 import akyto.core.chat.ChatState;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class ChatCommand {
 

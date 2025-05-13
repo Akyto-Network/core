@@ -1,12 +1,11 @@
 package akyto.core.runnable;
 
-import java.util.UUID;
-
+import akyto.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import akyto.core.Core;
+import java.util.UUID;
 
 public class FrozenRunnable extends BukkitRunnable {
 	

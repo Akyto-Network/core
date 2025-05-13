@@ -1,12 +1,15 @@
 package akyto.core.handler.manager;
 
-import java.io.File;
-import java.util.*;
-import java.util.concurrent.ConcurrentMap;
-
+import akyto.core.Core;
 import akyto.core.disguise.DisguiseEntry;
+import akyto.core.profile.Profile;
+import akyto.core.rank.RankEntry;
 import akyto.core.settings.NormalSettings;
 import akyto.core.settings.SpectateSettings;
+import akyto.core.utils.CoreUtils;
+import akyto.core.utils.database.DatabaseType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,14 +20,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachment;
 
-import com.google.common.collect.Lists;
-
-import akyto.core.Core;
-import akyto.core.profile.Profile;
-import akyto.core.rank.RankEntry;
-import akyto.core.utils.CoreUtils;
-import akyto.core.utils.database.DatabaseType;
-import com.google.common.collect.Maps;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 
 public class ProfileManager {
 	

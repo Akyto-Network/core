@@ -1,10 +1,13 @@
 package akyto.core.utils.config;
 
-import java.io.*;
-import org.bukkit.configuration.file.*;
-import org.bukkit.plugin.java.*;
-import org.bukkit.*;
-import java.util.*;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ConfigFile
 {

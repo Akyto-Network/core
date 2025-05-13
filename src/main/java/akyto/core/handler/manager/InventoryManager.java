@@ -1,13 +1,12 @@
 package akyto.core.handler.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import akyto.core.Core;
+import akyto.core.handler.loader.Inventories;
+import akyto.core.profile.Profile;
 import akyto.core.utils.CoreUtils;
+import akyto.core.utils.item.ItemUtils;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,10 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import akyto.core.handler.loader.Inventories;
-import akyto.core.profile.Profile;
-import akyto.core.utils.item.ItemUtils;
-import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InventoryManager {
 	

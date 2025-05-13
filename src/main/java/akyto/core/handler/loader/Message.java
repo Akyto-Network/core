@@ -1,12 +1,11 @@
 package akyto.core.handler.loader;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import akyto.core.Core;
 import akyto.core.utils.CoreUtils;
+import com.google.common.collect.Lists;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class Message {

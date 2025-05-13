@@ -1,9 +1,9 @@
 package akyto.core.handler.command.commons;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class SocialsCommand {
 	

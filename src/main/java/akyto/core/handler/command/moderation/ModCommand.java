@@ -1,16 +1,15 @@
 package akyto.core.handler.command.moderation;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import akyto.core.Core;
 import akyto.core.profile.Profile;
 import akyto.core.profile.ProfileState;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
 import akyto.core.utils.item.ItemUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public class ModCommand {
 	

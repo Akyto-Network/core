@@ -1,18 +1,17 @@
 package akyto.core.profile;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 import akyto.core.Core;
 import akyto.core.handler.loader.Settings;
 import akyto.core.utils.CoreUtils;
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Getter @Setter
 public class Profile {

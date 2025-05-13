@@ -1,13 +1,12 @@
 package akyto.core.handler.command.moderation;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import akyto.core.Core;
 import akyto.core.runnable.FrozenRunnable;
 import akyto.core.utils.command.Command;
 import akyto.core.utils.command.CommandArgs;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class FreezeCommand {
     
