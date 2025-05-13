@@ -4,9 +4,12 @@ import akyto.core.Core;
 import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
 import akyto.core.particle.ParticleEntry;
+import akyto.core.profile.Profile;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.Bukkit;
@@ -26,7 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class CoreUtils {
 
@@ -166,5 +171,49 @@ public class CoreUtils {
 
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
+	}
+	public static void changeNicknameDiscord(final Player player, int kitSize, Consumer<Boolean> callback) {
+		final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfile(player.getUniqueId());
+
+		if (profile == null || profile.getDiscordId() == null) {
+			callback.accept(false);
+			return;
+		}
+
+		JDA jda = Core.API.getJda();
+		AtomicBoolean found = new AtomicBoolean(false);
+
+		for (Guild guild : jda.getGuilds()) {
+			guild.retrieveMemberById(profile.getDiscordId()).queue(
+					member -> {
+						if (member != null) {
+							String newNickname = player.getName();
+							int globalElo = 0;
+							for (int elo : profile.getStats().get(2)) {
+								globalElo =+ elo;
+							}
+							globalElo = globalElo / kitSize;
+							guild.modifyNickname(member, "[" + globalElo + "] " + newNickname).queue(
+									success -> {
+										callback.accept(true);
+									},
+									error -> {
+										callback.accept(false);
+									}
+							);
+							found.set(true);
+						}
+					},
+					error -> {
+						System.err.println("Error when targeting member : " + error.getMessage());
+					}
+			);
+
+			if (found.get()) break;
+		}
+
+		if (!found.get()) {
+			callback.accept(false);
+		}
 	}
 }
