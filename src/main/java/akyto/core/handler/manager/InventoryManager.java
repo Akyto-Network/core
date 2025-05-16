@@ -93,24 +93,9 @@ public class InventoryManager {
         List<String> kitLore = new ArrayList<>();
         kitLore.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "------------------------");
 		final int kitSize = kitNames.length;
-        int maxName = 0;
-        int maxDigits = 0;
-        for (int i = 0; i < kitSize; i++) {
-            int nameLen = kitNames[i].length();
-            if (nameLen > maxName)
-                maxName = nameLen;
-            int digitLen = (int) (Math.log10(profiles.getStats().get(2)[i]) + 1);
-            if (digitLen > maxDigits)
-                maxDigits = digitLen;
-        }
-
-        String nameFormat = String.format("%%-%ds", maxName);
-        String eloFormat = String.format("%%-%ds", maxDigits + 2 + 4);
         for (int i = 0; i < kitSize; i++) {
         	final int lose = profiles.getStats().get(0)[i] - profiles.getStats().get(1)[i];
-            String kitName = String.format(nameFormat, kitNames[i]);
-            String elo = String.format(eloFormat, "(" + ChatColor.WHITE + profiles.getStats().get(2)[i] + ChatColor.GRAY + ")");
-            String prefix = kitName + ChatColor.GRAY + " " + elo + " : ";
+            String prefix = kitNames[i] + ChatColor.GRAY + " (" + ChatColor.WHITE + profiles.getStats().get(2)[i] + ChatColor.GRAY + ") : ";
         	kitLore.add(prefix + ChatColor.GREEN + profiles.getStats().get(1)[i] + ChatColor.GRAY + "/" + ChatColor.YELLOW + profiles.getStats().get(0)[i] + ChatColor.GRAY + "/" + ChatColor.RED + lose);
         }
 
