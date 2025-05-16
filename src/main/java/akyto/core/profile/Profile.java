@@ -50,6 +50,7 @@ public class Profile {
 	private Integer death;
 
 	private boolean disguised;
+	private int teamSize;
 
 	private int link;
 
@@ -75,6 +76,7 @@ public class Profile {
 		this.disguised = false;
 		this.kill = 0;
 		this.death = 0;
+		this.teamSize = 0;
 		this.linked = false;
 		this.link = 0;
 		this.setLinked();

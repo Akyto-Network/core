@@ -1,6 +1,7 @@
 package akyto.core.utils.inventory;
 
 import akyto.core.utils.item.ItemUtils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class MultipageSerializer {
 
     private Inventory[] inventories;
