@@ -4,19 +4,15 @@ import akyto.core.Core;
 import akyto.core.disguise.DisguiseEntry;
 import akyto.core.giveaway.Giveaway;
 import akyto.core.particle.ParticleEntry;
-import akyto.core.profile.Profile;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Skin;
 import org.bukkit.entity.Player;
-import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -29,9 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 public class CoreUtils {
 

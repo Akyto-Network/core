@@ -20,7 +20,7 @@ public class ListCommand {
         return CoreUtils.translate(rank.getValue().getColor()) + StringUtils.capitalize(rank.getKey());
     }
 
-	@Command(name = "list")
+	@Command(name = "list", aliases = {"who"})
     public void listCommand(final CommandArgs arg) {
     	final CommandSender sender = arg.getSender();
         StringBuilder builder = new StringBuilder();

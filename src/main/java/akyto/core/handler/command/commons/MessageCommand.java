@@ -90,7 +90,7 @@ public class MessageCommand {
 		receiverProfile.setResponsive(sender.getUniqueId());
     }
 	
-	@Command(name = "reply", aliases= {"r","answer"}, inGameOnly = true)
+	@Command(name = "reply", aliases= {"r", "answer"}, inGameOnly = true)
 	public void replyCommand(final CommandArgs arg) {
 		final Player sender = arg.getPlayer();
 		final String[] args = arg.getArgs();
@@ -144,7 +144,7 @@ public class MessageCommand {
 				.replace("%receiver%", Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName())
 				.replace("%incommingType%", "To")
 				.replace("%player%", Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName())
-				.replace("%rankColor%", rankSender)
+				.replace("%rankColor%", receiverColor)
 				.replace("%rank%", rankReceiver + (spaceReceiver ? " " : ""))
 				.replace("%message%", msg));
 
