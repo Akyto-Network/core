@@ -190,7 +190,7 @@ public class CoreUtils {
 							String newNickname = player.getName();
 							int globalElo = 0;
 							for (int elo : profile.getStats().get(2)) {
-								globalElo =+ elo;
+								globalElo = globalElo + elo;
 							}
 							globalElo = globalElo / kitSize;
 							guild.modifyNickname(member, "[" + globalElo + "] " + newNickname).queue(
