@@ -67,7 +67,11 @@ public class CoreUtils {
 	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 	    out.writeUTF(type);
 	    out.writeUTF(server);
-	    player.sendPluginMessage(Core.API, "BungeeCord", out.toByteArray());
+		try {
+			player.sendPluginMessage(Core.API, "BungeeCord", out.toByteArray());
+		} catch (Exception e) {
+			player.sendMessage(ChatColor.RED + "Unable to send you to " + server);
+		}
 	}
 	
 	public static String translate(final String str) {
