@@ -64,6 +64,7 @@ public class ProfileManager {
 	
 	public void createProfile(final UUID uuid) {
 		if (!this.profiles.containsKey(uuid)) {
+			System.out.println("Profile Created");
 			this.profiles.put(uuid, new Profile(uuid, "default", "none"));
 		}
 		if (!this.main.getDatabaseType().equals(DatabaseType.MYSQL)) {
