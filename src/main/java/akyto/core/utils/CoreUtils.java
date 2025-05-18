@@ -120,34 +120,6 @@ public class CoreUtils {
 		});
 	}
 
-	public static CompletableFuture<String> getPlayerPublicIP(Player player) {
-		CompletableFuture<String> future = new CompletableFuture<>();
-		try {
-			URL url = new URL("https://api.ipify.org?format=json");
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.setRequestProperty("Accept", "application/json");
-			con.setDoOutput(true);
-			player.getServer().getScheduler().runTaskAsynchronously(Core.API, () -> {
-				try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-					StringBuilder content = new StringBuilder();
-					String inputLine;
-					while ((inputLine = in.readLine()) != null) {
-						content.append(inputLine);
-					}
-					JSONObject jsonObject = new JSONObject(content.toString());
-					String publicIP = jsonObject.getString("ip");
-					future.complete(publicIP);
-				} catch (IOException e) {
-					future.completeExceptionally(e);
-				}
-			});
-		} catch (IOException e) {
-			future.completeExceptionally(e);
-		}
-		return future;
-	}
-
 
 	public static void matchHistory(final String nameOne, final String nameTwo, final String kit, final String arena, final String duration, final boolean ranked, final int eloA, final int eloB) {
 		String channelId = "1369877567770857502";
@@ -175,49 +147,5 @@ public class CoreUtils {
 
 	public static void disguise(final Player target, final Player disguised, DisguiseEntry disguiseEntry) {
 		disguised.setFakeNameAndSkin(target, disguiseEntry.getName(), new Skin(disguiseEntry.getDataSkin(), disguiseEntry.getSignature()));
-	}
-	public static void changeNicknameDiscord(final Player player, int kitSize, Consumer<Boolean> callback) {
-		final Profile profile = Core.API.getManagerHandler().getProfileManager().getProfile(player.getUniqueId());
-
-		if (profile == null || profile.getDiscordId() == null) {
-			callback.accept(false);
-			return;
-		}
-
-		JDA jda = Core.API.getJda();
-		AtomicBoolean found = new AtomicBoolean(false);
-
-		for (Guild guild : jda.getGuilds()) {
-			guild.retrieveMemberById(profile.getDiscordId()).queue(
-					member -> {
-						if (member != null) {
-							String newNickname = player.getName();
-							int globalElo = 0;
-							for (int elo : profile.getStats().get(2)) {
-								globalElo = globalElo + elo;
-							}
-							globalElo = globalElo / kitSize;
-							guild.modifyNickname(member, "[" + globalElo + "] " + newNickname).queue(
-									success -> {
-										callback.accept(true);
-									},
-									error -> {
-										callback.accept(false);
-									}
-							);
-							found.set(true);
-						}
-					},
-					error -> {
-						System.err.println("Error when targeting member : " + error.getMessage());
-					}
-			);
-
-			if (found.get()) break;
-		}
-
-		if (!found.get()) {
-			callback.accept(false);
-		}
 	}
 }
