@@ -28,10 +28,7 @@ public class LinkCommand {
             player.sendMessage(ChatColor.RED + "Your account was already linked!");
             return;
         }
-        if (verificationCodes.containsValue(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "Use your previous code after make a new one.");
-            return;
-        }
+        verificationCodes.entrySet().removeIf(entry -> entry.getValue().equals(player.getUniqueId()));
         String code = VerificationCodeGenerator.generateCode();
         verificationCodes.put(code, player.getUniqueId());
 

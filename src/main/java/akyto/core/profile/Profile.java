@@ -53,7 +53,6 @@ public class Profile {
 	private int teamSize;
 
 	private int link;
-
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
 		this.uuid = uuid;

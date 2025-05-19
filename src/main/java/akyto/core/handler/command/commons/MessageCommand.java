@@ -111,18 +111,20 @@ public class MessageCommand {
 			sender.sendMessage(ChatColor.RED + "Target isn't connected!");
 			return;
 		}
+		final Player receiver = Bukkit.getPlayer(senderProfile.getResponsive());
 
-		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(senderProfile.getResponsive());
+		final Profile receiverProfile = this.main.getManagerHandler().getProfileManager().getProfiles().get(receiver.getUniqueId());
 		if (receiverProfile.getSettings()[5] != 0) {
 			sender.sendMessage(ChatColor.RED + Bukkit.getPlayer(senderProfile.getResponsive()).getDisplayName() + " does not accept the private message longer!");
 			return;
 		}
 		String msg = StringUtils.join(args, ' ', 0, args.length);
 
-		Player receiver = Bukkit.getPlayer(senderProfile.getResponsive());
 		final HashMap<String, RankEntry> rank = this.main.getManagerHandler().getRankManager().getRanks();
+
 		String rankSender = rank.get(senderProfile.getRank()).getPrefix();
 		String rankReceiver = rank.get(receiverProfile.getRank()).getPrefix();
+
 		String senderColor = rank.get(senderProfile.getRank()).getColor();
 		String receiverColor = rank.get(receiverProfile.getRank()).getColor();
 		boolean spaceReceiver = rank.get(receiverProfile.getRank()).hasSpaceBetweenColor();
