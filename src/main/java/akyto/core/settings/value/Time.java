@@ -16,10 +16,10 @@ public class Time extends NormalSettings {
     public String[] values() {
         return new String[]
                 {
-                        ChatColor.DARK_AQUA + "sunrise",
-                        ChatColor.GOLD + "day",
-                        ChatColor.YELLOW + "sunset",
-                        ChatColor.BLUE + "night"
+                        ChatColor.DARK_AQUA + " Sunrise",
+                        ChatColor.GOLD + " Day",
+                        ChatColor.YELLOW + " Sunset",
+                        ChatColor.BLUE + " Night"
                 };
     }
 

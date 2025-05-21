@@ -14,9 +14,9 @@ public class DropsInventory extends NormalSettings {
     @Override
     public String[] values() {
         return new String[] {
-                ChatColor.GREEN + "clear",
-                ChatColor.YELLOW + "only armor",
-                ChatColor.GOLD + "all"
+                ChatColor.GREEN + " Clear",
+                ChatColor.YELLOW + " Only Armor",
+                ChatColor.GOLD + " All"
         };
     }
 

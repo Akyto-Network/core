@@ -15,8 +15,9 @@ public class Scoreboard extends NormalSettings {
     @Override
     public String[] values() {
         return new String[]{
-                ChatColor.GREEN + "enable",
-                ChatColor.RED + "disable"
+                ChatColor.GREEN + " Enabled",
+                ChatColor.YELLOW + " Display Ping",
+                ChatColor.RED + " Disabled"
         };
     }
 

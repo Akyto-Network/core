@@ -14,8 +14,9 @@ public class AllowSpectate extends NormalSettings {
     @Override
     public String[] values() {
         return new String[]{
-                ChatColor.GREEN + "enable",
-                ChatColor.RED + "disable"
+                ChatColor.GREEN + " Enabled",
+                ChatColor.YELLOW + " Only Friends",
+                ChatColor.RED + " Disabled"
         };
     }
 
