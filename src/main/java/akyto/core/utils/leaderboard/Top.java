@@ -31,12 +31,20 @@ public class Top {
     private void organise() {
         List<Map.Entry<String, Integer>> entries = topBoard.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toList());
+                .toList();
 
         int x = 1;
         for (Map.Entry<String, Integer> entry : entries) {
             if (x <= 10) {
-            	lore.add(ChatColor.DARK_GRAY + "#" + x + " " + ChatColor.RED + entry.getKey() + ChatColor.GRAY + " (" + ChatColor.WHITE + entry.getValue() + ChatColor.GRAY + ")");
+                String hashtag;
+                if (x < 4) {
+                    hashtag = (x == 1 ? ChatColor.RED.toString() : x == 2 ? ChatColor.YELLOW.toString() : ChatColor.GOLD.toString()) + ChatColor.MAGIC + "#" + ChatColor.RESET + " ";
+                }
+                else {
+                    hashtag = ChatColor.GRAY.toString() + ChatColor.ITALIC + "#";
+                }
+            	lore.add(
+                        hashtag + ChatColor.DARK_RED + ChatColor.BOLD + ChatColor.ITALIC + x + ChatColor.GRAY + " ৷ " + ChatColor.RED + entry.getKey() + ChatColor.GRAY + " ⇒ " + ChatColor.WHITE + entry.getValue());
             }
         	x++;
         }

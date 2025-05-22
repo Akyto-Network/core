@@ -18,10 +18,12 @@ public class MultipageSerializer {
     private Inventory[] inventories;
     private final String inventoryName;
     private final ItemStack icon;
+    private boolean tournament;
 
-    public MultipageSerializer(List<ItemStack> itemStacks, String inventoryName, ItemStack icon) {
+    public MultipageSerializer(List<ItemStack> itemStacks, String inventoryName, ItemStack icon, boolean tournament) {
         this.inventoryName = inventoryName;
         this.icon = icon;
+        this.tournament = tournament;
         refresh(itemStacks);
     }
 
@@ -36,7 +38,10 @@ public class MultipageSerializer {
             inventory.setItem(53, ItemUtils.createItems(Material.ARROW, ChatColor.GRAY + "Next Page" , Collections.singletonList(ChatColor.GRAY + "The next page is: " + ChatColor.AQUA + nextPage)));
             for (int i = 0; i <= 8; i++) inventory.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte)8));
             inventory.setItem(4, icon);
-
+            if (tournament) {
+                inventory.setItem(0, ItemUtils.createItems(Material.NAME_TAG, ChatColor.GRAY.toString() + ChatColor.ITALIC + "Create your tournament"));
+                inventory.setItem(8, ItemUtils.createItems(Material.NAME_TAG, ChatColor.GRAY.toString() + ChatColor.ITALIC + "Create your tournament"));
+            }
             if (!itemStacks.isEmpty()) {
                 for (int slot = 9; slot <= 44; slot++) {
                     if (start >= itemStacks.size()) break;
