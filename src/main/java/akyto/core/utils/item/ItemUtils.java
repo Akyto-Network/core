@@ -23,6 +23,10 @@ public class ItemUtils {
 	public static ItemStack createItems(final Material material, final String displayName, Byte data) {
 		return createItems(material, 1, (short) 0, data, displayName, false, null);
 	}
+
+	public static ItemStack createItems(final Material material, final String displayName, Byte data, List<String> lores) {
+		return createItems(material, 1, (short) 0, data, displayName, false, lores);
+	}
 	
 	public static ItemStack createItems(final Material material, final String displayName, boolean unbreakable) {
 		return createItems(material, 1, (short) 0, (byte) 0, displayName, unbreakable, null);

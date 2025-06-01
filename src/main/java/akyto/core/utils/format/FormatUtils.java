@@ -76,4 +76,15 @@ public class FormatUtils {
             return false;
         }
     }
+
+    public static double potionAccuracy(final int potThrown, final double potHeal) {
+        double maxPossibleHearts = potThrown * 4.0;
+        double accuracy = 0.0;
+
+        if (maxPossibleHearts > 0) {
+            double heartsHealed = potHeal;
+            accuracy = (heartsHealed / maxPossibleHearts) * 100.0;
+        }
+        return accuracy;
+    }
 }

@@ -120,7 +120,7 @@
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.idb</pattern>
-                            <shadedPattern>gg.potted.idb</shadedPattern>
+                            <shadedPattern>net.akyto.idb</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

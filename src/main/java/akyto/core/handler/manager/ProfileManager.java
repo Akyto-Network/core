@@ -72,6 +72,9 @@ public class ProfileManager {
 		}
 		final RankEntry rank = this.main.getManagerHandler().getProfileManager().getRank(uuid);
 		final Player p = Bukkit.getPlayer(uuid);
+		if (this.main.getLoaderHandler().getSettings().isBungeeCord()) {
+
+		}
 		if (this.main.getLoaderHandler().getSettings().isStaffNotifications()) {
 			if (!Bukkit.getOnlinePlayers().isEmpty()) {
 				final String perm = this.main.getLoaderHandler().getPermission().getStaffAnnounce();
