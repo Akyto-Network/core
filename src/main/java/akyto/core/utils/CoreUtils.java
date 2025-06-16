@@ -34,6 +34,9 @@ public class CoreUtils {
 		if (target != null) {
 			return target.getUniqueId();
 		}
+		if (Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName) != null) {
+			return Core.API.getServer().getPlayer(Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().get(playerName)).getUniqueId();
+		}
 		return Core.API.getServer().getOfflinePlayer(playerName).getUniqueId();
 	}
 

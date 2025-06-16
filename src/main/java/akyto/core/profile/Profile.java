@@ -52,6 +52,7 @@ public class Profile {
 	private boolean disguised;
 	private int teamSize;
 
+	private String team;
 	private int link;
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {

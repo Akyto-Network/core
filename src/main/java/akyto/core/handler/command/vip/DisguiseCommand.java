@@ -70,7 +70,6 @@ public class DisguiseCommand {
                     if (entry.getValue().equals(disguiseEntry)) {
                         randomEntry = entriesArray[random.nextInt(entriesArray.length)];
                         disguiseEntry = randomEntry.getValue();
-                        nameTaken = true;
                         break;
                     }
                 }

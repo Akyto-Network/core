@@ -35,8 +35,8 @@ public class FriendCommand {
             StringBuilder builderOnline = new StringBuilder();
             StringBuilder builderOffline = new StringBuilder();
             profile.getFriends().forEach(uuid -> {
-                if (builderOnline.length() > 0) builderOnline.append(ChatColor.GRAY).append(", ");
-                if (builderOffline.length() > 0) builderOnline.append(ChatColor.GRAY).append(", ");
+                if (!builderOnline.isEmpty()) builderOnline.append(ChatColor.GRAY).append(", ");
+                if (!builderOffline.isEmpty()) builderOnline.append(ChatColor.GRAY).append(", ");
                 if (Bukkit.getPlayer(uuid) != null) builderOnline.append(ChatColor.GREEN).append(CoreUtils.getName(uuid));
                 if (Bukkit.getPlayer(uuid) == null) builderOffline.append(ChatColor.RED).append(CoreUtils.getName(uuid));
             });

@@ -1,4 +1,5 @@
 name: Universal
 authors: [kezukdev, Greentor]
+description: "Made by Akyto Dev team with hearts <3 - Universal is the engine of Akyto."
 version: 1.0
 main: akyto.core.Core

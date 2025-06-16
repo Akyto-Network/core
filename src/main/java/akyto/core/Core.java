@@ -18,11 +18,13 @@ import akyto.core.rank.RankEntry;
 import akyto.core.rank.file.RankFile;
 import akyto.core.runnable.TipsRunnable;
 import akyto.core.tag.file.TagFile;
+import akyto.core.team.TeamEntry;
 import akyto.core.utils.database.DatabaseSetup;
 import akyto.core.utils.database.DatabaseType;
 import akyto.core.utils.database.api.MySQL;
 import co.aikar.idb.BukkitDB;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
@@ -79,6 +81,8 @@ public class Core extends JavaPlugin {
 	private final List<ParticleEntry> particles = Lists.newArrayList();
 	@Getter
 	private final List<String> linkedId = Lists.newArrayList();
+	@Getter
+	private final HashMap<String, TeamEntry> teams = Maps.newHashMap();
 	
 	public void onEnable() {
 		API = this;

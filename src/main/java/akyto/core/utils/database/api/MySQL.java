@@ -61,6 +61,7 @@ public class MySQL {
                 + "rank VARCHAR(16) DEFAULT 'default',"
                 + "tag VARCHAR(40) DEFAULT 'none',"
                 + "tokens INT(10) DEFAULT 0,"
+                + "team VARCHAR(40) DEFAULT 'none',"
                 + "link INT(10) DEFAULT 0,"
                 + "discordId VARCHAR(40) DEFAULT 'none',"
                 + "PRIMARY KEY (`ID`))";
