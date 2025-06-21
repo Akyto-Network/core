@@ -39,6 +39,8 @@ public class ProfileManager {
 	private final HashMap<String, String> realNameInDisguised = Maps.newHashMap();
 	@Getter
 	private final HashMap<UUID, UUID> friendsRequest = Maps.newHashMap();
+	@Getter
+	private final HashMap<UUID, UUID> teamRequest = Maps.newHashMap();
 
     public ProfileManager(final Core main) {
 		this.main = main;
@@ -126,9 +128,9 @@ public class ProfileManager {
 		ItemMeta meta = item.getItemMeta();
 		meta.getLore().clear();
 		List<String> lore = new ArrayList<>();
-		lore.add("§7§m----------------------");
+		lore.add(" ");
 		lore.addAll(Arrays.asList(getSettingLore(uuid, setting, normal)));
-		lore.add("§7§m----------------------");
+		lore.add(" ");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
