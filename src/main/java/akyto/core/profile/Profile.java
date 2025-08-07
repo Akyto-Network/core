@@ -54,6 +54,8 @@ public class Profile {
 
 	private String team;
 	private int link;
+
+    private boolean switchServer;
 	
 	public Profile(final UUID uuid, final String rank, final String effect) {
 		this.uuid = uuid;
@@ -79,6 +81,7 @@ public class Profile {
 		this.teamSize = 0;
 		this.linked = false;
 		this.link = 0;
+        this.switchServer = false;
 		this.setLinked();
 	}
 

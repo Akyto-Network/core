@@ -26,18 +26,26 @@ public class DatabaseSetup {
 	}
 	
 	public void exitAsync(final UUID uuid) {
-		CompletableFuture<Void> exit = CompletableFuture.runAsync(() -> this.exit(uuid));
-		exit.whenCompleteAsync((t, u) -> {
-			Bukkit.getOnlinePlayers().forEach(players -> {
-				if (this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid).getFriends().contains(players.getUniqueId())) {
-					players.sendMessage(Core.API.getLoaderHandler().getMessage().getFriendLeaved()
-							.replace("%player%", CoreUtils.getName(uuid))
-					);
-				}
-			});
-			this.main.getManagerHandler().getProfileManager().getProfiles().remove(uuid);
-		});
+		this.exitAsync(uuid, null, false);
 	}
+
+    public void exitAsync(final UUID uuid, final Player sender, boolean serverTeleport) {
+        CompletableFuture<Void> exit = CompletableFuture.runAsync(() -> this.exit(uuid));
+        exit.whenCompleteAsync((t, u) -> {
+            Bukkit.getOnlinePlayers().forEach(players -> {
+                if (this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid).getFriends().contains(players.getUniqueId())) {
+                    players.sendMessage(Core.API.getLoaderHandler().getMessage().getFriendLeaved()
+                            .replace("%player%", CoreUtils.getName(uuid))
+                    );
+                }
+            });
+            if (!serverTeleport) this.main.getManagerHandler().getProfileManager().getProfiles().remove(uuid);
+            if (serverTeleport) {
+                this.main.getManagerHandler().getProfileManager().getProfile(uuid).setSwitchServer(true);
+                CoreUtils.sendServer(sender, "Connect", Core.API.getLoaderHandler().getSettings().getHubInstance());
+            }
+        });
+    }
 
 	public void exit(final UUID uuid) {
 		final Profile data = this.main.getManagerHandler().getProfileManager().getProfiles().get(uuid);

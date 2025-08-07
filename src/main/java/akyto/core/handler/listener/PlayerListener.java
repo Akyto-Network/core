@@ -155,9 +155,13 @@ public class PlayerListener implements Listener {
 			Core.API.getManagerHandler().getProfileManager().getRealNameInDisguised().remove(Core.API.getManagerHandler().getProfileManager().getDisguised().get(leaver.getUniqueId()).getName());
 			Core.API.getManagerHandler().getProfileManager().getDisguised().remove(leaver.getUniqueId());
 		}
-		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL)){
-			if (!this.main.isShutdown()) this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
+        final boolean switchServer = this.main.getManagerHandler().getProfileManager().getProfile(leaver.getUniqueId()).isSwitchServer();
+		if (this.main.getDatabaseType().equals(DatabaseType.MYSQL) && !switchServer){
+			this.main.getDatabaseSetup().exitAsync(leaver.getUniqueId());
 		}
+        if (switchServer) {
+            this.main.getManagerHandler().getProfileManager().getProfiles().remove(leaver.getUniqueId());
+        }
 	}
 
 	@EventHandler(priority=EventPriority.MONITOR)

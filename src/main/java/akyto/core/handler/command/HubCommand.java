@@ -11,7 +11,7 @@ public class HubCommand {
 	@Command(name = "hub", aliases= {"lobby"}, inGameOnly = true)
 	public void hubCommand(final CommandArgs arg){
 		final Player sender = arg.getPlayer();
-		CoreUtils.sendServer(sender, "Connect", Core.API.getLoaderHandler().getSettings().getHubInstance());
+		Core.API.getDatabaseSetup().exitAsync(sender.getUniqueId(), sender, true);
     }
 
 }
