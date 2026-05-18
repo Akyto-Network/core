@@ -3,7 +3,7 @@ database:
   redis-password: "dev123"
 
 bot:
-  token: 'MTM2ODM1MTY0ODU2NDY0NjA0MA.GXP-2f.2ufRrt5aBFGivGM62R8hLEeyavL2R45Zgs0M1Q'
+  token:
   linkedId: []
 
 motd:
